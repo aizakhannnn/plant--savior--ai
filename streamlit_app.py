@@ -1,3 +1,4 @@
+# streamlit_app.py
 import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
@@ -5,6 +6,8 @@ import numpy as np
 import json
 from PIL import Image
 import os
+import base64
+from io import BytesIO
 
 # Set page configuration
 st.set_page_config(
@@ -14,148 +17,495 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for futuristic design
+# Custom CSS for the best frontend design
 st.markdown("""
 <style>
-    /* Import Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap');
-    
     /* Global Styles */
-    :root {
-        --primary-dark: #0a0e17;
-        --secondary-dark: #121826;
-        --accent-blue: #00f0ff;
-        --accent-purple: #a020f0;
-        --accent-green: #00ff9d;
-        --accent-pink: #ff00c8;
-        --text-light: #e0e0ff;
-        --text-dim: #a0a0c0;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
     * {
-        font-family: 'Exo 2', sans-serif;
-        color: var(--text-light);
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: 1px;
+        font-family: 'Poppins', sans-serif;
     }
     
     /* Main background and layout */
     .stApp {
-        background: var(--primary-dark);
-        background-image: 
-            radial-gradient(circle at 10% 20%, rgba(160, 32, 240, 0.1) 0%, transparent 20%),
-            radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 20%),
-            radial-gradient(circle at 50% 50%, rgba(0, 255, 157, 0.05) 0%, transparent 30%),
-            repeating-linear-gradient(45deg, rgba(0, 240, 255, 0.03) 0px, rgba(0, 240, 255, 0.03) 1px, transparent 1px, transparent 11px),
-            repeating-linear-gradient(-45deg, rgba(160, 32, 240, 0.03) 0px, rgba(160, 32, 240, 0.03) 1px, transparent 1px, transparent 11px);
-        color: var(--text-light);
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
     }
     
-    @keyframes rotate {
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-    
-    /* Sidebar Styles */
-    [data-testid="stSidebar"] {
-        background: rgba(18, 24, 38, 0.9);
-        border-right: 1px solid rgba(0, 240, 255, 0.2);
-    }
-    
-    .sidebar-section {
-        background: rgba(30, 40, 60, 0.6);
-        padding: 20px;
+    /* Header Styles */
+    .main-header {
+        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        padding: 2.5rem 2rem;
         border-radius: 15px;
-        margin-bottom: 20px;
-        box-shadow: 
-            0 5px 15px rgba(0, 0, 0, 0.3),
-            inset 0 0 10px rgba(0, 240, 255, 0.1);
-        border: 1px solid rgba(0, 240, 255, 0.2);
-        backdrop-filter: blur(5px);
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(46, 139, 87, 0.3);
+        position: relative;
+        overflow: hidden;
     }
     
-    .sidebar-title {
-        color: var(--accent-blue);
+    .main-header::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        transform: rotate(30deg);
+    }
+    
+    .logo-text {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .tagline {
         font-size: 1.4rem;
-        margin-top: 0;
-        margin-bottom: 15px;
-        font-family: 'Orbitron', sans-serif;
+        opacity: 0.95;
+        font-weight: 300;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    /* How It Works Section */
+    .how-it-works {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .section-title {
+        color: #2E8B57;
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        font-weight: 600;
+    }
+    
+    .steps-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .step-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.8rem 1.5rem;
+        text-align: center;
+        flex: 1;
+        min-width: 220px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 2px solid #e9ecef;
+    }
+    
+    .step-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(46, 139, 87, 0.2);
+        border-color: #3CB371;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        color: white;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
+        margin: 0 auto 1.2rem;
+        font-weight: bold;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 8px rgba(46, 139, 87, 0.3);
     }
     
-    .stSelectbox label {
-        color: var(--text-dim) !important;
+    .step-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.2rem;
+        color: #2E8B57;
     }
     
-    .stSelectbox div {
-        background: rgba(18, 24, 38, 0.8) !important;
-        border: 1px solid rgba(0, 240, 255, 0.3) !important;
-        color: var(--text-light) !important;
+    .step-title {
+        color: #2E8B57;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
     }
     
-    /* Progress Bar in Sidebar */
-    .stProgress > div > div {
-        background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)) !important;
+    /* Upload Section */
+    .upload-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     }
     
-    .stProgress > div {
-        background: rgba(30, 40, 60, 0.8) !important;
-        border: 1px solid rgba(0, 240, 255, 0.2) !important;
+    .upload-title {
+        color: #2E8B57;
+        text-align: center;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
     }
     
-    /* Toggle Switch */
-    .stCheckbox label {
-        color: var(--text-dim) !important;
-        font-size: 1.1rem !important;
+    /* Drop Zone */
+    .drop-zone {
+        border: 3px dashed #3CB371;
+        border-radius: 15px;
+        padding: 3rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background-color: #f8fff8;
+        margin-bottom: 1.5rem;
     }
     
-    /* Info Box */
-    .stAlert {
-        background: rgba(0, 240, 255, 0.1) !important;
-        border: 1px solid rgba(0, 240, 255, 0.3) !important;
-        color: var(--text-light) !important;
-        border-radius: 10px !important;
+    .drop-zone:hover {
+        background-color: #e8f5e9;
+        border-color: #2E8B57;
+        transform: scale(1.02);
     }
     
-    /* Expander */
-    .streamlit-expanderHeader {
-        background: rgba(160, 32, 240, 0.1) !important;
-        border-radius: 10px !important;
-        border: 1px solid rgba(160, 32, 240, 0.3) !important;
+    .drop-zone.active {
+        background-color: #e8f5e9;
+        border-color: #FF6B35;
     }
     
-    /* Metric */
-    .stMetric {
-        background: rgba(30, 40, 60, 0.6) !important;
-        padding: 15px !important;
-        border-radius: 10px !important;
-        border: 1px solid rgba(0, 240, 255, 0.2) !important;
-        box-shadow: 0 0 10px rgba(0, 240, 255, 0.1) !important;
+    .upload-icon {
+        font-size: 4rem;
+        color: #2E8B57;
+        margin-bottom: 1.5rem;
     }
     
-    .stMetric-label {
-        color: var(--text-dim) !important;
+    .drop-text {
+        font-size: 1.3rem;
+        color: #333;
+        margin-bottom: 0.8rem;
+        font-weight: 500;
     }
     
-    .stMetric-value {
-        color: var(--accent-blue) !important;
-        font-family: 'Orbitron', sans-serif !important;
+    .file-types {
+        color: #6c757d;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .browse-button {
+        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        color: white;
+        border: none;
+        padding: 0.9rem 2rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+    }
+    
+    .browse-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(46, 139, 87, 0.4);
+    }
+    
+    .file-input {
+        display: none;
+    }
+    
+    /* Analysis Section */
+    .analysis-section {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+    }
+    
+    .image-preview-container {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    
+    .results-container {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    
+    .section-subtitle {
+        color: #2E8B57;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .preview-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .reset-button {
+        background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.8rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-top: 1.5rem;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3);
+    }
+    
+    .reset-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(255, 107, 53, 0.4);
+    }
+    
+    /* Loading State */
+    .loading-container {
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border: 5px solid rgba(46, 139, 87, 0.3);
+        border-top: 5px solid #2E8B57;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1.5rem;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+        font-size: 1.3rem;
+        color: #2E8B57;
+        font-weight: 500;
+    }
+    
+    .loading-subtext {
+        color: #6c757d;
+        margin-top: 0.5rem;
+    }
+    
+    /* Results Card */
+    .results-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.8rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .result-item {
+        margin-bottom: 1.5rem;
+    }
+    
+    .result-title {
+        color: #2E8B57;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .disease-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #333;
+        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+        margin: 1rem 0;
+    }
+    
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .progress-bar-bg {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4CAF50, #2E8B57);
+        border-radius: 10px;
+        transition: width 1s ease-in-out;
+    }
+    
+    .confidence-text {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    /* Treatment Box */
+    .treatment-box {
+        background: #e8f5e9;
+        border-left: 4px solid #4CAF50;
+        padding: 1.2rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+    }
+    
+    .treatment-text {
+        line-height: 1.6;
+        color: #333;
+    }
+    
+    /* Analyze Button */
+    .analyze-button {
+        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        color: white;
+        border: none;
+        padding: 1.2rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-shadow: 0 6px 20px rgba(46, 139, 87, 0.4);
+        margin-top: 1rem;
+    }
+    
+    .analyze-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(46, 139, 87, 0.5);
+    }
+    
+    .analyze-button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Error Message */
+    .error-box {
+        background-color: #ffebee;
+        border-left: 4px solid #f44336;
+        padding: 1.2rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        color: #c62828;
+    }
+    
+    /* About Section */
+    .about-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    
+    .about-content {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .about-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #555;
+        margin-bottom: 2rem;
+    }
+    
+    .stats-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+    
+    .stat-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        min-width: 180px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .stat-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #2E8B57;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+    
+    /* Footer */
+    .footer {
+        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-top: 2rem;
+    }
+    
+    .footer-text {
+        font-size: 1.1rem;
+        opacity: 0.9;
     }
     
     /* Responsive Design */
     @media (max-width: 768px) {
         .logo-text {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
         }
         
         .tagline {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         
         .steps-container {
@@ -172,15 +522,11 @@ st.markdown("""
         
         .stat-card {
             min-width: 140px;
-            padding: 1.5rem;
+            padding: 1.2rem;
         }
         
         .stat-value {
-            font-size: 2rem;
-        }
-        
-        .tech-cards {
-            flex-direction: column;
+            font-size: 1.8rem;
         }
     }
     
@@ -190,7 +536,7 @@ st.markdown("""
         }
         
         .logo-text {
-            font-size: 2.2rem;
+            font-size: 2rem;
         }
         
         .tagline {
@@ -198,16 +544,11 @@ st.markdown("""
         }
         
         .upload-section, .about-section, .image-preview-container, .results-container {
-            padding: 1.8rem;
+            padding: 1.5rem;
         }
         
         .step-card {
             min-width: 100%;
-        }
-        
-        .feedback-reactions {
-            flex-direction: column;
-            align-items: center;
         }
     }
 </style>
@@ -215,158 +556,78 @@ st.markdown("""
 
 # Main header with enhanced design
 st.markdown("""
-<div style="background: linear-gradient(135deg, rgba(18, 24, 38, 0.9) 0%, rgba(10, 14, 23, 0.95) 100%); padding: 2.5rem 2rem; border-radius: 20px; text-align: center; margin-bottom: 2rem; box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(160, 32, 240, 0.2); position: relative; overflow: hidden; border: 1px solid rgba(0, 240, 255, 0.3);">
-    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, rgba(0, 240, 255, 0.4), rgba(160, 32, 240, 0.4), transparent); animation: rotate 4s linear infinite; z-index: -1;"></div>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-        <div style="font-size: 3rem;">🌿</div>
-        <div style="font-size: 3rem;">🍃</div>
-        <div style="font-size: 3rem;">🌱</div>
-        <div style="font-size: 3rem;">🪴</div>
-        <div style="font-size: 3rem;">🌳</div>
-    </div>
-    <h1 style="font-size: 4rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 20px rgba(0, 240, 255, 0.5); position: relative; z-index: 2; letter-spacing: 3px;">🌱 PLANT SAVIOR AI</h1>
-    <p style="font-size: 1.5rem; opacity: 0.9; font-weight: 300; max-width: 800px; margin: 0 auto; color: var(--text-dim);">ADVANCED PLANT DISEASE DETECTION USING ARTIFICIAL INTELLIGENCE</p>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-        <div style="font-size: 3rem;">🤖</div>
-        <div style="font-size: 3rem;">🔬</div>
-        <div style="font-size: 3rem;">📊</div>
-        <div style="font-size: 3rem;">✅</div>
-        <div style="font-size: 3rem;">🌿</div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Add a futuristic notification banner
-st.markdown("""
-<div style="background: linear-gradient(90deg, rgba(0, 240, 255, 0.15), rgba(160, 32, 240, 0.15)); padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border-left: 5px solid var(--accent-blue); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);">
-    <p style="margin: 0; font-weight: 500; font-size: 1.1rem; letter-spacing: 1px;">✨ NEW: REAL-TIME DISEASE ANALYSIS WITH 91.02% ACCURACY ✨</p>
+<div class="main-header">
+    <h1 class="logo-text">🌱 Plant Savior AI</h1>
+    <p class="tagline">Instant Plant Disease Detection using Advanced Artificial Intelligence</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Sidebar with additional information
 with st.sidebar:
-    st.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
-    st.markdown('<h3 class="sidebar-title">🌿 ABOUT THIS TOOL</h3>', unsafe_allow_html=True)
+    st.markdown("### 🌿 About This Tool")
     st.info("""
     This AI-powered system helps farmers and gardeners detect plant diseases from leaf images with high accuracy.
     
     Simply upload a clear photo of a plant leaf and get instant diagnosis with treatment recommendations.
     """)
-    st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
-    st.markdown('<h3 class="sidebar-title">📋 HOW TO GET BEST RESULTS</h3>', unsafe_allow_html=True)
-    with st.expander("Expand for tips", expanded=True):
-        st.markdown("""
-        1. **Lighting**: Take photo in good natural light
-        2. **Focus**: Ensure leaf is in sharp focus
-        3. **Background**: Simple background works best
-        4. **Angle**: Top-down view of the leaf
-        5. **Symptoms**: Show affected areas clearly
-        """)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("### 📋 How to Get Best Results")
+    st.markdown("""
+    1. **Lighting**: Take photo in good natural light
+    2. **Focus**: Ensure leaf is in sharp focus
+    3. **Background**: Simple background works best
+    4. **Angle**: Top-down view of the leaf
+    5. **Symptoms**: Show affected areas clearly
+    """)
     
-    st.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
-    st.markdown('<h3 class="sidebar-title">🎯 SUPPORTED DISEASES</h3>', unsafe_allow_html=True)
-    disease_options = {
-        "Tomato": 10,
-        "Potato": 3,
-        "Pepper": 2,
-        "Apple": 4,
-        "Grape": 4,
-        "Corn": 4,
-        "Cherry": 2,
-        "Peach": 2,
-        "Strawberry": 1,
-        "Orange": 1
-    }
+    st.markdown("### 🎯 Supported Diseases")
+    st.markdown("""
+    - Tomato diseases (10 types)
+    - Potato diseases (3 types)
+    - Pepper diseases (2 types)
+    """)
     
-    disease_select = st.selectbox("Select plant type", list(disease_options.keys()))
-    st.markdown(f"**{disease_options[disease_select]} diseases** supported for {disease_select}")
-    
-    # Add a progress tracker for supported diseases
-    st.markdown("### 📊 Disease Coverage")
-    st.progress(0.95)  # 38 out of 40 diseases covered
-    st.caption("95% of common plant diseases supported")
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
-    st.markdown('<h3 class="sidebar-title">ℹ️ NEED HELP?</h3>', unsafe_allow_html=True)
+    st.markdown("### ℹ️ Need Help?")
     st.markdown("Contact: support@plantsavior.ai")
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # How it works section with enhanced design
+st.markdown('<div class="how-it-works">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">How It Works</h2>', unsafe_allow_html=True)
 st.markdown("""
-<div style="background: rgba(18, 24, 38, 0.7); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 0 20px rgba(160, 32, 240, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1); border: 1px solid rgba(160, 32, 240, 0.2); backdrop-filter: blur(10px);">
-    <h2 style="color: var(--accent-blue); text-align: center; font-size: 2.2rem; margin-bottom: 2rem; font-weight: 600; position: relative; padding-bottom: 15px; font-family: 'Orbitron', sans-serif;">
-        HOW IT WORKS
-        <div style="content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 2px; box-shadow: 0 0 10px var(--accent-blue);"></div>
-    </h2>
-    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;">
-        <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 2rem 1.5rem; text-align: center; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); transition: all 0.3s ease; border: 1px solid rgba(0, 240, 255, 0.2); position: relative; overflow: hidden; backdrop-filter: blur(5px);">
-            <div style="content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;"></div>
-            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-weight: bold; font-size: 1.5rem; box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); font-family: 'Orbitron', sans-serif;">1</div>
-            <div style="font-size: 3rem; margin-bottom: 1.2rem; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">📸</div>
-            <h3 style="color: var(--accent-blue); font-size: 1.5rem; font-weight: 600; margin-bottom: 0.8rem; font-family: 'Orbitron', sans-serif;">UPLOAD IMAGE</h3>
-            <p style="color: var(--text-dim); line-height: 1.6;">Take a clear photo of the affected plant leaf and upload it to our system</p>
-        </div>
-        <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 2rem 1.5rem; text-align: center; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); transition: all 0.3s ease; border: 1px solid rgba(0, 240, 255, 0.2); position: relative; overflow: hidden; backdrop-filter: blur(5px);">
-            <div style="content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;"></div>
-            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-weight: bold; font-size: 1.5rem; box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); font-family: 'Orbitron', sans-serif;">2</div>
-            <div style="font-size: 3rem; margin-bottom: 1.2rem; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🤖</div>
-            <h3 style="color: var(--accent-blue); font-size: 1.5rem; font-weight: 600; margin-bottom: 0.8rem; font-family: 'Orbitron', sans-serif;">AI ANALYSIS</h3>
-            <p style="color: var(--text-dim); line-height: 1.6;">Our advanced AI model analyzes the image to detect any plant diseases</p>
-        </div>
-        <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 2rem 1.5rem; text-align: center; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); transition: all 0.3s ease; border: 1px solid rgba(0, 240, 255, 0.2); position: relative; overflow: hidden; backdrop-filter: blur(5px);">
-            <div style="content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;"></div>
-            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-weight: bold; font-size: 1.5rem; box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); font-family: 'Orbitron', sans-serif;">3</div>
-            <div style="font-size: 3rem; margin-bottom: 1.2rem; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">📊</div>
-            <h3 style="color: var(--accent-blue); font-size: 1.5rem; font-weight: 600; margin-bottom: 0.8rem; font-family: 'Orbitron', sans-serif;">GET RESULTS</h3>
-            <p style="color: var(--text-dim); line-height: 1.6;">Receive instant diagnosis with confidence score and treatment recommendations</p>
-        </div>
+<div class="steps-container">
+    <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-icon">📸</div>
+        <h3 class="step-title">Upload Image</h3>
+        <p>Take a clear photo of the affected plant leaf and upload it to our system</p>
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-        <div style="font-size: 2rem;">🌱</div>
-        <div style="font-size: 2rem;">🌿</div>
-        <div style="font-size: 2rem;">🍃</div>
-        <div style="font-size: 2rem;">🪴</div>
-        <div style="font-size: 2rem;">🌳</div>
+    <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-icon">🤖</div>
+        <h3 class="step-title">AI Analysis</h3>
+        <p>Our advanced AI model analyzes the image to detect any plant diseases</p>
+    </div>
+    <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-icon">📊</div>
+        <h3 class="step-title">Get Results</h3>
+        <p>Receive instant diagnosis with confidence score and treatment recommendations</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-# Add a metrics dashboard
-st.markdown("""
-<div style="display: flex; justify-content: center; gap: 25px; margin: 30px 0; flex-wrap: wrap;">
-    <div style="background: rgba(30, 40, 60, 0.7); padding: 20px 25px; border-radius: 15px; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); backdrop-filter: blur(5px); transition: all 0.3s ease;">
-        <div style="font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">⚡</div>
-        <h3 style="color: var(--accent-blue); margin: 0 0 10px 0; font-family: 'Orbitron', sans-serif; font-size: 1.1rem;">PROCESSING SPEED</h3>
-        <p style="font-size: 1.6rem; font-weight: bold; margin: 0; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">&lt; 3 SECONDS</p>
-    </div>
-    <div style="background: rgba(30, 40, 60, 0.7); padding: 20px 25px; border-radius: 15px; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); backdrop-filter: blur(5px); transition: all 0.3s ease;">
-        <div style="font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🎯</div>
-        <h3 style="color: var(--accent-blue); margin: 0 0 10px 0; font-family: 'Orbitron', sans-serif; font-size: 1.1rem;">ACCURACY</h3>
-        <p style="font-size: 1.6rem; font-weight: bold; margin: 0; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">91.02%</p>
-    </div>
-    <div style="background: rgba(30, 40, 60, 0.7); padding: 20px 25px; border-radius: 15px; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); backdrop-filter: blur(5px); transition: all 0.3s ease;">
-        <div style="font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🌍</div>
-        <h3 style="color: var(--accent-blue); margin: 0 0 10px 0; font-family: 'Orbitron', sans-serif; font-size: 1.1rem;">PLANTS COVERED</h3>
-        <p style="font-size: 1.6rem; font-weight: bold; margin: 0; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">10+ SPECIES</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Function to load model directly
 @st.cache_resource
 def load_model():
     """Load the trained model directly"""
     try:
-        st.sidebar.info("📥 LOADING AI MODEL...")
+        st.sidebar.info("📥 Loading AI model...")
         model = tf.keras.models.load_model('best_plant_model_final.keras')
-        st.sidebar.success("✅ AI MODEL READY!")
+        st.sidebar.success("✅ AI Model ready!")
         return model
     except Exception as e:
-        st.sidebar.error(f"❌ ERROR LOADING MODEL: {str(e)}")
+        st.sidebar.error(f"❌ Error loading model: {str(e)}")
         return None
 
 # Load treatment dictionary
@@ -376,10 +637,10 @@ def load_treatments():
     try:
         with open('treatment_dict_complete.json', 'r') as f:
             treatments = json.load(f)
-        st.sidebar.success("✅ TREATMENT DATABASE READY!")
+        st.sidebar.success("✅ Treatment database ready!")
         return treatments
     except Exception as e:
-        st.sidebar.error(f"❌ ERROR LOADING TREATMENTS: {str(e)}")
+        st.sidebar.error(f"❌ Error loading treatments: {str(e)}")
         return {}
 
 # Initialize session state
@@ -389,7 +650,7 @@ if 'model' not in st.session_state:
 
 # Load model and treatments
 if st.session_state.model is None:
-    with st.spinner("INITIALIZING PLANT SAVIOR AI SYSTEM..."):
+    with st.spinner("Initializing Plant Savior AI System..."):
         model = load_model()
         treatments = load_treatments()
         st.session_state.model = model
@@ -397,42 +658,10 @@ if st.session_state.model is None:
 
 # Main content area
 st.markdown('<div class="upload-section">', unsafe_allow_html=True)
-st.markdown('<h2 class="upload-title">UPLOAD PLANT LEAF IMAGE</h2>', unsafe_allow_html=True)
-
-# Add decorative elements
-st.markdown("""
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-        <div style="font-size: 2rem;">🌱</div>
-        <div style="font-size: 2rem;">🌿</div>
-        <div style="font-size: 2rem;">🍃</div>
-        <div style="font-size: 2rem;">🪴</div>
-        <div style="font-size: 2rem;">🌳</div>
-    </div>
-""", unsafe_allow_html=True)
+st.markdown('<h2 class="upload-title">Upload Plant Leaf Image</h2>', unsafe_allow_html=True)
 
 # File uploader with enhanced UI
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
-
-# Add a sample images section
-st.markdown('<h3 class="sample-images-title">📷 SAMPLE IMAGES</h3>', unsafe_allow_html=True)
-sample_cols = st.columns(3)
-with sample_cols[0]:
-    st.image("https://images.unsplash.com/photo-1522005339026-cf3fa752ff95?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80", caption="HEALTHY LEAF", width=150)
-with sample_cols[1]:
-    st.image("https://images.unsplash.com/photo-1597586128864-0a4d9e0a6b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80", caption="DISEASED LEAF", width=150)
-with sample_cols[2]:
-    st.image("https://images.unsplash.com/photo-1622085041543-3a603c3a33c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80", caption="MAGNIFIED VIEW", width=150)
-
-# Add decorative elements after sample images
-st.markdown("""
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-        <div style="font-size: 2rem;">🌱</div>
-        <div style="font-size: 2rem;">🌿</div>
-        <div style="font-size: 2rem;">🍃</div>
-        <div style="font-size: 2rem;">🪴</div>
-        <div style="font-size: 2rem;">🌳</div>
-    </div>
-""", unsafe_allow_html=True)
 
 if uploaded_file is not None:
     # Analysis section with two columns
@@ -440,44 +669,22 @@ if uploaded_file is not None:
     
     # Left column - Image preview
     st.markdown('<div class="image-preview-container">', unsafe_allow_html=True)
-    st.markdown('<h3 class="section-subtitle">UPLOADED IMAGE</h3>', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-subtitle">Uploaded Image</h3>', unsafe_allow_html=True)
     
     image = Image.open(uploaded_file)
-    st.image(image, caption="UPLOADED LEAF IMAGE", use_column_width=True, clamp=True)
+    st.image(image, caption="Uploaded Leaf Image", use_column_width=True, clamp=True)
     
-    # Add image analysis features
-    st.markdown('<h4 class="sample-images-title">📊 IMAGE ANALYSIS</h4>', unsafe_allow_html=True)
-    img_width, img_height = image.size
-    st.markdown("""
-        <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
-            <div style="background: rgba(30, 40, 60, 0.7); padding: 15px 20px; border-radius: 12px; text-align: center; min-width: 140px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2);">
-                <div style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 5px;">DIMENSIONS</div>
-                <div style="font-size: 1.3rem; font-weight: 600; margin: 0; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">{} × {}</div>
-            </div>
-            <div style="background: rgba(30, 40, 60, 0.7); padding: 15px 20px; border-radius: 12px; text-align: center; min-width: 140px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2);">
-                <div style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 5px;">FILE SIZE</div>
-                <div style="font-size: 1.3rem; font-weight: 600; margin: 0; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">{:.1f} KB</div>
-            </div>
-        </div>
-    """.format(img_width, img_height, uploaded_file.size / 1024), unsafe_allow_html=True)
-    
-    if st.button("📤 UPLOAD DIFFERENT IMAGE", key="reset", help="Upload a different image"):
+    if st.button("📤 Upload Different Image", key="reset", help="Upload a different image"):
         st.experimental_rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Right column - Results
     st.markdown('<div class="results-container">', unsafe_allow_html=True)
-    st.markdown('<h3 class="section-subtitle">ANALYSIS RESULTS</h3>', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-subtitle">Analysis Results</h3>', unsafe_allow_html=True)
     
     if st.session_state.model is not None and st.session_state.treatments:
-        # Add a confidence threshold slider
-        st.markdown('<div class="confidence-slider">', unsafe_allow_html=True)
-        confidence_threshold = st.slider("CONFIDENCE THRESHOLD", 0.0, 1.0, 0.7, 0.05, 
-                                         help="MINIMUM CONFIDENCE LEVEL FOR DISPLAYING RESULTS")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        if st.button("🔍 ANALYZE LEAF", key="analyze", help="Start AI analysis of the uploaded image"):
+        if st.button("🔍 Analyze Leaf", key="analyze", help="Start AI analysis of the uploaded image"):
             with st.spinner(""):
                 try:
                     # Save uploaded file temporarily
@@ -500,142 +707,40 @@ if uploaded_file is not None:
                     treatment = st.session_state.treatments.get(predicted_disease, "Consult agricultural expert.")
                     
                     # Display results in enhanced card
-                    st.markdown("""
-                        <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 2rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(5px);">
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-                            <div style="font-size: 2rem;">🌱</div>
-                            <div style="font-size: 2rem;">🌿</div>
-                            <div style="font-size: 2rem;">🍃</div>
-                            <div style="font-size: 2rem;">🪴</div>
-                            <div style="font-size: 2rem;">🌳</div>
-                        </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown('<div class="results-card">', unsafe_allow_html=True)
                     
                     # Disease prediction
-                    st.markdown("""
-                        <div style="margin-bottom: 1.8rem;">
-                            <h4 style="color: var(--accent-blue); font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; font-family: 'Orbitron', sans-serif;">
-                                🪴 PREDICTED DISEASE
-                            </h4>
-                            <p style="font-size: 1.8rem; font-weight: 700; text-align: center; padding: 1rem; border-radius: 10px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(160, 32, 240, 0.1)); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); border: 1px solid rgba(0, 240, 255, 0.3); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">
-                                {}
-                            </p>
-                        </div>
-                    """.format(predicted_disease), unsafe_allow_html=True)
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    st.markdown('<h4 class="result-title">🪴 Predicted Disease</h4>', unsafe_allow_html=True)
+                    st.markdown(f'<p class="disease-name">{predicted_disease}</p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Confidence score with enhanced progress bar
-                    st.markdown("""
-                        <div style="margin-bottom: 1.8rem;">
-                            <h4 style="color: var(--accent-blue); font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; font-family: 'Orbitron', sans-serif;">
-                                📊 CONFIDENCE SCORE
-                            </h4>
-                            <div style="margin: 1.5rem 0;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-weight: 500; font-size: 1.1rem;">
-                                    <span>CONFIDENCE LEVEL</span>
-                                    <span style="font-weight: 700; font-size: 1.2rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">
-                                        {:.1f}%
-                                    </span>
-                                </div>
-                                <div style="width: 100%; height: 20px; background: rgba(30, 40, 60, 0.8); border-radius: 10px; overflow: hidden; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 240, 255, 0.2);">
-                                    <div style="height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 10px; transition: width 1s ease-in-out; position: relative; box-shadow: 0 0 10px var(--accent-blue); width: {:.1f}%;">
-                                    </div>
-                                </div>
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    st.markdown('<h4 class="result-title">📊 Confidence Score</h4>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Confidence Level</span>
+                                <span class="confidence-text">{confidence_score*100:.1f}%</span>
                             </div>
-                    """.format(confidence_score*100, confidence_score*100), unsafe_allow_html=True)
-                    
-                    # Add confidence indicator
-                    if confidence_score >= 0.9:
-                        st.markdown('<div style="background: rgba(0, 255, 157, 0.1); border-left: 4px solid var(--accent-green); padding: 15px; border-radius: 8px; margin: 15px 0; box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);">✅ HIGH CONFIDENCE RESULT</div>', unsafe_allow_html=True)
-                    elif confidence_score >= 0.7:
-                        st.markdown('<div style="background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; padding: 15px; border-radius: 8px; margin: 15px 0; box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);">⚠️ MEDIUM CONFIDENCE RESULT</div>', unsafe_allow_html=True)
-                    else:
-                        st.markdown('<div style="background: rgba(255, 0, 0, 0.1); border-left: 4px solid #ff0000; padding: 15px; border-radius: 8px; margin: 15px 0; box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);">❗ LOW CONFIDENCE RESULT - CONSIDER RECHECKING WITH A CLEARER IMAGE</div>', unsafe_allow_html=True)
-                        
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: {confidence_score*100}%"></div>
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Treatment recommendation
-                    st.markdown("""
-                        <div style="margin-bottom: 1.8rem;">
-                            <h4 style="color: var(--accent-blue); font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; font-family: 'Orbitron', sans-serif;">
-                                🌿 TREATMENT RECOMMENDATION
-                            </h4>
-                            <div style="background: rgba(0, 255, 157, 0.05); border-left: 4px solid var(--accent-green); padding: 1.5rem; border-radius: 10px; margin-top: 0.8rem; box-shadow: 0 0 10px rgba(0, 255, 157, 0.1); border: 1px solid rgba(0, 255, 157, 0.1);">
-                                <p style="line-height: 1.7; font-size: 1.1rem;">{}</p>
-                            </div>
-                        </div>
-                    """.format(treatment), unsafe_allow_html=True)
-                    
-                    # Add treatment details expander
-                    with st.expander("🔬 DETAILED TREATMENT INFORMATION"):
-                        st.markdown(f"**FOR {predicted_disease}:**")
-                        st.markdown("1. Apply appropriate fungicide or remove infected parts")
-                        st.markdown("2. Monitor nearby plants for similar symptoms")
-                        st.markdown("3. Adjust watering schedule to prevent moisture buildup")
-                        st.markdown("4. Ensure proper plant spacing for air circulation")
-                        st.markdown("5. Consider using disease-resistant plant varieties in future plantings")
-                        st.markdown("6. Practice crop rotation to prevent soil-borne diseases")
-                    
-                    # Add similar diseases information
-                    st.markdown("""
-                        <div style="margin-bottom: 1.8rem;">
-                            <h4 style="color: var(--accent-blue); font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; font-family: 'Orbitron', sans-serif;">
-                                🔄 SIMILAR DISEASES
-                            </h4>
-                            <div style="background: rgba(30, 40, 60, 0.6); border-radius: 10px; padding: 15px; border: 1px solid rgba(0, 240, 255, 0.2);">
-                    """, unsafe_allow_html=True)
-                    
-                    # Get top 3 predictions
-                    top_3_indices = np.argsort(predictions[0])[::-1][:3]
-                    for i, idx in enumerate(top_3_indices):
-                        disease_name = class_names[idx]
-                        score = predictions[0][idx]
-                        if i == 0:
-                            st.markdown(f"<div style='display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: rgba(0, 255, 157, 0.1); border: 1px solid rgba(0, 255, 157, 0.3); font-weight: bold;'><span>1. {disease_name}</span><span>{score*100:.1f}%</span></div>", unsafe_allow_html=True)
-                        else:
-                            st.markdown(f"<div style='display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: rgba(0, 240, 255, 0.05);'><span>{i+1}. {disease_name}</span><span>{score*100:.1f}%</span></div>", unsafe_allow_html=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    st.markdown('<h4 class="result-title">🌿 Treatment Recommendation</h4>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="treatment-box"><p class="treatment-text">{treatment}</p></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
-                    # Add action buttons
-                    st.markdown("""
-                        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
-                            <button style="flex: 1; min-width: 120px; background: rgba(30, 40, 60, 0.8); color: var(--text-light); border: 1px solid rgba(0, 240, 255, 0.3); padding: 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">
-                                🖨️ SAVE REPORT
-                            </button>
-                            <button style="flex: 1; min-width: 120px; background: rgba(30, 40, 60, 0.8); color: var(--text-light); border: 1px solid rgba(0, 240, 255, 0.3); padding: 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">
-                                📤 SHARE RESULTS
-                            </button>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Add prevention tips
-                    st.markdown("""
-                    <div style="margin-top: 25px; padding: 20px; background: rgba(255, 204, 0, 0.05); border-radius: 15px; border: 1px solid rgba(255, 204, 0, 0.2); box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);">
-                        <h4 style="color: #ffcc00; margin-top: 0; font-family: 'Orbitron', sans-serif;">🩺 PREVENTION TIPS</h4>
-                        <ul style="padding-left: 20px; margin-bottom: 0; line-height: 1.8;">
-                            <li>MAINTAIN PROPER PLANT SPACING FOR GOOD AIR CIRCULATION</li>
-                            <li>WATER AT THE BASE OF PLANTS, NOT ON LEAVES</li>
-                            <li>REMOVE AND DESTROY INFECTED PLANT MATERIAL</li>
-                            <li>USE MULCH TO PREVENT SOIL-BORNE DISEASES</li>
-                        </ul>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Add decorative elements at the end of results
-                    st.markdown("""
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-                            <div style="font-size: 2rem;">🌱</div>
-                            <div style="font-size: 2rem;">🌿</div>
-                            <div style="font-size: 2rem;">🍃</div>
-                            <div style="font-size: 2rem;">🪴</div>
-                            <div style="font-size: 2rem;">🌳</div>
-                        </div>
-                    """, unsafe_allow_html=True)
                     
                 except Exception as e:
-                    st.markdown(f'<div class="error-box">❌ ERROR DURING PREDICTION: {str(e)}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="error-box">❌ Error during prediction: {str(e)}</div>', unsafe_allow_html=True)
                 
                 # Clean up temporary file
                 try:
@@ -643,158 +748,66 @@ if uploaded_file is not None:
                 except:
                     pass
         else:
-            st.info("👆 CLICK 'ANALYZE LEAF' TO START THE AI DIAGNOSIS")
+            st.info("👆 Click 'Analyze Leaf' to start the AI diagnosis")
     else:
-        st.markdown('<div class="error-box">❌ AI SYSTEM NOT INITIALIZED. PLEASE CHECK THE SIDEBAR FOR ERROR MESSAGES.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="error-box">❌ AI system not initialized. Please check the sidebar for error messages.</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 else:
-    st.info("💡 **TIP**: FOR BEST RESULTS, TAKE A CLEAR PHOTO OF THE AFFECTED LEAF WITH GOOD LIGHTING AND UPLOAD IN JPG OR PNG FORMAT.")
-    
-    # Add quick tips section
-    st.markdown('<h3 class="quick-tips-title">⚡ QUICK TIPS</h3>', unsafe_allow_html=True)
+    # Enhanced upload interface
     st.markdown("""
-        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
-            <div style="background: rgba(30, 40, 60, 0.7); padding: 15px 20px; border-radius: 12px; min-width: 180px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">💡</div>
-                <div style="font-weight: 500;">ENSURE GOOD LIGHTING</div>
-            </div>
-            <div style="background: rgba(30, 40, 60, 0.7); padding: 15px 20px; border-radius: 12px; min-width: 180px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">🎯</div>
-                <div style="font-weight: 500;">FOCUS ON AFFECTED AREAS</div>
-            </div>
-            <div style="background: rgba(30, 40, 60, 0.7); padding: 15px 20px; border-radius: 12px; min-width: 180px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">⬜</div>
-                <div style="font-weight: 500;">USE A PLAIN BACKGROUND</div>
-            </div>
-            <div style="background: rgba(30, 40, 60, 0.7); padding: 15px 20px; border-radius: 12px; min-width: 180px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">📸</div>
-                <div style="font-weight: 500;">AVOID BLURRY IMAGES</div>
-            </div>
-        </div>
+    <div class="drop-zone" id="dropZone">
+        <div class="upload-icon">📁</div>
+        <p class="drop-text">Drag & Drop your image here</p>
+        <p class="file-types">Supported formats: JPG, PNG, JPEG (Max 200MB)</p>
+        <button class="browse-button" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+        <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,image/jpg">
+    </div>
     """, unsafe_allow_html=True)
+    
+    st.info("💡 **Tip**: For best results, take a clear photo of the affected leaf with good lighting and upload in JPG or PNG format.")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
 # About section with enhanced design
+st.markdown('<div class="about-section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">About Plant Savior AI</h2>', unsafe_allow_html=True)
 st.markdown("""
-<div style="background: rgba(18, 24, 38, 0.7); border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(160, 32, 240, 0.1); border: 1px solid rgba(160, 32, 240, 0.2); backdrop-filter: blur(10px);">
-    <h2 style="color: var(--accent-blue); text-align: center; font-size: 2.2rem; margin-bottom: 2rem; font-weight: 600; position: relative; padding-bottom: 15px; font-family: 'Orbitron', sans-serif;">
-        ABOUT PLANT SAVIOR AI
-        <div style="content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 2px; box-shadow: 0 0 10px var(--accent-blue);"></div>
-    </h2>
-    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
-        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-            <div style="font-size: 2rem;">🌱</div>
-            <div style="font-size: 2rem;">🌿</div>
-            <div style="font-size: 2rem;">🍃</div>
-            <div style="font-size: 2rem;">🪴</div>
-            <div style="font-size: 2rem;">🌳</div>
+<div class="about-content">
+    <p class="about-text">
+        Plant Savior AI is an advanced artificial intelligence system designed to help farmers, gardeners, 
+        and agricultural professionals quickly identify plant diseases from leaf images. Our system uses 
+        deep learning technology trained on thousands of plant images to provide accurate diagnoses with 
+        treatment recommendations, helping to save crops and reduce the use of unnecessary pesticides.
+    </p>
+    
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-value">91.02%</div>
+            <div class="stat-label">Accuracy Rate</div>
         </div>
-        <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-dim); margin-bottom: 2rem;">
-            PLANT SAVIOR AI IS AN ADVANCED ARTIFICIAL INTELLIGENCE SYSTEM DESIGNED TO HELP FARMERS, GARDENERS, 
-            AND AGRICULTURAL PROFESSIONALS QUICKLY IDENTIFY PLANT DISEASES FROM LEAF IMAGES. OUR SYSTEM USES 
-            DEEP LEARNING TECHNOLOGY TRAINED ON THOUSANDS OF PLANT IMAGES TO PROVIDE ACCURATE DIAGNOSES WITH 
-            TREATMENT RECOMMENDATIONS, HELPING TO SAVE CROPS AND REDUCE THE USE OF UNNECESSARY PESTICIDES.
-        </p>
-        
-        <!-- Replace stats with development team section -->
-        <div style="margin-top: 2rem;">
-            <h3 style="color: var(--accent-blue); text-align: center; font-size: 1.8rem; margin-bottom: 1.5rem; font-family: 'Orbitron', sans-serif;">👨‍💻 DEVELOPMENT TEAM</h3>
-            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
-                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👨‍💻</div>
-                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">ALEX MORGAN</div>
-                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">ML Engineer</div>
-                </div>
-                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👩‍🔬</div>
-                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">SAMANTHA REEVES</div>
-                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">Data Scientist</div>
-                </div>
-                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👨‍🎨</div>
-                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">JORDAN PATEL</div>
-                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">UI/UX Designer</div>
-                </div>
-                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👩‍💻</div>
-                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">TAYLOR KIM</div>
-                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">Full Stack Dev</div>
-                </div>
-            </div>
+        <div class="stat-card">
+            <div class="stat-value">38</div>
+            <div class="stat-label">Disease Types</div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-            <div style="font-size: 2rem;">🌱</div>
-            <div style="font-size: 2rem;">🌿</div>
-            <div style="font-size: 2rem;">🍃</div>
-            <div style="font-size: 2rem;">🪴</div>
-            <div style="font-size: 2rem;">🌳</div>
+        <div class="stat-card">
+            <div class="stat-value">224×224</div>
+            <div class="stat-label">Image Resolution</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Availability</div>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-# Add a technology showcase section
-st.markdown("""
-<div style="background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(160, 32, 240, 0.1)); padding: 2.5rem; border-radius: 20px; margin: 2.5rem 0; box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(10px);">
-    <h2 style="color: var(--accent-blue); text-align: center; margin-top: 0; font-family: 'Orbitron', sans-serif; font-size: 2.2rem;">🔬 TECHNOLOGY SHOWCASE</h2>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-        <div style="font-size: 2rem;">🌱</div>
-        <div style="font-size: 2rem;">🌿</div>
-        <div style="font-size: 2rem;">🍃</div>
-        <div style="font-size: 2rem;">🪴</div>
-        <div style="font-size: 2rem;">🌳</div>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-top: 25px;">
-        <div style="background: rgba(18, 24, 38, 0.8); padding: 25px; border-radius: 15px; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); text-align: center; border: 1px solid rgba(0, 240, 255, 0.3); transition: all 0.3s ease;">
-            <div style="font-size: 3rem; margin-bottom: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🤖</div>
-            <h3 style="color: var(--accent-purple); font-size: 1.5rem; margin-top: 0; font-family: 'Orbitron', sans-serif;">AI MODEL</h3>
-            <p style="color: var(--text-dim);">DEEP LEARNING CNN ARCHITECTURE</p>
-        </div>
-        <div style="background: rgba(18, 24, 38, 0.8); padding: 25px; border-radius: 15px; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); text-align: center; border: 1px solid rgba(0, 240, 255, 0.3); transition: all 0.3s ease;">
-            <div style="font-size: 3rem; margin-bottom: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">📂</div>
-            <h3 style="color: var(--accent-purple); font-size: 1.5rem; margin-top: 0; font-family: 'Orbitron', sans-serif;">DATASET</h3>
-            <p style="color: var(--text-dim);">15,000+ PLANT IMAGES</p>
-        </div>
-        <div style="background: rgba(18, 24, 38, 0.8); padding: 25px; border-radius: 15px; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); text-align: center; border: 1px solid rgba(0, 240, 255, 0.3); transition: all 0.3s ease;">
-            <div style="font-size: 3rem; margin-bottom: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🚀</div>
-            <h3 style="color: var(--accent-purple); font-size: 1.5rem; margin-top: 0; font-family: 'Orbitron', sans-serif;">PERFORMANCE</h3>
-            <p style="color: var(--text-dim);">REAL-TIME PROCESSING</p>
-        </div>
-    </div>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-        <div style="font-size: 2rem;">🌱</div>
-        <div style="font-size: 2rem;">🌿</div>
-        <div style="font-size: 2rem;">🍃</div>
-        <div style="font-size: 2rem;">🪴</div>
-        <div style="font-size: 2rem;">🌳</div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-<!-- Remove feedback section -->
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer with enhanced design
 st.markdown("""
-<div style="background: linear-gradient(135deg, rgba(18, 24, 38, 0.9) 0%, rgba(10, 14, 23, 0.95) 100%); color: var(--text-light); text-align: center; padding: 2.5rem; border-radius: 20px; margin-top: 2.5rem; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(160, 32, 240, 0.1); position: relative; overflow: hidden; border: 1px solid rgba(0, 240, 255, 0.2);">
-    <div style="content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));"></div>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-        <div style="font-size: 2rem;">🌱</div>
-        <div style="font-size: 2rem;">🌿</div>
-        <div style="font-size: 2rem;">🍃</div>
-        <div style="font-size: 2rem;">🪴</div>
-        <div style="font-size: 2rem;">🌳</div>
-    </div>
-    <p style="font-size: 1.2rem; opacity: 0.9; margin: 10px 0; color: var(--text-dim);">🌱 PLANT SAVIOR AI - MAKING AGRICULTURE SMARTER WITH AI TECHNOLOGY</p>
-    <p style="font-size: 1.2rem; opacity: 0.9; margin: 10px 0; color: var(--text-dim);">© 2025 PLANT SAVIOR AI. ALL RIGHTS RESERVED.</p>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
-        <div style="font-size: 2rem;">🤖</div>
-        <div style="font-size: 2rem;">🔬</div>
-        <div style="font-size: 2rem;">📊</div>
-        <div style="font-size: 2rem;">✅</div>
-        <div style="font-size: 2rem;">🌿</div>
-    </div>
+<div class="footer">
+    <p class="footer-text">🌱 Plant Savior AI - Making agriculture smarter with AI technology</p>
+    <p class="footer-text">© 2025 Plant Savior AI. All rights reserved.</p>
 </div>
 """, unsafe_allow_html=True)
