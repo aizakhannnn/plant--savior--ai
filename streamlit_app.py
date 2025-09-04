@@ -47,7 +47,10 @@ st.markdown("""
         background: var(--primary-dark);
         background-image: 
             radial-gradient(circle at 10% 20%, rgba(160, 32, 240, 0.1) 0%, transparent 20%),
-            radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 20%);
+            radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 50% 50%, rgba(0, 255, 157, 0.05) 0%, transparent 30%),
+            repeating-linear-gradient(45deg, rgba(0, 240, 255, 0.03) 0px, rgba(0, 240, 255, 0.03) 1px, transparent 1px, transparent 11px),
+            repeating-linear-gradient(-45deg, rgba(160, 32, 240, 0.03) 0px, rgba(160, 32, 240, 0.03) 1px, transparent 1px, transparent 11px);
         color: var(--text-light);
     }
     
@@ -214,8 +217,22 @@ st.markdown("""
 st.markdown("""
 <div style="background: linear-gradient(135deg, rgba(18, 24, 38, 0.9) 0%, rgba(10, 14, 23, 0.95) 100%); padding: 2.5rem 2rem; border-radius: 20px; text-align: center; margin-bottom: 2rem; box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(160, 32, 240, 0.2); position: relative; overflow: hidden; border: 1px solid rgba(0, 240, 255, 0.3);">
     <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, rgba(0, 240, 255, 0.4), rgba(160, 32, 240, 0.4), transparent); animation: rotate 4s linear infinite; z-index: -1;"></div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
+        <div style="font-size: 3rem;">🌿</div>
+        <div style="font-size: 3rem;">🍃</div>
+        <div style="font-size: 3rem;">🌱</div>
+        <div style="font-size: 3rem;">🪴</div>
+        <div style="font-size: 3rem;">🌳</div>
+    </div>
     <h1 style="font-size: 4rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 20px rgba(0, 240, 255, 0.5); position: relative; z-index: 2; letter-spacing: 3px;">🌱 PLANT SAVIOR AI</h1>
     <p style="font-size: 1.5rem; opacity: 0.9; font-weight: 300; max-width: 800px; margin: 0 auto; color: var(--text-dim);">ADVANCED PLANT DISEASE DETECTION USING ARTIFICIAL INTELLIGENCE</p>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+        <div style="font-size: 3rem;">🤖</div>
+        <div style="font-size: 3rem;">🔬</div>
+        <div style="font-size: 3rem;">📊</div>
+        <div style="font-size: 3rem;">✅</div>
+        <div style="font-size: 3rem;">🌿</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -308,6 +325,13 @@ st.markdown("""
             <p style="color: var(--text-dim); line-height: 1.6;">Receive instant diagnosis with confidence score and treatment recommendations</p>
         </div>
     </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+        <div style="font-size: 2rem;">🌱</div>
+        <div style="font-size: 2rem;">🌿</div>
+        <div style="font-size: 2rem;">🍃</div>
+        <div style="font-size: 2rem;">🪴</div>
+        <div style="font-size: 2rem;">🌳</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -375,25 +399,38 @@ if st.session_state.model is None:
 st.markdown('<div class="upload-section">', unsafe_allow_html=True)
 st.markdown('<h2 class="upload-title">UPLOAD PLANT LEAF IMAGE</h2>', unsafe_allow_html=True)
 
+# Add decorative elements
+st.markdown("""
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
+        <div style="font-size: 2rem;">🌱</div>
+        <div style="font-size: 2rem;">🌿</div>
+        <div style="font-size: 2rem;">🍃</div>
+        <div style="font-size: 2rem;">🪴</div>
+        <div style="font-size: 2rem;">🌳</div>
+    </div>
+""", unsafe_allow_html=True)
+
 # File uploader with enhanced UI
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
 
 # Add a sample images section
 st.markdown('<h3 class="sample-images-title">📷 SAMPLE IMAGES</h3>', unsafe_allow_html=True)
+sample_cols = st.columns(3)
+with sample_cols[0]:
+    st.image("https://images.unsplash.com/photo-1522005339026-cf3fa752ff95?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80", caption="HEALTHY LEAF", width=150)
+with sample_cols[1]:
+    st.image("https://images.unsplash.com/photo-1597586128864-0a4d9e0a6b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80", caption="DISEASED LEAF", width=150)
+with sample_cols[2]:
+    st.image("https://images.unsplash.com/photo-1622085041543-3a603c3a33c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80", caption="MAGNIFIED VIEW", width=150)
+
+# Add decorative elements after sample images
 st.markdown("""
-    <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0; flex-wrap: wrap;">
-        <div style="text-align: center; background: rgba(30, 40, 60, 0.6); padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(5px); transition: all 0.3s ease;">
-            <img src="https://images.unsplash.com/photo-1522005339026-cf3fa752ff95?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px; border: 2px solid rgba(0, 240, 255, 0.3);">
-            <div style="margin-top: 10px; font-weight: 500; color: var(--accent-blue);">HEALTHY LEAF</div>
-        </div>
-        <div style="text-align: center; background: rgba(30, 40, 60, 0.6); padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(5px); transition: all 0.3s ease;">
-            <img src="https://images.unsplash.com/photo-1597586128864-0a4d9e0a6b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px; border: 2px solid rgba(0, 240, 255, 0.3);">
-            <div style="margin-top: 10px; font-weight: 500; color: var(--accent-blue);">DISEASED LEAF</div>
-        </div>
-        <div style="text-align: center; background: rgba(30, 40, 60, 0.6); padding: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(5px); transition: all 0.3s ease;">
-            <img src="https://images.unsplash.com/photo-1622085041543-3a603c3a33c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px; border: 2px solid rgba(0, 240, 255, 0.3);">
-            <div style="margin-top: 10px; font-weight: 500; color: var(--accent-blue);">MAGNIFIED VIEW</div>
-        </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+        <div style="font-size: 2rem;">🌱</div>
+        <div style="font-size: 2rem;">🌿</div>
+        <div style="font-size: 2rem;">🍃</div>
+        <div style="font-size: 2rem;">🪴</div>
+        <div style="font-size: 2rem;">🌳</div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -465,6 +502,13 @@ if uploaded_file is not None:
                     # Display results in enhanced card
                     st.markdown("""
                         <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 2rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(5px);">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
+                            <div style="font-size: 2rem;">🌱</div>
+                            <div style="font-size: 2rem;">🌿</div>
+                            <div style="font-size: 2rem;">🍃</div>
+                            <div style="font-size: 2rem;">🪴</div>
+                            <div style="font-size: 2rem;">🌳</div>
+                        </div>
                     """, unsafe_allow_html=True)
                     
                     # Disease prediction
@@ -579,6 +623,17 @@ if uploaded_file is not None:
                     </div>
                     """, unsafe_allow_html=True)
                     
+                    # Add decorative elements at the end of results
+                    st.markdown("""
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+                            <div style="font-size: 2rem;">🌱</div>
+                            <div style="font-size: 2rem;">🌿</div>
+                            <div style="font-size: 2rem;">🍃</div>
+                            <div style="font-size: 2rem;">🪴</div>
+                            <div style="font-size: 2rem;">🌳</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
                 except Exception as e:
                     st.markdown(f'<div class="error-box">❌ ERROR DURING PREDICTION: {str(e)}</div>', unsafe_allow_html=True)
                 
@@ -595,16 +650,6 @@ if uploaded_file is not None:
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 else:
-    # Enhanced upload interface
-    st.markdown("""
-    <div style="border: 3px dashed var(--accent-blue); border-radius: 15px; padding: 3rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(0, 240, 255, 0.05); margin-bottom: 1.5rem; position: relative; overflow: hidden;">
-        <div style="font-size: 5rem; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1.5rem;">📁</div>
-        <p style="font-size: 1.5rem; margin-bottom: 0.8rem; font-weight: 500; color: var(--text-light);">DRAG & DROP YOUR IMAGE HERE</p>
-        <p style="color: var(--text-dim); font-size: 1.1rem; margin-bottom: 1.5rem;">SUPPORTED FORMATS: JPG, PNG, JPEG (MAX 200MB)</p>
-        <button style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: var(--primary-dark); border: none; padding: 1rem 2.5rem; border-radius: 50px; cursor: pointer; font-size: 1.2rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); font-family: 'Orbitron', sans-serif; letter-spacing: 1px; position: relative; overflow: hidden;">BROWSE FILES</button>
-    </div>
-    """, unsafe_allow_html=True)
-    
     st.info("💡 **TIP**: FOR BEST RESULTS, TAKE A CLEAR PHOTO OF THE AFFECTED LEAF WITH GOOD LIGHTING AND UPLOAD IN JPG OR PNG FORMAT.")
     
     # Add quick tips section
@@ -640,6 +685,13 @@ st.markdown("""
         <div style="content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 2px; box-shadow: 0 0 10px var(--accent-blue);"></div>
     </h2>
     <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
+            <div style="font-size: 2rem;">🌱</div>
+            <div style="font-size: 2rem;">🌿</div>
+            <div style="font-size: 2rem;">🍃</div>
+            <div style="font-size: 2rem;">🪴</div>
+            <div style="font-size: 2rem;">🌳</div>
+        </div>
         <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-dim); margin-bottom: 2rem;">
             PLANT SAVIOR AI IS AN ADVANCED ARTIFICIAL INTELLIGENCE SYSTEM DESIGNED TO HELP FARMERS, GARDENERS, 
             AND AGRICULTURAL PROFESSIONALS QUICKLY IDENTIFY PLANT DISEASES FROM LEAF IMAGES. OUR SYSTEM USES 
@@ -647,23 +699,38 @@ st.markdown("""
             TREATMENT RECOMMENDATIONS, HELPING TO SAVE CROPS AND REDUCE THE USE OF UNNECESSARY PESTICIDES.
         </p>
         
-        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem;">
-            <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.8rem; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">91.02%</div>
-                <div style="color: var(--text-dim); font-size: 1.1rem;">ACCURACY RATE</div>
+        <!-- Replace stats with development team section -->
+        <div style="margin-top: 2rem;">
+            <h3 style="color: var(--accent-blue); text-align: center; font-size: 1.8rem; margin-bottom: 1.5rem; font-family: 'Orbitron', sans-serif;">👨‍💻 DEVELOPMENT TEAM</h3>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👨‍💻</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">ALEX MORGAN</div>
+                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">ML Engineer</div>
+                </div>
+                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👩‍🔬</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">SAMANTHA REEVES</div>
+                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">Data Scientist</div>
+                </div>
+                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👨‍🎨</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">JORDAN PATEL</div>
+                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">UI/UX Designer</div>
+                </div>
+                <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.5rem; text-align: center; min-width: 150px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👩‍💻</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue); font-family: 'Orbitron', sans-serif;">TAYLOR KIM</div>
+                    <div style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem;">Full Stack Dev</div>
+                </div>
             </div>
-            <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.8rem; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">38</div>
-                <div style="color: var(--text-dim); font-size: 1.1rem;">DISEASE TYPES</div>
-            </div>
-            <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.8rem; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">224×224</div>
-                <div style="color: var(--text-dim); font-size: 1.1rem;">IMAGE RESOLUTION</div>
-            </div>
-            <div style="background: rgba(30, 40, 60, 0.6); border-radius: 15px; padding: 1.8rem; text-align: center; min-width: 180px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); transition: all 0.3s ease; backdrop-filter: blur(5px);">
-                <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif;">24/7</div>
-                <div style="color: var(--text-dim); font-size: 1.1rem;">AVAILABILITY</div>
-            </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+            <div style="font-size: 2rem;">🌱</div>
+            <div style="font-size: 2rem;">🌿</div>
+            <div style="font-size: 2rem;">🍃</div>
+            <div style="font-size: 2rem;">🪴</div>
+            <div style="font-size: 2rem;">🌳</div>
         </div>
     </div>
 </div>
@@ -673,6 +740,13 @@ st.markdown("""
 st.markdown("""
 <div style="background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(160, 32, 240, 0.1)); padding: 2.5rem; border-radius: 20px; margin: 2.5rem 0; box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); border: 1px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(10px);">
     <h2 style="color: var(--accent-blue); text-align: center; margin-top: 0; font-family: 'Orbitron', sans-serif; font-size: 2.2rem;">🔬 TECHNOLOGY SHOWCASE</h2>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
+        <div style="font-size: 2rem;">🌱</div>
+        <div style="font-size: 2rem;">🌿</div>
+        <div style="font-size: 2rem;">🍃</div>
+        <div style="font-size: 2rem;">🪴</div>
+        <div style="font-size: 2rem;">🌳</div>
+    </div>
     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-top: 25px;">
         <div style="background: rgba(18, 24, 38, 0.8); padding: 25px; border-radius: 15px; flex: 1; min-width: 220px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); text-align: center; border: 1px solid rgba(0, 240, 255, 0.3); transition: all 0.3s ease;">
             <div style="font-size: 3rem; margin-bottom: 15px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🤖</div>
@@ -690,40 +764,37 @@ st.markdown("""
             <p style="color: var(--text-dim);">REAL-TIME PROCESSING</p>
         </div>
     </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+        <div style="font-size: 2rem;">🌱</div>
+        <div style="font-size: 2rem;">🌿</div>
+        <div style="font-size: 2rem;">🍃</div>
+        <div style="font-size: 2rem;">🪴</div>
+        <div style="font-size: 2rem;">🌳</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Add a feedback section
-st.markdown("""
-<div style="background: linear-gradient(135deg, rgba(255, 0, 200, 0.1), rgba(255, 102, 0, 0.1)); padding: 2.5rem; border-radius: 20px; margin: 2.5rem 0; box-shadow: 0 0 30px rgba(255, 0, 200, 0.2); border: 1px solid rgba(255, 0, 200, 0.2); backdrop-filter: blur(10px);">
-    <h2 style="color: var(--accent-pink); text-align: center; margin-top: 0; font-family: 'Orbitron', sans-serif; font-size: 2.2rem;">💬 WE VALUE YOUR FEEDBACK</h2>
-    <p style="text-align: center; font-size: 1.2rem; color: var(--text-dim);">HELP US IMPROVE PLANT SAVIOR AI BY SHARING YOUR EXPERIENCE</p>
-    <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 15px; margin-top: 25px;">
-        <input type="text" placeholder="YOUR FEEDBACK..." style="flex: 1; padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 0, 200, 0.3); background: rgba(18, 24, 38, 0.8); color: var(--text-light); font-size: 1.1rem;">
-        <button style="background: linear-gradient(135deg, var(--accent-pink), #ff4d94); color: white; border: none; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">SEND</button>
-    </div>
-    <div style="display: flex; justify-content: center; gap: 30px; margin-top: 30px; flex-wrap: wrap;">
-        <div style="text-align: center; cursor: pointer; transition: all 0.3s ease; padding: 15px; border-radius: 10px; background: rgba(18, 24, 38, 0.5); border: 1px solid rgba(255, 0, 200, 0.2);">
-            <div style="font-size: 2.5rem; margin-bottom: 10px;">👍</div>
-            <p style="margin: 0; font-weight: 500;">HELPFUL</p>
-        </div>
-        <div style="text-align: center; cursor: pointer; transition: all 0.3s ease; padding: 15px; border-radius: 10px; background: rgba(18, 24, 38, 0.5); border: 1px solid rgba(255, 0, 200, 0.2);">
-            <div style="font-size: 2.5rem; margin-bottom: 10px;">👎</div>
-            <p style="margin: 0; font-weight: 500;">NOT HELPFUL</p>
-        </div>
-        <div style="text-align: center; cursor: pointer; transition: all 0.3s ease; padding: 15px; border-radius: 10px; background: rgba(18, 24, 38, 0.5); border: 1px solid rgba(255, 0, 200, 0.2);">
-            <div style="font-size: 2.5rem; margin-bottom: 10px;">💡</div>
-            <p style="margin: 0; font-weight: 500;">SUGGEST</p>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+<!-- Remove feedback section -->
 
 # Footer with enhanced design
 st.markdown("""
 <div style="background: linear-gradient(135deg, rgba(18, 24, 38, 0.9) 0%, rgba(10, 14, 23, 0.95) 100%); color: var(--text-light); text-align: center; padding: 2.5rem; border-radius: 20px; margin-top: 2.5rem; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(160, 32, 240, 0.1); position: relative; overflow: hidden; border: 1px solid rgba(0, 240, 255, 0.2);">
     <div style="content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));"></div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
+        <div style="font-size: 2rem;">🌱</div>
+        <div style="font-size: 2rem;">🌿</div>
+        <div style="font-size: 2rem;">🍃</div>
+        <div style="font-size: 2rem;">🪴</div>
+        <div style="font-size: 2rem;">🌳</div>
+    </div>
     <p style="font-size: 1.2rem; opacity: 0.9; margin: 10px 0; color: var(--text-dim);">🌱 PLANT SAVIOR AI - MAKING AGRICULTURE SMARTER WITH AI TECHNOLOGY</p>
     <p style="font-size: 1.2rem; opacity: 0.9; margin: 10px 0; color: var(--text-dim);">© 2025 PLANT SAVIOR AI. ALL RIGHTS RESERVED.</p>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 20px;">
+        <div style="font-size: 2rem;">🤖</div>
+        <div style="font-size: 2rem;">🔬</div>
+        <div style="font-size: 2rem;">📊</div>
+        <div style="font-size: 2rem;">✅</div>
+        <div style="font-size: 2rem;">🌿</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
