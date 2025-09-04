@@ -8,6 +8,9 @@ from PIL import Image
 import os
 import base64
 from io import BytesIO
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import plotly.express as px
 import pandas as pd
 from datetime import datetime
 
