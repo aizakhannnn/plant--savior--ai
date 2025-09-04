@@ -566,7 +566,7 @@ st.markdown("""
 with st.sidebar:
     st.markdown("### 🌿 About This Tool")
     st.info("""
-    This AI-powered system helps farmers and gardeners detect plant diseases from leaf images with 91.02% accuracy.
+    This AI-powered system helps farmers and gardeners detect plant diseases from leaf images with high accuracy.
     
     Simply upload a clear photo of a plant leaf and get instant diagnosis with treatment recommendations.
     """)
@@ -617,67 +617,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Function to recreate model architecture
+# Function to load model directly
 @st.cache_resource
-def recreate_model():
-    """Recreate the exact model architecture used during training"""
-    st.sidebar.info("🔧 Recreating model architecture...")
-    
+def load_model():
+    """Load the trained model directly"""
     try:
-        # Recreate the exact same MobileNetV2 architecture
-        base_model = tf.keras.applications.MobileNetV2(
-            input_shape=(224, 224, 3),
-            include_top=False,
-            weights='imagenet'
-        )
-        
-        # Freeze the base model
-        base_model.trainable = False
-        
-        # Recreate the custom top layers exactly as trained
-        model = tf.keras.Sequential([
-            base_model,
-            tf.keras.layers.GlobalAveragePooling2D(),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Dropout(0.3),
-            tf.keras.layers.Dense(256, activation='relu'),
-            tf.keras.layers.Dropout(0.2),
-            tf.keras.layers.Dense(15, activation='softmax')  # 15 classes from your training
-        ])
-        
-        # Compile with exact same settings
-        model.compile(
-            optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-            loss='categorical_crossentropy',
-            metrics=['accuracy']
-        )
-        
-        st.sidebar.success("✅ Model architecture ready!")
-        return model
-    except Exception as e:
-        st.sidebar.error(f"❌ Error: {str(e)}")
-        return None
-
-# Function to load weights
-@st.cache_resource
-def load_model_weights():
-    """Load model weights from .keras file"""
-    try:
-        st.sidebar.info("📥 Loading model weights...")
-        
-        # Recreate model first
-        model = recreate_model()
-        
-        if model is None:
-            return None
-            
-        # Load the weights (this is more compatible than loading the full model)
-        model.load_weights('best_plant_model_final.keras')
+        st.sidebar.info("📥 Loading AI model...")
+        model = tf.keras.models.load_model('best_plant_model_final.keras')
         st.sidebar.success("✅ AI Model ready!")
-        
         return model
     except Exception as e:
-        st.sidebar.error(f"❌ Error loading weights: {str(e)}")
+        st.sidebar.error(f"❌ Error loading model: {str(e)}")
         return None
 
 # Load treatment dictionary
@@ -701,7 +651,7 @@ if 'model' not in st.session_state:
 # Load model and treatments
 if st.session_state.model is None:
     with st.spinner("Initializing Plant Savior AI System..."):
-        model = load_model_weights()
+        model = load_model()
         treatments = load_treatments()
         st.session_state.model = model
         st.session_state.treatments = treatments
@@ -838,7 +788,7 @@ st.markdown("""
             <div class="stat-label">Accuracy Rate</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">15</div>
+            <div class="stat-value">38</div>
             <div class="stat-label">Disease Types</div>
         </div>
         <div class="stat-card">
