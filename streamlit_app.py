@@ -76,10 +76,7 @@ st.markdown("""
         font-weight: 700;
         margin-bottom: 0.5rem;
         text-shadow: 0 0 10px rgba(0, 245, 255, 0.7);
-        background: linear-gradient(90deg, #00dbde, #fc00ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: white;
         animation: glow 2s infinite alternate;
     }
     
@@ -632,50 +629,7 @@ st.markdown("""
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
     }
     
-    .stats-container {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 2.5rem;
-        margin-top: 2rem;
-    }
     
-    .stat-card {
-        background: rgba(0, 30, 60, 0.6);
-        border-radius: 15px;
-        padding: 2rem;
-        text-align: center;
-        min-width: 200px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(0, 197, 255, 0.3);
-        backdrop-filter: blur(5px);
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 40px rgba(0, 197, 255, 0.4);
-        border: 1px solid rgba(0, 245, 255, 0.6);
-    }
-    
-    .stat-value {
-        font-size: 2.8rem;
-        font-weight: 700;
-        color: #00f5ff;
-        margin-bottom: 0.8rem;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.7);
-        background: linear-gradient(90deg, #00dbde, #fc00ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .stat-label {
-        color: #a0d0ff;
-        font-size: 1.1rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
     
     /* Footer - Futuristic */
     .footer {
@@ -998,18 +952,7 @@ if uploaded_file is not None:
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 else:
-    # Enhanced upload interface
-    st.markdown("""
-    <div class="drop-zone" id="dropZone">
-        <div class="upload-icon">📁</div>
-        <p class="drop-text">DRAG & DROP YOUR IMAGE HERE</p>
-        <p class="file-types">SUPPORTED FORMATS: JPG, PNG, JPEG (MAX 200MB)</p>
-        <button class="browse-button" onclick="document.getElementById('fileInput').click()">BROWSE FILES</button>
-        <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,image/jpg">
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.info("💡 **TIP**: FOR BEST RESULTS, TAKE A CLEAR PHOTO OF THE AFFECTED LEAF WITH GOOD LIGHTING AND UPLOAD IN JPG OR PNG FORMAT.")
+    st.info("⬆️ **PLEASE UPLOAD AN IMAGE OF A PLANT LEAF USING THE UPLOADER ABOVE**")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1024,25 +967,6 @@ st.markdown("""
         DEEP LEARNING TECHNOLOGY TRAINED ON THOUSANDS OF PLANT IMAGES TO PROVIDE ACCURATE DIAGNOSES WITH 
         TREATMENT RECOMMENDATIONS, HELPING TO SAVE CROPS AND REDUCE THE USE OF UNNECESSARY PESTICIDES.
     </p>
-    
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-value">91.02%</div>
-            <div class="stat-label">ACCURACY RATE</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">38</div>
-            <div class="stat-label">DISEASE TYPES</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">224×224</div>
-            <div class="stat-label">IMAGE RESOLUTION</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">24/7</div>
-            <div class="stat-label">AVAILABILITY</div>
-        </div>
-    </div>
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
