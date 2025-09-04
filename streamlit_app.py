@@ -8,9 +8,6 @@ from PIL import Image
 import os
 import base64
 from io import BytesIO
-import matplotlib.pyplot as plt
-import plotly.graph_objects as go
-import plotly.express as px
 import pandas as pd
 from datetime import datetime
 
@@ -1852,7 +1849,7 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.add('active');
             
             // Hide all sections
-            document.querySelectorAll('.upload-section, .dashboard, .comparison-section, .ar-preview-container').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.upload-section, .dashboard, .comparison-section, .ar-preview-container').forEach(s => s.style.display = 'none';
             
             // Show corresponding section
             const sectionId = button.getAttribute('data-section');
@@ -1862,28 +1859,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Chatbot functionality
     const chatbotToggle = document.querySelector('.chatbot-toggle');
-    const chatbotWindow = document.querySelector('.chatbot-window');
-    const chatbotClose = document.querySelector('.chatbot-close');
-    const chatbotInput = document.querySelector('.chatbot-input input');
-    const chatbotSend = document.querySelector('.chatbot-input button');
-    const chatbotMessages = document.querySelector('.chatbot-messages');
+    const chatbotWindow = document.querySelector('.chatbot-window';
+    const chatbotClose = document.querySelector('.chatbot-close';
+    const chatbotInput = document.querySelector('.chatbot-input input';
+    const chatbotSend = document.querySelector('.chatbot-input button';
+    const chatbotMessages = document.querySelector('.chatbot-messages';
     
     if (chatbotToggle && chatbotWindow && chatbotClose) {
         chatbotToggle.addEventListener('click', () => {
-            chatbotWindow.classList.toggle('active');
+            chatbotWindow.classList.toggle('active';
         });
         
         chatbotClose.addEventListener('click', () => {
-            chatbotWindow.classList.remove('active');
+            chatbotWindow.classList.remove('active';
         });
         
         // Function to add a message to the chat
         function addMessage(text, isUser) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            const messageDiv = document.createElement('div';
+            messageDiv.classList.add('message';
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message';
             messageDiv.textContent = text;
-            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.appendChild(messageDiv;
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         }
         
@@ -1912,20 +1909,20 @@ document.addEventListener('DOMContentLoaded', function() {
         function sendMessage() {
             const message = chatbotInput.value.trim();
             if (message) {
-                addMessage(message, true);
+                addMessage(message, true;
                 chatbotInput.value = '';
                 
                 // Simulate bot thinking
                 setTimeout(() => {
-                    const botResponse = getBotResponse(message);
-                    addMessage(botResponse, false);
-                }, 1000);
+                    const botResponse = getBotResponse(message;
+                    addMessage(botResponse, false;
+                }, 1000;
             }
         }
         
         // Event listeners for chat
         if (chatbotSend) {
-            chatbotSend.addEventListener('click', sendMessage);
+            chatbotSend.addEventListener('click', sendMessage;
         }
         
         if (chatbotInput) {
@@ -1938,15 +1935,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add initial bot message
         setTimeout(() => {
-            addMessage('Hello! I\\'m the Plant Savior AI assistant. How can I help you today?', false);
-        }, 1000);
+            addMessage('Hello! I\\'m the Plant Savior AI assistant. How can I help you today?', false;
+        }, 1000;
     }
     
     // Comparison section toggle
-    const comparisonToggle = document.querySelector('.comparison-toggle');
+    const comparisonToggle = document.querySelector('.comparison-toggle';
     if (comparisonToggle) {
         comparisonToggle.addEventListener('click', () => {
-            const comparisonSection = document.querySelector('.comparison-section');
+            const comparisonSection = document.querySelector('.comparison-section';
             if (comparisonSection) {
                 comparisonSection.style.display = comparisonSection.style.display === 'block' ? 'none' : 'block';
             }
@@ -1954,9 +1951,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Voice command functionality
-    const voiceButton = document.querySelector('.voice-command-button');
-    const voiceText = document.querySelector('.voice-command-text');
-    const voiceResult = document.querySelector('.voice-command-result');
+    const voiceButton = document.querySelector('.voice-command-button';
+    const voiceText = document.querySelector('.voice-command-text';
+    const voiceResult = document.querySelector('.voice-command-result';
     
     if (voiceButton && 'webkitSpeechRecognition' in window) {
         const recognition = new webkitSpeechRecognition();
@@ -1965,7 +1962,7 @@ document.addEventListener('DOMContentLoaded', function() {
         recognition.lang = 'en-US';
         
         recognition.onstart = function() {
-            voiceButton.classList.add('listening');
+            voiceButton.classList.add('listening';
             voiceText.textContent = 'Listening...';
         };
         
@@ -1975,16 +1972,16 @@ document.addEventListener('DOMContentLoaded', function() {
             voiceResult.innerHTML = `<strong>You said:</strong> ${transcript}`;
             
             // Process voice commands
-            processVoiceCommand(transcript);
+            processVoiceCommand(transcript;
         };
         
         recognition.onerror = function(event) {
             voiceText.textContent = 'Error occurred in recognition: ' + event.error;
-            voiceButton.classList.remove('listening');
+            voiceButton.classList.remove('listening';
         };
         
         recognition.onend = function() {
-            voiceButton.classList.remove('listening');
+            voiceButton.classList.remove('listening';
             voiceText.textContent = 'Click the microphone to speak';
         };
         
@@ -2002,30 +1999,30 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (lowerCommand.includes('upload') || lowerCommand.includes('analyze')) {
                 // Simulate clicking the analyze button
-                const analyzeButton = document.querySelector('.analyze-button');
+                const analyzeButton = document.querySelector('.analyze-button';
                 if (analyzeButton) {
                     analyzeButton.click();
                     voiceResult.innerHTML += '<br><strong>Action:</strong> Started analysis';
                 }
             } else if (lowerCommand.includes('dashboard')) {
                 // Navigate to dashboard
-                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
-                document.querySelector('[data-section="dashboard"]').classList.add('active');
-                document.querySelectorAll('.upload-section, .comparison-section, .ar-preview-container').forEach(s => s.style.display = 'none');
+                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active';
+                document.querySelector('[data-section="dashboard"]').classList.add('active';
+                document.querySelectorAll('.upload-section, .comparison-section, .ar-preview-container').forEach(s => s.style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 voiceResult.innerHTML += '<br><strong>Action:</strong> Navigated to dashboard';
             } else if (lowerCommand.includes('history')) {
                 // Navigate to history
-                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
-                document.querySelector('[data-section="comparison-section"]').classList.add('active');
-                document.querySelectorAll('.upload-section, .dashboard, .ar-preview-container').forEach(s => s.style.display = 'none');
+                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active';
+                document.querySelector('[data-section="comparison-section"]').classList.add('active';
+                document.querySelectorAll('.upload-section, .dashboard, .ar-preview-container').forEach(s => s.style.display = 'none';
                 document.getElementById('comparison-section').style.display = 'block';
                 voiceResult.innerHTML += '<br><strong>Action:</strong> Navigated to history';
             } else if (lowerCommand.includes('ar') || lowerCommand.includes('augmented reality')) {
                 // Navigate to AR preview
-                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
-                document.querySelector('[data-section="ar-preview-container"]').classList.add('active');
-                document.querySelectorAll('.upload-section, .dashboard, .comparison-section').forEach(s => s.style.display = 'none');
+                document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active';
+                document.querySelector('[data-section="ar-preview-container"]').classList.add('active';
+                document.querySelectorAll('.upload-section, .dashboard, .comparison-section').forEach(s => s.style.display = 'none';
                 document.getElementById('ar-preview-container').style.display = 'block';
                 voiceResult.innerHTML += '<br><strong>Action:</strong> Navigated to AR preview';
             } else {
@@ -2040,7 +2037,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // AR Preview functionality
-    const arButton = document.querySelector('.ar-button');
+    const arButton = document.querySelector('.ar-button';
     if (arButton) {
         arButton.addEventListener('click', () => {
             // Simulate AR functionality
@@ -2053,7 +2050,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 arButton.textContent = 'Start AR Experience';
                 
                 // Show AR placeholder
-                const placeholder = document.querySelector('.ar-preview-placeholder');
+                const placeholder = document.querySelector('.ar-preview-placeholder';
                 if (placeholder) {
                     placeholder.innerHTML = `
                         <div>
@@ -2063,14 +2060,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                 }
-            }, 2000);
+            }, 2000;
         });
     }
     
     // Mobile menu toggle for smaller screens
     function handleMobileMenu() {
-        const navContainer = document.querySelector('.nav-container');
-        const navButtons = document.querySelectorAll('.nav-button');
+        const navContainer = document.querySelector('.nav-container';
+        const navButtons = document.querySelectorAll('.nav-button';
         
         if (window.innerWidth <= 768) {
             // Stack buttons vertically on mobile
@@ -2097,7 +2094,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle mobile menu on load and resize
     handleMobileMenu();
-    window.addEventListener('resize', handleMobileMenu);
+    window.addEventListener('resize', handleMobileMenu;
 });
 </script>
 """, unsafe_allow_html=True)
@@ -2435,15 +2432,50 @@ st.markdown('<div class="dashboard-grid">', unsafe_allow_html=True)
 st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
 st.markdown('<h3 class="dashboard-card-title">Disease Distribution</h3>', unsafe_allow_html=True)
 
-fig = px.pie(df, values='Count', names='Disease', 
-             color_discrete_sequence=[ '#00f5ff', '#ff00c8', '#00ff9d', '#ff5252', '#5252ff'])
-fig.update_layout(
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
-    font=dict(color='#e0f7fa'),
-    title_font=dict(color='#00f5ff')
-)
-st.plotly_chart(fig, use_container_width=True)
+# Create a simple text-based chart since we can't use plotly
+st.markdown("""
+<div style="background: rgba(0, 245, 255, 0.1); border-radius: 8px; padding: 1rem;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+        <span>Tomato Healthy</span>
+        <span>45</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #00f5ff, #00f5ff); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Tomato Septoria Leaf Spot</span>
+        <span>32</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 71%; height: 100%; background: linear-gradient(90deg, #ff00c8, #ff00c8); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Tomato Blight</span>
+        <span>28</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 62%; height: 100%; background: linear-gradient(90deg, #00ff9d, #00ff9d); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Potato Healthy</span>
+        <span>51</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ff5252, #ff5252); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Potato Blight</span>
+        <span>19</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 42%; height: 100%; background: linear-gradient(90deg, #5252ff, #5252ff); border-radius: 4px;"></div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -2451,16 +2483,50 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
 st.markdown('<h3 class="dashboard-card-title">Average Confidence Scores</h3>', unsafe_allow_html=True)
 
-fig2 = px.bar(df, x='Disease', y='Confidence', 
-              color='Disease',
-              color_discrete_sequence=['#00f5ff', '#ff00c8', '#00ff9d', '#ff5252', '#5252ff'])
-fig2.update_layout(
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
-    font=dict(color='#e0f7fa'),
-    title_font=dict(color='#00f5ff')
-)
-st.plotly_chart(fig2, use_container_width=True)
+# Create a simple text-based chart for confidence scores
+st.markdown("""
+<div style="background: rgba(0, 245, 255, 0.1); border-radius: 8px; padding: 1rem;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+        <span>Tomato Healthy</span>
+        <span>95.2%</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #00f5ff, #00f5ff); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Tomato Septoria Leaf Spot</span>
+        <span>87.6%</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 92%; height: 100%; background: linear-gradient(90deg, #ff00c8, #ff00c8); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Tomato Blight</span>
+        <span>91.3%</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 96%; height: 100%; background: linear-gradient(90deg, #00ff9d, #00ff9d); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Potato Healthy</span>
+        <span>96.1%</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ff5252, #ff5252); border-radius: 4px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; margin-top: 1rem;">
+        <span>Potato Blight</span>
+        <span>89.7%</span>
+    </div>
+    <div style="width: 100%; background: rgba(255, 255, 255, 0.1); border-radius: 4px; height: 20px;">
+        <div style="width: 94%; height: 100%; background: linear-gradient(90deg, #5252ff, #5252ff); border-radius: 4px;"></div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
