@@ -1,5 +1,5 @@
 # streamlit_app.py
-# Streamlit web application for plant disease detection using .keras model
+# Fixed Streamlit web application with model compatibility
 
 import streamlit as st
 import tensorflow as tf
@@ -53,6 +53,13 @@ st.markdown("""
         border-radius: 4px;
         margin: 1rem 0;
     }
+    .error-box {
+        background-color: #ffebee;
+        border-left: 4px solid #f44336;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -79,13 +86,25 @@ if 'model' not in st.session_state:
     st.session_state.model = None
     st.session_state.treatments = {}
 
-# Load model function with caching
+# Load model function with error handling
 @st.cache_resource
 def load_model_and_treatments():
-    """Load the trained model and treatment dictionary"""
+    """Load the trained model and treatment dictionary with compatibility fix"""
     try:
-        # Load the best model (91.02% accuracy)
-        model = tf.keras.models.load_model('best_plant_model_final.keras')
+        st.info("🔧 Loading AI model with compatibility settings...")
+        
+        # Load the best model with custom objects to handle compatibility issues
+        model = tf.keras.models.load_model(
+            'best_plant_model_final.keras',
+            compile=False  # Don't compile initially to avoid compatibility issues
+        )
+        
+        # Recompile with the same settings used during training
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+            loss='categorical_crossentropy',
+            metrics=['accuracy']
+        )
         
         # Load treatment dictionary
         with open('treatment_dict_complete.json', 'r') as f:
@@ -100,8 +119,29 @@ def load_model_and_treatments():
         st.info("• treatment_dict_complete.json")
         return None, {}
     except Exception as e:
-        st.error(f"❌ Error loading model: {e}")
-        return None, {}
+        st.error(f"❌ Error loading model: {str(e)}")
+        st.info("🔧 Trying alternative loading method...")
+        
+        # Alternative loading method
+        try:
+            st.info("🔄 Attempting to load model with custom objects...")
+            model = tf.keras.models.load_model(
+                'best_plant_model_final.keras',
+                custom_objects={'BatchNormalization': tf.keras.layers.BatchNormalization}
+            )
+            
+            with open('treatment_dict_complete.json', 'r') as f:
+                treatments = json.load(f)
+            
+            st.success("✅ Model loaded with custom objects!")
+            return model, treatments
+        except Exception as e2:
+            st.error(f"❌ Failed to load model: {str(e2)}")
+            st.info("🔧 Please check:")
+            st.info("1. Model file exists and is not corrupted")
+            st.info("2. TensorFlow version compatibility")
+            st.info("3. File permissions")
+            return None, {}
 
 # Load model and treatments
 if st.session_state.model is None:
@@ -137,7 +177,7 @@ if uploaded_file is not None:
                     img_array = img_array.reshape(1, 224, 224, 3) / 255.0
                     
                     # Make prediction
-                    predictions = st.session_state.model.predict(img_array)
+                    predictions = st.session_state.model.predict(img_array, verbose=0)
                     predicted_class = np.argmax(predictions[0])
                     confidence_score = float(predictions[0][predicted_class])
                     
@@ -171,7 +211,8 @@ if uploaded_file is not None:
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                 except Exception as e:
-                    st.error(f"❌ Error during prediction: {e}")
+                    st.error(f"❌ Error during prediction: {str(e)}")
+                    st.markdown(f'<div class="error-box"><p>Technical details: {str(e)}</p></div>', unsafe_allow_html=True)
                 
                 # Clean up temporary file
                 try:
@@ -179,7 +220,7 @@ if uploaded_file is not None:
                 except:
                     pass
         else:
-            st.error("❌ Model not loaded. Please check if model files exist.")
+            st.error("❌ Model not loaded. Please check the error messages above.")
 
 # Information section
 st.subheader("About Plant Savior AI")
@@ -190,6 +231,22 @@ treatment recommendations to help save crops and plants.
 
 **Model Performance:** 91.02% validation accuracy on 15 plant disease classes
 """)
+
+# Troubleshooting section
+with st.expander("⚠️ Troubleshooting"):
+    st.write("""
+    **If you're seeing model loading errors:**
+    
+    1. **Version Mismatch**: The model was trained with a different TensorFlow version
+    2. **Corrupted File**: Download the model file again
+    3. **Memory Issues**: Try restarting the application
+    
+    **Solutions:**
+    - Ensure you're using TensorFlow 2.13.0
+    - Check that all required files are present
+    - Verify file permissions
+    - Try clearing Streamlit cache: `streamlit cache clear`
+    """)
 
 # Technical details
 with st.expander("Technical Details"):
@@ -211,6 +268,7 @@ st.caption("🌱 Plant Savior AI - Making agriculture smarter with AI technology
 # Requirements.txt information
 if st.checkbox("Show requirements.txt"):
     st.code("""
+python==3.10.12
 tensorflow==2.13.0
 streamlit==1.28.0
 numpy==1.24.3
