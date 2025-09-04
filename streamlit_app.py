@@ -1,12 +1,9 @@
 # streamlit_app.py
-# Fixed Streamlit web application with model compatibility
-
 import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import numpy as np
 import json
-import matplotlib.pyplot as plt
 from PIL import Image
 import os
 
@@ -81,72 +78,92 @@ with col2:
 with col3:
     st.markdown('<div class="step-card"><h2>3</h2><p>Get Results</p><p>📊</p></div>', unsafe_allow_html=True)
 
-# Initialize session state
-if 'model' not in st.session_state:
-    st.session_state.model = None
-    st.session_state.treatments = {}
-
-# Load model function with error handling
+# Function to recreate model architecture
 @st.cache_resource
-def load_model_and_treatments():
-    """Load the trained model and treatment dictionary with compatibility fix"""
+def recreate_model():
+    """Recreate the exact model architecture used during training"""
+    st.info("🔧 Recreating model architecture...")
+    
     try:
-        st.info("🔧 Loading AI model with compatibility settings...")
-        
-        # Load the best model with custom objects to handle compatibility issues
-        model = tf.keras.models.load_model(
-            'best_plant_model_final.keras',
-            compile=False  # Don't compile initially to avoid compatibility issues
+        # Recreate the exact same MobileNetV2 architecture
+        base_model = tf.keras.applications.MobileNetV2(
+            input_shape=(224, 224, 3),
+            include_top=False,
+            weights='imagenet'
         )
         
-        # Recompile with the same settings used during training
+        # Freeze the base model
+        base_model.trainable = False
+        
+        # Recreate the custom top layers exactly as trained
+        model = tf.keras.Sequential([
+            base_model,
+            tf.keras.layers.GlobalAveragePooling2D(),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.Dropout(0.3),
+            tf.keras.layers.Dense(256, activation='relu'),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(15, activation='softmax')  # 15 classes from your training
+        ])
+        
+        # Compile with exact same settings
         model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
             loss='categorical_crossentropy',
             metrics=['accuracy']
         )
         
-        # Load treatment dictionary
+        st.success("✅ Model architecture recreated successfully!")
+        return model
+    except Exception as e:
+        st.error(f"❌ Error recreating model: {str(e)}")
+        return None
+
+# Function to load weights
+@st.cache_resource
+def load_model_weights():
+    """Load model weights from .keras file"""
+    try:
+        st.info("📥 Loading model weights...")
+        
+        # Recreate model first
+        model = recreate_model()
+        
+        if model is None:
+            return None
+            
+        # Load the weights (this is more compatible than loading the full model)
+        model.load_weights('best_plant_model_final.keras')
+        st.success("✅ Model weights loaded successfully!")
+        
+        return model
+    except Exception as e:
+        st.error(f"❌ Error loading weights: {str(e)}")
+        return None
+
+# Load treatment dictionary
+@st.cache_resource
+def load_treatments():
+    """Load treatment recommendations"""
+    try:
         with open('treatment_dict_complete.json', 'r') as f:
             treatments = json.load(f)
-        
-        st.success("✅ AI Model loaded successfully!")
-        return model, treatments
-    except FileNotFoundError as e:
-        st.error(f"❌ Required files not found: {e}")
-        st.info("Please ensure the following files are in your project directory:")
-        st.info("• best_plant_model_final.keras")
-        st.info("• treatment_dict_complete.json")
-        return None, {}
+        st.success("✅ Treatment dictionary loaded!")
+        return treatments
     except Exception as e:
-        st.error(f"❌ Error loading model: {str(e)}")
-        st.info("🔧 Trying alternative loading method...")
-        
-        # Alternative loading method
-        try:
-            st.info("🔄 Attempting to load model with custom objects...")
-            model = tf.keras.models.load_model(
-                'best_plant_model_final.keras',
-                custom_objects={'BatchNormalization': tf.keras.layers.BatchNormalization}
-            )
-            
-            with open('treatment_dict_complete.json', 'r') as f:
-                treatments = json.load(f)
-            
-            st.success("✅ Model loaded with custom objects!")
-            return model, treatments
-        except Exception as e2:
-            st.error(f"❌ Failed to load model: {str(e2)}")
-            st.info("🔧 Please check:")
-            st.info("1. Model file exists and is not corrupted")
-            st.info("2. TensorFlow version compatibility")
-            st.info("3. File permissions")
-            return None, {}
+        st.error(f"❌ Error loading treatments: {str(e)}")
+        return {}
+
+# Initialize session state
+if 'model' not in st.session_state:
+    st.session_state.model = None
+    st.session_state.treatments = {}
 
 # Load model and treatments
 if st.session_state.model is None:
-    with st.spinner("Loading AI model..."):
-        model, treatments = load_model_and_treatments()
+    with st.spinner("Initializing AI system..."):
+        model = load_model_weights()
+        treatments = load_treatments()
         st.session_state.model = model
         st.session_state.treatments = treatments
 
@@ -164,14 +181,14 @@ if uploaded_file is not None:
         st.image(image, caption="Uploaded Leaf Image", use_column_width=True)
     
     with col2:
-        if st.session_state.model is not None:
+        if st.session_state.model is not None and st.session_state.treatments:
             with st.spinner("Analyzing image..."):
-                # Save uploaded file temporarily
-                with open("temp_image.jpg", "wb") as f:
-                    f.write(uploaded_file.getbuffer())
-                
-                # Preprocess image
                 try:
+                    # Save uploaded file temporarily
+                    with open("temp_image.jpg", "wb") as f:
+                        f.write(uploaded_file.getbuffer())
+                    
+                    # Preprocess image
                     img = load_img("temp_image.jpg", target_size=(224, 224))
                     img_array = img_to_array(img)
                     img_array = img_array.reshape(1, 224, 224, 3) / 255.0
@@ -220,7 +237,7 @@ if uploaded_file is not None:
                 except:
                     pass
         else:
-            st.error("❌ Model not loaded. Please check the error messages above.")
+            st.error("❌ AI system not initialized. Please check the error messages above.")
 
 # Information section
 st.subheader("About Plant Savior AI")
@@ -237,15 +254,13 @@ with st.expander("⚠️ Troubleshooting"):
     st.write("""
     **If you're seeing model loading errors:**
     
-    1. **Version Mismatch**: The model was trained with a different TensorFlow version
-    2. **Corrupted File**: Download the model file again
-    3. **Memory Issues**: Try restarting the application
+    1. **Version Compatibility**: This app now recreates the model architecture and loads weights separately
+    2. **File Issues**: Ensure all required files are present in the project directory
+    3. **Memory**: Try refreshing the page if you see memory errors
     
-    **Solutions:**
-    - Ensure you're using TensorFlow 2.13.0
-    - Check that all required files are present
-    - Verify file permissions
-    - Try clearing Streamlit cache: `streamlit cache clear`
+    **Required Files:**
+    - `best_plant_model_final.keras` (model weights)
+    - `treatment_dict_complete.json` (treatment recommendations)
     """)
 
 # Technical details
@@ -257,21 +272,7 @@ with st.expander("Technical Details"):
     **Training Data:** PlantVillage dataset with class balancing
     **Framework:** TensorFlow/Keras
     """)
-    
-    if st.session_state.model is not None:
-        st.write(f"**Model Parameters:** {st.session_state.model.count_params():,}")
 
 # Footer
 st.markdown("---")
 st.caption("🌱 Plant Savior AI - Making agriculture smarter with AI technology")
-
-# Requirements.txt information
-if st.checkbox("Show requirements.txt"):
-    st.code("""
-python==3.10.12
-tensorflow==2.13.0
-streamlit==1.28.0
-numpy==1.24.3
-Pillow==10.0.1
-matplotlib==3.7.2
-""", language="txt")
