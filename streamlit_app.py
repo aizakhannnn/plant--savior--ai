@@ -750,11 +750,11 @@ st.markdown("""
         bottom: 0;
         background: linear-gradient(45deg, 
             rgba(0, 197, 255, 0.1) 25%, 
-            transparent 25%, 
+            transparent, 
             transparent 50%, 
             rgba(0, 197, 255, 0.1) 50%, 
             rgba(0, 197, 255, 0.1) 75%, 
-            transparent 75%);
+            transparent);
         background-size: 20px 20px;
         animation: progressPattern 2s linear infinite;
     }
@@ -1187,8 +1187,110 @@ st.markdown("""
             opacity: 1;
         }
     }
+    /* Team Section - New */
+    .team-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(0, 197, 255, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .team-title {
+        color: #00f5ff;
+        text-align: center;
+        font-size: 3.2rem;
+        margin-bottom: 3rem;
+        font-weight: 900;
+        text-shadow: 
+            0 0 15px rgba(0, 245, 255, 0.8),
+            0 0 30px rgba(0, 245, 255, 0.4);
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: titleGlow 3s infinite alternate;
+    }
+    .team-container {
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        flex-wrap: wrap;
+    }
+    .team-card {
+        background: rgba(0, 30, 60, 0.8);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        flex: 1;
+        min-width: 280px;
+        max-width: 320px;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 197, 255, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .team-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #00c9ff, #fc00ff, #00c9ff);
+        background-size: 200% 100%;
+        animation: borderFlow 3s linear infinite;
+    }
+    .team-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 
+            0 15px 50px rgba(0, 197, 255, 0.5),
+            0 5px 20px rgba(252, 0, 255, 0.3);
+        border: 1px solid rgba(0, 245, 255, 0.7);
+    }
+    .team-name {
+        color: #00f5ff;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+        text-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+    }
+    .team-role {
+        color: #fc00ff;
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .team-desc {
+        color: #c0d8ff;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    .love-icon {
+        display: block;
+        text-align: center;
+        font-size: 2.5rem;
+        margin: 2rem 0;
+        color: #ff2d95;
+        animation: heartBeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartBeat {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
 </style>
 """, unsafe_allow_html=True)
+
 # Main header with enhanced futuristic design
 st.markdown("""
 <div class="main-header">
@@ -1196,6 +1298,7 @@ st.markdown("""
     <p class="tagline">NEXT-GENERATION PLANT DISEASE DETECTION POWERED BY ADVANCED ARTIFICIAL INTELLIGENCE</p>
 </div>
 """, unsafe_allow_html=True)
+
 # Statistics Section - Removed "24/7 Available" as requested
 st.markdown("""
 <div class="stats-section">
@@ -1213,6 +1316,7 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 # Enhanced Sidebar
 with st.sidebar:
     st.markdown("### 🚀 AI SYSTEM STATUS")
@@ -1262,10 +1366,7 @@ with st.sidebar:
     • **NumPy** - Numerical Computing
     • **Custom CNN** - Disease Classification
     """)
-   
-    
-("📧 Plantsavior AI")
-("🌐 www.plantsaviorai.streamlit.app")
+
 # How it works section with enhanced design
 st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">HOW THE AI SYSTEM WORKS</h2>', unsafe_allow_html=True)
@@ -1292,6 +1393,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
 # Function to load model with enhanced caching
 @st.cache_resource(show_spinner=False)
 def load_model():
@@ -1309,6 +1411,7 @@ def load_model():
         st.sidebar.error(f"❌ MODEL LOADING ERROR: {str(e)}")
         st.error(f"🚨 **SYSTEM ERROR**: {str(e)}")
         return None
+
 # Load treatment dictionary with enhanced error handling
 @st.cache_resource(show_spinner=False)
 def load_treatments():
@@ -1343,11 +1446,13 @@ def load_treatments():
     except Exception as e:
         st.sidebar.error(f"❌ TREATMENT LOADING ERROR: {str(e)}")
         return {}
+
 # Initialize session state with enhanced management
 if 'model' not in st.session_state:
     st.session_state.model = None
     st.session_state.treatments = {}
     st.session_state.analysis_count = 0
+
 # Load model and treatments with progress tracking
 if st.session_state.model is None:
     with st.spinner("⚡ BOOTING UP PLANT SAVIOR AI SYSTEM..."):
@@ -1358,6 +1463,7 @@ if st.session_state.model is None:
         if model is not None:
             st.success("🚀 **SYSTEM READY**: Plant Savior AI is now fully operational!")
             time.sleep(1)  # Brief pause for effect
+
 # Main upload section with enhanced design
 st.markdown('<div class="upload-section glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="upload-title">🔬 AI-POWERED PLANT ANALYSIS</h2>', unsafe_allow_html=True)
@@ -1555,6 +1661,7 @@ else:
     </div>
     """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
 # Enhanced About section
 st.markdown('<div class="about-section glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">🚀 ABOUT PLANT SAVIOR AI</h2>', unsafe_allow_html=True)
@@ -1580,6 +1687,33 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
+# === NEW: Team Section ===
+st.markdown('<div class="team-section glass-container fade-in-up">', unsafe_allow_html=True)
+st.markdown('<h2 class="team-title">👥 MEET THE TEAM</h2>', unsafe_allow_html=True)
+st.markdown("""
+<div class="team-container">
+    <div class="team-card">
+        <h3 class="team-name">Aiza</h3>
+        <p class="team-role">Team Lead, Full Stack AI Engineer</p>
+        <p class="team-desc">Leading the development and integration of AI models and full-stack architecture. Expert in deep learning, neural networks, and end-to-end system design.</p>
+    </div>
+    <div class="team-card">
+        <h3 class="team-name">Tooba</h3>
+        <p class="team-role">Web Designer</p>
+        <p class="team-desc">Crafting the futuristic UI/UX experience. Responsible for the cyberpunk design, animations, and responsive interface that powers Plant Savior AI.</p>
+    </div>
+    <div class="team-card">
+        <h3 class="team-name">Taiba</h3>
+        <p class="team-role">Machine Learning Engineer</p>
+        <p class="team-desc">Specializing in model training, optimization, and performance tuning. Ensures our AI delivers 99.2% accuracy across diverse plant conditions.</p>
+    </div>
+</div>
+<div class="love-icon">❤️</div>
+<p style="text-align: center; color: #00f5ff; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
+""", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
 # Enhanced Footer
 st.markdown("""
 <div class="footer">
