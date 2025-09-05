@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Savior AI - Plant Disease Detection</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-green shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fas fa-seedling me-2"></i>
+                <span class="fw-bold">Plant Savior AI</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section bg-light-green py-5">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">Plant Disease Detection with AI</h1>
+                    <p class="lead mb-4">Upload a photo of your plant's leaf and get instant diagnosis with treatment recommendations powered by advanced artificial intelligence.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-primary btn-lg px-4 py-2" id="scrollToUpload">
+                            <i class="fas fa-camera me-2"></i>Start Diagnosis
+                        </button>
+                        <a href="#how-it-works" class="btn btn-outline-primary btn-lg px-4 py-2">
+                            <i class="fas fa-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section py-5" id="upload">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                        <div class="card-header bg-primary text-white py-3">
+                            <h2 class="mb-0 h4 fw-bold text-center">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Upload Plant Leaf Image
+                            </h2>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Choose Image</label>
+                                    <div class="upload-area border border-2 border-dashed rounded-3 p-5 text-center" id="dropArea">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                        <p class="mb-2">Drag & drop your image here</p>
+                                        <p class="text-muted small mb-3">or</p>
+                                        <button type="button" class="btn btn-outline-primary" id="browseBtn">
+                                            <i class="fas fa-folder-open me-2"></i>Browse Files
+                                        </button>
+                                        <input type="file" id="imageInput" name="image" accept="image/*" class="d-none">
+                                    </div>
+                                    <div class="form-text">Supported formats: JPG, PNG, JPEG. Max size: 10MB</div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold" id="predictBtn" disabled>
+                                        <i class="fas fa-flask me-2"></i>Analyze Plant Disease
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section py-5 d-none" id="resultsSection">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                        <div class="card-header bg-success text-white py-3">
+                            <h2 class="mb-0 h4 fw-bold text-center">
+                                <i class="fas fa-chart-bar me-2"></i>Analysis Results
+                            </h2>
+                        </div>
+                        <div class="card-body p-4">
+                            <div id="resultsContent">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works py-5 bg-light" id="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+                <p class="lead text-muted">Our AI-powered system makes plant disease detection simple and accurate</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <span class="fw-bold">1</span>
+                            </div>
+                            <div class="icon-wrapper bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <i class="fas fa-camera fa-2x text-primary"></i>
+                            </div>
+                            <h3 class="h5 fw-bold mb-2">Upload Image</h3>
+                            <p class="text-muted">Take a clear photo of the affected plant leaf and upload it to our system.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <span class="fw-bold">2</span>
+                            </div>
+                            <div class="icon-wrapper bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <i class="fas fa-brain fa-2x text-primary"></i>
+                            </div>
+                            <h3 class="h5 fw-bold mb-2">AI Analysis</h3>
+                            <p class="text-muted">Our advanced AI model analyzes the image to detect any plant diseases.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <span class="fw-bold">3</span>
+                            </div>
+                            <div class="icon-wrapper bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <i class="fas fa-clipboard-list fa-2x text-primary"></i>
+                            </div>
+                            <h3 class="h5 fw-bold mb-2">Get Results</h3>
+                            <p class="text-muted">Receive instant diagnosis with confidence score and treatment recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Why Choose Plant Savior AI?</h2>
+                <p class="lead text-muted">Advanced features for accurate plant disease detection</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
+                        <div class="feature-icon bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="fas fa-robot fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">AI-Powered</h3>
+                        <p class="text-muted small">Advanced deep learning models trained on thousands of plant images.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
+                        <div class="feature-icon bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="fas fa-bolt fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Instant Results</h3>
+                        <p class="text-muted small">Get diagnosis and treatment recommendations in seconds.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
+                        <div class="feature-icon bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="fas fa-leaf fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">30+ Diseases</h3>
+                        <p class="text-muted small">Detect over 30 different plant diseases across various crops.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
+                        <div class="feature-icon bg-light-green rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                            <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Secure & Private</h3>
+                        <p class="text-muted small">Your images are processed securely and never stored.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section py-5 bg-light" id="about">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="about-image bg-light-green rounded-3 p-4 text-center">
+                        <i class="fas fa-seedling fa-5x text-primary"></i>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold mb-3">About Plant Savior AI</h2>
+                    <p class="lead">Advanced artificial intelligence for plant disease detection</p>
+                    <p>Plant Savior AI is an advanced artificial intelligence system designed to help farmers, gardeners, and agricultural professionals quickly identify plant diseases from leaf images. Our system uses deep learning technology trained on thousands of plant images to provide accurate diagnoses with treatment recommendations.</p>
+                    <p>Our AI model can detect over 30 different plant diseases across various crops including tomatoes, potatoes, peppers, apples, and more. With an accuracy rate exceeding 95%, Plant Savior AI is a trusted tool for rapid disease identification in agricultural settings.</p>
+                    <div class="mt-4">
+                        <button class="btn btn-primary btn-lg">
+                            <i class="fas fa-camera me-2"></i>Try It Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h3 class="h5 fw-bold mb-3">
+                        <i class="fas fa-seedling me-2"></i>Plant Savior AI
+                    </h3>
+                    <p>Advanced AI for instant plant disease detection and treatment recommendations.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h3 class="h5 fw-bold mb-3">Quick Links</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/" class="text-white text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#how-it-works" class="text-white text-decoration-none">How It Works</a></li>
+                        <li class="mb-2"><a href="#about" class="text-white text-decoration-none">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h3 class="h5 fw-bold mb-3">Contact</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> support@plantsavior.ai</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Plant Savior AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-white fw-bold">Analyzing your plant image...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
