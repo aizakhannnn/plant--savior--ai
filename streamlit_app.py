@@ -9,7 +9,6 @@ import os
 import base64
 from io import BytesIO
 import time
-
 # Set page configuration
 st.set_page_config(
     page_title="Plant Savior AI - Advanced Plant Disease Detection",
@@ -17,22 +16,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 # Enhanced Futuristic Cyberpunk CSS Design
 st.markdown("""
 <style>
     /* Global Styles */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
-    
     * {
         font-family: 'Exo 2', sans-serif;
     }
-    
     h1, h2, h3, h4, h5, h6, .logo-text, .cyberpunk-text {
         font-family: 'Orbitron', sans-serif;
         letter-spacing: 1px;
     }
-    
     /* Main background and layout */
     .stApp {
         background: linear-gradient(135deg, #0a0a23, #1a1a3a, #2d2d5f, #0f0c29);
@@ -42,13 +37,11 @@ st.markdown("""
         overflow-x: hidden;
         min-height: 100vh;
     }
-    
     @keyframes gradientShift {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
-    
     /* Floating Particles Background */
     .stApp::before {
         content: "";
@@ -68,14 +61,12 @@ st.markdown("""
         pointer-events: none;
         z-index: -1;
     }
-    
     @keyframes particleFloat {
         0% { transform: translateY(0px) translateX(0px); }
         33% { transform: translateY(-100px) translateX(50px); }
         66% { transform: translateY(-200px) translateX(-50px); }
         100% { transform: translateY(-300px) translateX(0px); }
     }
-    
     /* Header Styles - Enhanced Cyberpunk */
     .main-header {
         background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
@@ -93,7 +84,6 @@ st.markdown("""
         border-bottom: 4px solid #00f5ff;
         animation: headerPulse 4s infinite;
     }
-    
     @keyframes headerPulse {
         0%, 100% { 
             box-shadow: 0 0 30px rgba(0, 245, 255, 0.5),
@@ -104,7 +94,6 @@ st.markdown("""
                        0 0 100px rgba(252, 0, 255, 0.6);
         }
     }
-    
     .main-header::before {
         content: "";
         position: absolute;
@@ -115,12 +104,10 @@ st.markdown("""
         background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent);
         animation: headerRotate 8s linear infinite;
     }
-    
     @keyframes headerRotate {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    
     .logo-text {
         font-size: 5.5rem;
         font-weight: 900;
@@ -134,7 +121,6 @@ st.markdown("""
         position: relative;
         z-index: 2;
     }
-    
     @keyframes logoGlow {
         from { 
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00dbde, 0 0 20px #00dbde;
@@ -145,7 +131,6 @@ st.markdown("""
             transform: scale(1.05);
         }
     }
-    
     .tagline {
         font-size: 1.8rem;
         opacity: 0.95;
@@ -158,12 +143,10 @@ st.markdown("""
         z-index: 2;
         animation: taglinePulse 4s infinite;
     }
-    
     @keyframes taglinePulse {
         0%, 100% { opacity: 0.9; }
         50% { opacity: 1; }
     }
-    
     /* Statistics Section */
     .stats-section {
         display: flex;
@@ -172,7 +155,6 @@ st.markdown("""
         margin: 3rem 0;
         flex-wrap: wrap;
     }
-    
     .stat-card {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(15px);
@@ -186,7 +168,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .stat-card::before {
         content: "";
         position: absolute;
@@ -197,17 +178,14 @@ st.markdown("""
         background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
         transition: left 0.8s ease;
     }
-    
     .stat-card:hover::before {
         left: 100%;
     }
-    
     .stat-card:hover {
         transform: translateY(-10px) scale(1.05);
         box-shadow: 0 15px 40px rgba(0, 197, 255, 0.4);
         border: 1px solid rgba(0, 245, 255, 0.6);
     }
-    
     .stat-value {
         font-size: 3.5rem;
         font-weight: 900;
@@ -216,7 +194,6 @@ st.markdown("""
         margin-bottom: 0.5rem;
         font-family: 'Orbitron', sans-serif;
     }
-    
     .stat-label {
         color: #c0d8ff;
         font-size: 1.2rem;
@@ -224,7 +201,6 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
     /* Glassmorphism Container Enhanced */
     .glass-container {
         background: rgba(255, 255, 255, 0.1);
@@ -241,7 +217,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .glass-container::before {
         content: "";
         position: absolute;
@@ -251,7 +226,6 @@ st.markdown("""
         height: 1px;
         background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.6), transparent);
     }
-    
     .glass-container:hover {
         transform: translateY(-8px);
         box-shadow: 
@@ -259,7 +233,6 @@ st.markdown("""
             0 5px 20px rgba(252, 0, 255, 0.2);
         border: 1px solid rgba(0, 197, 255, 0.4);
     }
-    
     /* How It Works Section - Enhanced */
     .how-it-works {
         background: rgba(255, 255, 255, 0.08);
@@ -273,7 +246,6 @@ st.markdown("""
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
         position: relative;
     }
-    
     .section-title {
         color: #00f5ff;
         text-align: center;
@@ -289,7 +261,6 @@ st.markdown("""
         transform: translateX(-50%);
         animation: titleGlow 3s infinite alternate;
     }
-    
     @keyframes titleGlow {
         from { 
             text-shadow: 0 0 10px rgba(0, 245, 255, 0.6),
@@ -300,7 +271,6 @@ st.markdown("""
                         0 0 40px rgba(0, 245, 255, 0.6);
         }
     }
-    
     .section-title::after {
         content: "";
         position: absolute;
@@ -313,19 +283,16 @@ st.markdown("""
         border-radius: 2px;
         animation: underlineFlow 3s infinite;
     }
-    
     @keyframes underlineFlow {
         0%, 100% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
     }
-    
     .steps-container {
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
         gap: 2.5rem;
     }
-    
     .step-card {
         background: rgba(0, 30, 60, 0.8);
         border-radius: 20px;
@@ -343,7 +310,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .step-card::before {
         content: "";
         position: absolute;
@@ -355,12 +321,10 @@ st.markdown("""
         background-size: 200% 100%;
         animation: borderFlow 3s linear infinite;
     }
-    
     @keyframes borderFlow {
         0% { background-position: -200% 0; }
         100% { background-position: 200% 0; }
     }
-    
     .step-card:hover {
         transform: translateY(-15px) scale(1.05);
         box-shadow: 
@@ -368,7 +332,6 @@ st.markdown("""
             0 10px 30px rgba(252, 0, 255, 0.3);
         border: 1px solid rgba(0, 245, 255, 0.7);
     }
-    
     .step-number {
         width: 80px;
         height: 80px;
@@ -387,12 +350,10 @@ st.markdown("""
         border: 3px solid rgba(255, 255, 255, 0.2);
         animation: numberPulse 2s infinite;
     }
-    
     @keyframes numberPulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.1); }
     }
-    
     .step-icon {
         font-size: 4rem;
         margin-bottom: 2rem;
@@ -400,12 +361,10 @@ st.markdown("""
         text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
         animation: iconFloat 4s ease-in-out infinite;
     }
-    
     @keyframes iconFloat {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
     }
-    
     .step-title {
         color: #00f5ff;
         font-size: 1.8rem;
@@ -415,14 +374,12 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
     .step-description {
         color: #c0d8ff;
         font-size: 1.1rem;
         line-height: 1.6;
         font-weight: 400;
     }
-    
     /* Upload Section - Enhanced */
     .upload-section {
         background: rgba(255, 255, 255, 0.08);
@@ -435,7 +392,6 @@ st.markdown("""
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
-    
     .upload-title {
         color: #00f5ff;
         text-align: center;
@@ -446,7 +402,6 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 2px;
     }
-    
     /* Drop Zone - Ultra Futuristic */
     .drop-zone {
         border: 4px dashed transparent;
@@ -463,7 +418,6 @@ st.markdown("""
             0 0 30px rgba(0, 197, 255, 0.3),
             inset 0 0 30px rgba(0, 0, 0, 0.2);
     }
-    
     .drop-zone::before {
         content: "";
         position: absolute;
@@ -477,12 +431,10 @@ st.markdown("""
         z-index: -1;
         border-radius: 30px;
     }
-    
     @keyframes borderAnimation {
         0%, 100% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
     }
-    
     .drop-zone::after {
         content: "";
         position: absolute;
@@ -494,14 +446,12 @@ st.markdown("""
         border-radius: 25px;
         z-index: -1;
     }
-    
     .drop-zone:hover {
         transform: scale(1.02);
         box-shadow: 
             0 0 50px rgba(0, 197, 255, 0.5),
             inset 0 0 50px rgba(0, 197, 255, 0.1);
     }
-    
     .upload-icon {
         font-size: 6rem;
         color: #00f5ff;
@@ -511,7 +461,6 @@ st.markdown("""
             0 0 40px rgba(0, 245, 255, 0.4);
         animation: iconPulse 3s ease-in-out infinite;
     }
-    
     @keyframes iconPulse {
         0%, 100% { 
             transform: scale(1) translateY(0px);
@@ -522,7 +471,6 @@ st.markdown("""
             text-shadow: 0 0 30px rgba(0, 245, 255, 1);
         }
     }
-    
     .drop-text {
         font-size: 1.8rem;
         color: #e0f7ff;
@@ -532,14 +480,12 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
     .file-types {
         color: #a0d0ff;
         font-size: 1.2rem;
         margin-bottom: 2.5rem;
         font-weight: 500;
     }
-    
     .browse-button {
         background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
         color: white;
@@ -559,7 +505,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .browse-button::before {
         content: "";
         position: absolute;
@@ -570,18 +515,15 @@ st.markdown("""
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         transition: left 0.6s ease;
     }
-    
     .browse-button:hover::before {
         left: 100%;
     }
-    
     .browse-button:hover {
         transform: translateY(-3px) scale(1.05);
         box-shadow: 
             0 15px 35px rgba(0, 197, 255, 0.8),
             0 5px 15px rgba(252, 0, 255, 0.6);
     }
-    
     /* Analysis Section - Enhanced */
     .analysis-section {
         display: flex;
@@ -589,7 +531,6 @@ st.markdown("""
         flex-wrap: wrap;
         margin-bottom: 3rem;
     }
-    
     .image-preview-container, .results-container {
         flex: 1;
         min-width: 350px;
@@ -603,14 +544,12 @@ st.markdown("""
         border: 1px solid rgba(0, 197, 255, 0.25);
         transition: all 0.4s ease;
     }
-    
     .image-preview-container:hover, .results-container:hover {
         transform: translateY(-5px);
         box-shadow: 
             0 15px 50px rgba(0, 197, 255, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
-    
     .section-subtitle {
         color: #00f5ff;
         font-size: 2.2rem;
@@ -621,7 +560,6 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
     .preview-image {
         width: 100%;
         max-height: 450px;
@@ -633,20 +571,17 @@ st.markdown("""
         border: 3px solid rgba(0, 245, 255, 0.4);
         transition: all 0.4s ease;
     }
-    
     .preview-image:hover {
         transform: scale(1.02);
         box-shadow: 
             0 0 40px rgba(0, 197, 255, 0.6),
             0 0 80px rgba(252, 0, 255, 0.3);
     }
-    
     /* Loading Animation - Enhanced */
     .loading-container {
         text-align: center;
         padding: 4rem;
     }
-    
     .spinner {
         width: 100px;
         height: 100px;
@@ -661,7 +596,6 @@ st.markdown("""
             inset 0 0 30px rgba(0, 245, 255, 0.2);
         position: relative;
     }
-    
     .spinner::before {
         content: "";
         position: absolute;
@@ -674,12 +608,10 @@ st.markdown("""
         border-radius: 50%;
         animation: multiSpin 1s linear infinite reverse;
     }
-    
     @keyframes multiSpin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    
     .loading-text {
         font-size: 1.8rem;
         color: #00f5ff;
@@ -688,19 +620,16 @@ st.markdown("""
         margin-bottom: 1rem;
         animation: textPulse 2s infinite;
     }
-    
     @keyframes textPulse {
         0%, 100% { opacity: 0.8; }
         50% { opacity: 1; }
     }
-    
     .loading-subtext {
         color: #a0d0ff;
         margin-top: 1rem;
         font-size: 1.2rem;
         font-weight: 500;
     }
-    
     /* Results Card - Ultra Enhanced */
     .results-card {
         background: rgba(0, 30, 60, 0.8);
@@ -713,7 +642,6 @@ st.markdown("""
         backdrop-filter: blur(10px);
         animation: cardSlideIn 0.8s ease-out;
     }
-    
     @keyframes cardSlideIn {
         0% { 
             opacity: 0; 
@@ -724,7 +652,6 @@ st.markdown("""
             transform: translateY(0);
         }
     }
-    
     .result-item {
         margin-bottom: 2.5rem;
         padding: 2rem;
@@ -735,7 +662,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .result-item::before {
         content: "";
         position: absolute;
@@ -746,17 +672,14 @@ st.markdown("""
         background: linear-gradient(90deg, #00c9ff, #fc00ff);
         animation: resultGlow 3s infinite;
     }
-    
     @keyframes resultGlow {
         0%, 100% { opacity: 0.5; }
         50% { opacity: 1; }
     }
-    
     .result-item:hover {
         transform: translateX(10px);
         box-shadow: 0 5px 20px rgba(0, 197, 255, 0.3);
     }
-    
     .result-title {
         color: #00f5ff;
         font-size: 1.6rem;
@@ -769,7 +692,6 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
     .disease-name {
         font-size: 2.2rem;
         font-weight: 900;
@@ -785,7 +707,6 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 2px;
     }
-    
     @keyframes diseaseGlow {
         0% { 
             filter: brightness(1);
@@ -796,12 +717,10 @@ st.markdown("""
             transform: scale(1.05);
         }
     }
-    
     /* Progress Bar - Ultra Futuristic */
     .progress-container {
         margin: 2rem 0;
     }
-    
     .progress-label {
         display: flex;
         justify-content: space-between;
@@ -810,7 +729,6 @@ st.markdown("""
         color: #e0f7ff;
         font-size: 1.1rem;
     }
-    
     .progress-bar-bg {
         width: 100%;
         height: 20px;
@@ -823,7 +741,6 @@ st.markdown("""
         border: 2px solid rgba(0, 197, 255, 0.4);
         position: relative;
     }
-    
     .progress-bar-bg::before {
         content: "";
         position: absolute;
@@ -841,12 +758,10 @@ st.markdown("""
         background-size: 20px 20px;
         animation: progressPattern 2s linear infinite;
     }
-    
     @keyframes progressPattern {
         0% { background-position: 0 0; }
         100% { background-position: 20px 0; }
     }
-    
     .progress-bar-fill {
         height: 100%;
         background: linear-gradient(90deg, #00c9ff, #1e60c4, #fc00ff, #00f5ff);
@@ -859,12 +774,10 @@ st.markdown("""
         position: relative;
         animation: progressFlow 3s linear infinite;
     }
-    
     @keyframes progressFlow {
         0% { background-position: 0% 50%; }
         100% { background-position: 200% 50%; }
     }
-    
     .progress-bar-fill::after {
         content: "";
         position: absolute;
@@ -878,12 +791,10 @@ st.markdown("""
             transparent);
         animation: progressShine 2s infinite;
     }
-    
     @keyframes progressShine {
         0% { transform: translateX(-100%); }
         100% { transform: translateX(100%); }
     }
-    
     .confidence-text {
         font-weight: 900;
         color: #00f5ff;
@@ -891,7 +802,6 @@ st.markdown("""
         font-size: 1.4rem;
         font-family: 'Orbitron', sans-serif;
     }
-    
     /* Treatment Box - Enhanced */
     .treatment-box {
         background: rgba(0, 40, 80, 0.7);
@@ -906,7 +816,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .treatment-box::before {
         content: "";
         position: absolute;
@@ -917,12 +826,10 @@ st.markdown("""
         background: linear-gradient(180deg, #00c9ff, #fc00ff, #00f5ff);
         animation: treatmentGlow 3s infinite;
     }
-    
     @keyframes treatmentGlow {
         0%, 100% { opacity: 0.7; }
         50% { opacity: 1; }
     }
-    
     .treatment-text {
         line-height: 1.8;
         color: #e0f7ff;
@@ -930,7 +837,6 @@ st.markdown("""
         font-weight: 500;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
     }
-    
     /* Buttons - Ultra Enhanced */
     .analyze-button, .reset-button {
         border: none;
@@ -948,7 +854,6 @@ st.markdown("""
         overflow: hidden;
         backdrop-filter: blur(10px);
     }
-    
     .analyze-button {
         background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
         color: white;
@@ -957,7 +862,6 @@ st.markdown("""
             0 0 60px rgba(252, 0, 255, 0.3);
         border: 2px solid rgba(255, 255, 255, 0.2);
     }
-    
     .analyze-button::before {
         content: "";
         position: absolute;
@@ -971,18 +875,15 @@ st.markdown("""
             transparent);
         transition: left 0.8s ease;
     }
-    
     .analyze-button:hover::before {
         left: 100%;
     }
-    
     .analyze-button:hover {
         transform: translateY(-8px) scale(1.02);
         box-shadow: 
             0 15px 40px rgba(0, 197, 255, 0.8),
             0 5px 20px rgba(252, 0, 255, 0.6);
     }
-    
     .reset-button {
         background: linear-gradient(135deg, #ff2d95 0%, #b30062 50%, #ff6b35 100%);
         color: white;
@@ -991,14 +892,12 @@ st.markdown("""
             0 0 50px rgba(179, 0, 98, 0.3);
         border: 2px solid rgba(255, 45, 149, 0.3);
     }
-    
     .reset-button:hover {
         transform: translateY(-5px) scale(1.02);
         box-shadow: 
             0 12px 30px rgba(255, 45, 149, 0.7),
             0 5px 15px rgba(179, 0, 98, 0.5);
     }
-    
     .analyze-button:disabled {
         background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
         cursor: not-allowed;
@@ -1007,7 +906,6 @@ st.markdown("""
         border: 1px solid #444466;
         opacity: 0.5;
     }
-    
     /* Error Message - Enhanced */
     .error-box {
         background: rgba(100, 0, 40, 0.5);
@@ -1023,12 +921,10 @@ st.markdown("""
         backdrop-filter: blur(10px);
         animation: errorPulse 2s infinite;
     }
-    
     @keyframes errorPulse {
         0%, 100% { border-left-color: #ff2d95; }
         50% { border-left-color: #ff6b35; }
     }
-    
     /* About Section - Enhanced */
     .about-section {
         background: rgba(255, 255, 255, 0.08);
@@ -1041,13 +937,11 @@ st.markdown("""
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
-    
     .about-content {
         max-width: 1200px;
         margin: 0 auto;
         text-align: center;
     }
-    
     .about-text {
         font-size: 1.3rem;
         line-height: 1.9;
@@ -1056,7 +950,6 @@ st.markdown("""
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
         font-weight: 400;
     }
-    
     /* Tech Stack Section */
     .tech-stack {
         display: flex;
@@ -1065,7 +958,6 @@ st.markdown("""
         flex-wrap: wrap;
         margin: 3rem 0;
     }
-    
     .tech-item {
         background: rgba(0, 30, 60, 0.6);
         padding: 1.5rem 2rem;
@@ -1079,13 +971,11 @@ st.markdown("""
         backdrop-filter: blur(5px);
         font-size: 1.1rem;
     }
-    
     .tech-item:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 25px rgba(0, 197, 255, 0.4);
         border-color: #00f5ff;
     }
-    
     /* Footer - Enhanced */
     .footer {
         background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
@@ -1101,7 +991,6 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    
     .footer::before {
         content: "";
         position: absolute;
@@ -1112,12 +1001,10 @@ st.markdown("""
         background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
         animation: footerRotate 20s linear infinite;
     }
-    
     @keyframes footerRotate {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    
     .footer-text {
         font-size: 1.3rem;
         opacity: 0.95;
@@ -1127,7 +1014,6 @@ st.markdown("""
         position: relative;
         z-index: 2;
     }
-    
     .creator-info {
         margin-top: 2rem;
         padding-top: 2rem;
@@ -1137,26 +1023,22 @@ st.markdown("""
         position: relative;
         z-index: 2;
     }
-    
     /* Sidebar Styles - Enhanced */
     [data-testid="stSidebar"] {
         background: rgba(10, 15, 40, 0.9);
         backdrop-filter: blur(15px);
         border-right: 2px solid rgba(0, 197, 255, 0.4);
     }
-    
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
         color: #00f5ff !important;
         text-shadow: 0 0 10px rgba(0, 245, 255, 0.6) !important;
     }
-    
     [data-testid="stSidebar"] p {
         color: #c0d8ff !important;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.1) !important;
     }
-    
     [data-testid="stSidebar"] .stMarkdown {
         background: rgba(255, 255, 255, 0.05);
         border-radius: 10px;
@@ -1164,7 +1046,6 @@ st.markdown("""
         margin: 1rem 0;
         border: 1px solid rgba(0, 197, 255, 0.2);
     }
-    
     /* Success Message */
     .success-box {
         background: rgba(0, 100, 50, 0.5);
@@ -1179,119 +1060,94 @@ st.markdown("""
         border: 1px solid rgba(0, 255, 136, 0.3);
         backdrop-filter: blur(10px);
     }
-    
     /* Responsive Design - Enhanced */
     @media (max-width: 1200px) {
         .logo-text {
             font-size: 4.5rem;
         }
-        
         .section-title {
             font-size: 2.8rem;
         }
     }
-    
     @media (max-width: 768px) {
         .main-header {
             padding: 3rem 1.5rem;
         }
-        
         .logo-text {
             font-size: 3.5rem;
         }
-        
         .tagline {
             font-size: 1.4rem;
         }
-        
         .steps-container {
             flex-direction: column;
         }
-        
         .analysis-section {
             flex-direction: column;
         }
-        
         .drop-zone {
             padding: 3rem 2rem;
         }
-        
         .stats-section {
             flex-direction: column;
             align-items: center;
         }
-        
         .stat-card {
             min-width: 200px;
             max-width: 300px;
         }
-        
         .section-title {
             font-size: 2.2rem;
         }
-        
         .tech-stack {
             justify-content: center;
         }
     }
-    
     @media (max-width: 480px) {
         .main-header {
             padding: 2rem 1rem;
         }
-        
         .logo-text {
             font-size: 2.8rem;
         }
-        
         .tagline {
             font-size: 1.2rem;
         }
-        
         .glass-container, .upload-section, .about-section {
             padding: 2rem;
         }
-        
         .step-card {
             min-width: 100%;
             padding: 2rem 1.5rem;
         }
-        
         .upload-icon {
             font-size: 4rem;
         }
-        
         .drop-zone {
             padding: 2rem 1rem;
         }
-        
         .analyze-button, .reset-button {
             padding: 1.5rem;
             font-size: 1.2rem;
         }
     }
-    
     /* Custom scrollbar - Enhanced */
     ::-webkit-scrollbar {
         width: 12px;
     }
-    
     ::-webkit-scrollbar-track {
         background: rgba(10, 15, 40, 0.8);
         border-radius: 6px;
     }
-    
     ::-webkit-scrollbar-thumb {
         background: linear-gradient(180deg, #00c9ff, #1e60c4, #fc00ff);
         border-radius: 6px;
         box-shadow: 0 0 10px rgba(0, 197, 255, 0.5);
     }
-    
     ::-webkit-scrollbar-thumb:hover {
         background: linear-gradient(180deg, #fc00ff, #1e60c4, #00c9ff);
         box-shadow: 0 0 15px rgba(252, 0, 255, 0.7);
     }
-    
     /* Additional Animations */
     @keyframes fadeInUp {
         from {
@@ -1303,11 +1159,9 @@ st.markdown("""
             transform: translateY(0);
         }
     }
-    
     .fade-in-up {
         animation: fadeInUp 0.8s ease-out;
     }
-    
     /* Notification Styles */
     .notification {
         position: fixed;
@@ -1323,7 +1177,6 @@ st.markdown("""
         z-index: 1000;
         animation: slideInRight 0.5s ease-out;
     }
-    
     @keyframes slideInRight {
         from {
             transform: translateX(100%);
@@ -1336,7 +1189,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
 # Main header with enhanced futuristic design
 st.markdown("""
 <div class="main-header">
@@ -1344,8 +1196,7 @@ st.markdown("""
     <p class="tagline">NEXT-GENERATION PLANT DISEASE DETECTION POWERED BY ADVANCED ARTIFICIAL INTELLIGENCE</p>
 </div>
 """, unsafe_allow_html=True)
-
-# Statistics Section
+# Statistics Section - Removed "24/7 Available" as requested
 st.markdown("""
 <div class="stats-section">
     <div class="stat-card">
@@ -1357,32 +1208,24 @@ st.markdown("""
         <div class="stat-label">Plant Diseases</div>
     </div>
     <div class="stat-card">
-        <div class="stat-value">&lt;3s</div>
+        <div class="stat-value"><3s</div>
         <div class="stat-label">Analysis Time</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-value">24/7</div>
-        <div class="stat-label">Available</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
 # Enhanced Sidebar
 with st.sidebar:
     st.markdown("### 🚀 AI SYSTEM STATUS")
     st.success("🟢 NEURAL NETWORK: ACTIVE")
     st.success("🟢 IMAGE PROCESSOR: READY")
     st.success("🟢 TREATMENT DB: LOADED")
-    
     st.markdown("### 🌿 ABOUT THIS SYSTEM")
     st.info("""
     **PLANT SAVIOR AI** utilizes cutting-edge deep learning technology to provide instant plant disease diagnosis. Our advanced convolutional neural network has been trained on thousands of plant images to deliver professional-grade accuracy.
-    
     🔬 **POWERED BY**: TensorFlow & Keras
     🎯 **ACCURACY**: 99.2% on test data
     ⚡ **SPEED**: Real-time analysis
     """)
-    
     st.markdown("### 📋 OPTIMAL RESULTS GUIDE")
     st.markdown("""
     **📸 PHOTOGRAPHY TIPS:**
@@ -1391,14 +1234,12 @@ with st.sidebar:
     • Avoid shadows and reflections
     • Hold camera steady for clarity
     • Fill frame with leaf details
-    
     **🔍 BEST PRACTICES:**
     • Single leaf per image
     • Clear disease symptoms visible
     • High resolution (>500px)
     • Minimal background clutter
     """)
-    
     st.markdown("### 🎯 SUPPORTED DISEASES")
     st.markdown("""
     **🍅 TOMATO DISEASES (10 TYPES):**
@@ -1407,15 +1248,12 @@ with st.sidebar:
     • Spider Mites • Target Spot
     • Yellow Leaf Curl • Mosaic Virus
     • Bacterial Spot • Healthy
-    
     **🥔 POTATO DISEASES (3 TYPES):**
     • Early Blight • Late Blight
     • Healthy
-    
     **🌶️ PEPPER DISEASES (2 TYPES):**
     • Bacterial Spot • Healthy
     """)
-    
     st.markdown("### 💡 TECH STACK")
     st.markdown("""
     • **TensorFlow 2.x** - Deep Learning
@@ -1424,10 +1262,10 @@ with st.sidebar:
     • **NumPy** - Numerical Computing
     • **Custom CNN** - Disease Classification
     """)
-    
     st.markdown("### 📞 SUPPORT")
-    st.info("🔧 **TECHNICAL SUPPORT**\n📧 support@plantsavior.ai\n🌐 www.plantsavior.ai")
-
+    st.info("🔧 **TECHNICAL SUPPORT**
+📧 support@plantsavior.ai
+🌐 www.plantsaviorai.streamlit.app")
 # How it works section with enhanced design
 st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">HOW THE AI SYSTEM WORKS</h2>', unsafe_allow_html=True)
@@ -1454,7 +1292,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
-
 # Function to load model with enhanced caching
 @st.cache_resource(show_spinner=False)
 def load_model():
@@ -1472,7 +1309,6 @@ def load_model():
         st.sidebar.error(f"❌ MODEL LOADING ERROR: {str(e)}")
         st.error(f"🚨 **SYSTEM ERROR**: {str(e)}")
         return None
-
 # Load treatment dictionary with enhanced error handling
 @st.cache_resource(show_spinner=False)
 def load_treatments():
@@ -1507,13 +1343,11 @@ def load_treatments():
     except Exception as e:
         st.sidebar.error(f"❌ TREATMENT LOADING ERROR: {str(e)}")
         return {}
-
 # Initialize session state with enhanced management
 if 'model' not in st.session_state:
     st.session_state.model = None
     st.session_state.treatments = {}
     st.session_state.analysis_count = 0
-
 # Load model and treatments with progress tracking
 if st.session_state.model is None:
     with st.spinner("⚡ BOOTING UP PLANT SAVIOR AI SYSTEM..."):
@@ -1524,32 +1358,24 @@ if st.session_state.model is None:
         if model is not None:
             st.success("🚀 **SYSTEM READY**: Plant Savior AI is now fully operational!")
             time.sleep(1)  # Brief pause for effect
-
 # Main upload section with enhanced design
 st.markdown('<div class="upload-section glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="upload-title">🔬 AI-POWERED PLANT ANALYSIS</h2>', unsafe_allow_html=True)
-
 # Enhanced file uploader
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Upload a clear image of the plant leaf for AI analysis")
-
 if uploaded_file is not None:
     # Analysis section with enhanced two-column layout
     st.markdown('<div class="analysis-section fade-in-up">', unsafe_allow_html=True)
-    
     # Left column - Enhanced image preview
     col1, col2 = st.columns([1, 1], gap="large")
-    
     with col1:
         st.markdown('<div class="image-preview-container">', unsafe_allow_html=True)
         st.markdown('<h3 class="section-subtitle">📸 UPLOADED IMAGE</h3>', unsafe_allow_html=True)
-        
         image = Image.open(uploaded_file)
         st.image(image, caption="🌿 Ready for AI Analysis", use_column_width=True, clamp=True)
-        
         # Image info display
         width, height = image.size
         file_size = len(uploaded_file.getvalue()) / 1024  # KB
-        
         st.markdown(f"""
         <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(0, 197, 255, 0.3);">
             <p style="color: #00f5ff; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
@@ -1558,17 +1384,13 @@ if uploaded_file is not None:
             <p style="color: #c0d8ff; margin: 5px 0;">📁 Format: {uploaded_file.type}</p>
         </div>
         """, unsafe_allow_html=True)
-        
         if st.button("🔄 **UPLOAD NEW IMAGE**", key="reset", help="Upload a different leaf image", use_container_width=True):
             st.rerun()
-        
         st.markdown('</div>', unsafe_allow_html=True)
-    
     # Right column - Enhanced results
     with col2:
         st.markdown('<div class="results-container">', unsafe_allow_html=True)
         st.markdown('<h3 class="section-subtitle">🧬 AI ANALYSIS CENTER</h3>', unsafe_allow_html=True)
-        
         if st.session_state.model is not None and st.session_state.treatments:
             if st.button("🚀 **ANALYZE WITH AI**", key="analyze", help="Start advanced AI analysis", use_container_width=True):
                 # Enhanced loading animation
@@ -1581,7 +1403,6 @@ if uploaded_file is not None:
                     </div>
                     """, unsafe_allow_html=True)
                     time.sleep(1)
-                    
                     st.markdown("""
                     <div class="loading-container">
                         <div class="spinner"></div>
@@ -1590,7 +1411,6 @@ if uploaded_file is not None:
                     </div>
                     """, unsafe_allow_html=True)
                     time.sleep(1)
-                    
                     st.markdown("""
                     <div class="loading-container">
                         <div class="spinner"></div>
@@ -1599,52 +1419,40 @@ if uploaded_file is not None:
                     </div>
                     """, unsafe_allow_html=True)
                     time.sleep(1)
-                
                 try:
                     # Save uploaded file temporarily
                     with open("temp_image.jpg", "wb") as f:
                         f.write(uploaded_file.getbuffer())
-                    
                     # Preprocess image
                     img = load_img("temp_image.jpg", target_size=(224, 224))
                     img_array = img_to_array(img)
                     img_array = img_array.reshape(1, 224, 224, 3) / 255.0
-                    
                     # Make prediction
                     predictions = st.session_state.model.predict(img_array, verbose=0)
                     predicted_class = np.argmax(predictions[0])
                     confidence_score = float(predictions[0][predicted_class])
-                    
                     # Get all predictions for top 3 results
                     top_3_indices = np.argsort(predictions[0])[-3:][::-1]
-                    
                     # Get class names and prediction
                     class_names = list(st.session_state.treatments.keys())
                     predicted_disease = class_names[predicted_class]
                     treatment = st.session_state.treatments.get(predicted_disease, "Consult with an agricultural expert for specialized treatment.")
-                    
                     # Update analysis counter
                     st.session_state.analysis_count += 1
-                    
                     # Display enhanced results
                     st.markdown('<div class="results-card">', unsafe_allow_html=True)
-                    
                     # Main diagnosis result
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">🎯 PRIMARY DIAGNOSIS</h4>', unsafe_allow_html=True)
-                    
                     # Clean disease name for display
                     display_disease = predicted_disease.replace('_', ' ').title()
                     st.markdown(f'<p class="disease-name">{display_disease}</p>', unsafe_allow_html=True)
-                    
                     # Health status indicator
                     if "healthy" in predicted_disease.lower():
                         st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff88, #00cc66); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
                     else:
                         st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #ff6b35, #ff2d95); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
-                    
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Confidence score with enhanced progress bar
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">🎯 CONFIDENCE ANALYSIS</h4>', unsafe_allow_html=True)
@@ -1659,7 +1467,6 @@ if uploaded_file is not None:
                             </div>
                         </div>
                     """, unsafe_allow_html=True)
-                    
                     # Confidence interpretation
                     if confidence_score > 0.9:
                         conf_msg = "🟢 **VERY HIGH CONFIDENCE** - Diagnosis is highly reliable"
@@ -1673,10 +1480,8 @@ if uploaded_file is not None:
                     else:
                         conf_msg = "🔴 **LOW CONFIDENCE** - Recommend professional diagnosis"
                         conf_color = "#ff2d95"
-                    
                     st.markdown(f'<p style="color: {conf_color}; font-weight: 600; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Top 3 predictions
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">📊 TOP PREDICTIONS</h4>', unsafe_allow_html=True)
@@ -1691,13 +1496,11 @@ if uploaded_file is not None:
                         </div>
                         """, unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Treatment recommendation with enhanced styling
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">💊 TREATMENT PROTOCOL</h4>', unsafe_allow_html=True)
                     st.markdown(f'<div class="treatment-box"><p class="treatment-text">{treatment}</p></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Analysis summary
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">📈 ANALYSIS SUMMARY</h4>', unsafe_allow_html=True)
@@ -1710,18 +1513,14 @@ if uploaded_file is not None:
                     </div>
                     """, unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Success notification
                     st.success("✅ **ANALYSIS COMPLETE!** Your plant has been successfully diagnosed by our AI system.")
-                    
                 except Exception as e:
                     st.markdown('<div class="error-box">', unsafe_allow_html=True)
                     st.markdown(f'<p>❌ **ANALYSIS ERROR**: {str(e)}</p>', unsafe_allow_html=True)
                     st.markdown('<p>Please try uploading a different image or contact support if the issue persists.</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                
                 # Clean up temporary file
                 try:
                     os.remove("temp_image.jpg")
@@ -1740,9 +1539,7 @@ if uploaded_file is not None:
             st.markdown('<p>❌ **SYSTEM ERROR**: AI model or treatment database not properly loaded.</p>', unsafe_allow_html=True)
             st.markdown('<p>Please refresh the page or contact technical support.</p>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
-        
         st.markdown('</div>', unsafe_allow_html=True)
-    
     st.markdown('</div>', unsafe_allow_html=True)
 else:
     # Enhanced upload prompt
@@ -1757,26 +1554,18 @@ else:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
 st.markdown('</div>', unsafe_allow_html=True)
-
 # Enhanced About section
 st.markdown('<div class="about-section glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">🚀 ABOUT PLANT SAVIOR AI</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="about-content">
     <p class="about-text">
-        <strong>Plant Savior AI</strong> represents the cutting edge of agricultural technology, combining advanced machine learning 
-        with practical farming solutions. Our system utilizes a sophisticated Convolutional Neural Network (CNN) architecture 
-        trained on over 50,000 high-quality plant images to deliver professional-grade plant disease diagnosis.
+        <strong>Plant Savior AI</strong> represents the cutting edge of agricultural technology, combining advanced machine learning with practical farming solutions. Our system utilizes a sophisticated Convolutional Neural Network (CNN) architecture trained on over 50,000 high-quality plant images to deliver professional-grade plant disease diagnosis.
     </p>
-    
     <p class="about-text">
-        Built with <strong>TensorFlow 2.x</strong> and deployed using <strong>Streamlit</strong>, this application showcases 
-        the power of AI in solving real-world agricultural challenges. Whether you're a farmer, gardener, or agricultural 
-        researcher, Plant Savior AI provides instant, accurate plant health assessment at your fingertips.
+        Built with <strong>TensorFlow 2.x</strong> and deployed using <strong>Streamlit</strong>, this application showcases the power of AI in solving real-world agricultural challenges. Whether you're a farmer, gardener, or agricultural researcher, Plant Savior AI provides instant, accurate plant health assessment at your fingertips.
     </p>
-    
     <div class="tech-stack">
         <div class="tech-item">🧠 TensorFlow</div>
         <div class="tech-item">🌐 Streamlit</div>
@@ -1785,28 +1574,22 @@ st.markdown("""
         <div class="tech-item">🐍 Python</div>
         <div class="tech-item">📊 Keras</div>
     </div>
-    
     <p class="about-text">
-        Our mission is to democratize plant disease detection, making advanced agricultural AI accessible to everyone. 
-        By combining scientific rigor with user-friendly design, we're helping to create a more sustainable and 
-        productive agricultural future.
+        Our mission is to democratize plant disease detection, making advanced agricultural AI accessible to everyone. By combining scientific rigor with user-friendly design, we're helping to create a more sustainable and productive agricultural future.
     </p>
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
-
 # Enhanced Footer
 st.markdown("""
 <div class="footer">
     <div class="footer-text">🌱 PLANT SAVIOR AI - REVOLUTIONIZING AGRICULTURE WITH ARTIFICIAL INTELLIGENCE</div>
     <div class="footer-text">Powered by Advanced Deep Learning • Real-time Disease Detection • Professional Treatment Recommendations</div>
-    
     <div class="creator-info">
         <div class="footer-text">🎯 <strong>MODEL ACCURACY:</strong> 99.2% on validation data</div>
         <div class="footer-text">⚡ <strong>PROCESSING SPEED:</strong> Sub-3-second analysis</div>
         <div class="footer-text">🌍 <strong>IMPACT:</strong> Helping farmers worldwide save crops and reduce pesticide use</div>
     </div>
-    
     <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid rgba(255, 255, 255, 0.2);">
         <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
     </div>
