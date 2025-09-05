@@ -1,4 +1,3 @@
-# streamlit_app.py
 import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
@@ -15,85 +14,171 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for the professional design
+# Enhanced Custom CSS for the professional design
 st.markdown("""
 <style>
     /* Global Styles */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
     * {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Poppins', sans-serif;
     }
     
     /* Main background and layout */
     .stApp {
-        background-color: #f8f9fa;
+        background: linear-gradient(135deg, #e0f7e0 0%, #c8f2d1 100%);
         color: #333333;
         overflow-x: hidden;
     }
     
+    /* Interactive elements */
+    .interactive-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .interactive-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 12px 24px rgba(46, 125, 50, 0.25) !important;
+    }
+    
+    /* Animated badges */
+    .badge {
+        display: inline-block;
+        padding: 0.25em 0.75em;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin: 0 0.25em;
+        animation: pulse 2s infinite;
+    }
+    
+    .badge-primary {
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        color: white;
+    }
+    
+    .badge-secondary {
+        background: linear-gradient(135deg, #2196F3, #0D47A1);
+        color: white;
+    }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    }
+    
+    /* Floating animation */
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .floating {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    /* Bounce animation */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-20px);}
+        60% {transform: translateY(-10px);}
+    }
+    
+    .bounce {
+        animation: bounce 2s infinite;
+    }
+    
     /* Header Styles */
     .main-header {
-        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
         padding: 3rem 2rem;
         color: white;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-radius: 0 0 20px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .main-header::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        transform: rotate(30deg);
     }
     
     .logo-text {
-        font-size: 2rem;
+        font-size: 2.8rem;
         font-weight: 700;
         margin-bottom: 1rem;
         letter-spacing: -0.5px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 2;
     }
     
     .tagline {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         font-weight: 400;
         max-width: 700px;
         margin: 0 auto;
-        opacity: 0.9;
+        opacity: 0.95;
+        position: relative;
+        z-index: 2;
     }
     
     /* Container Styles */
     .section-container {
-        max-width: 1200px;
+        max-width: 1300px;
         margin: 0 auto 2rem;
-        padding: 0 1rem;
+        padding: 0 1.5rem;
     }
     
     /* Glass Container */
     .glass-container {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e9ecef;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .glass-container:hover {
+        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
+        transform: translateY(-5px);
     }
     
     /* Section Title */
     .section-title {
-        color: #2E8B57;
+        color: #2E7D32;
         text-align: center;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        font-weight: 600;
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 700;
         position: relative;
     }
     
     .section-title::after {
         content: "";
         position: absolute;
-        bottom: -10px;
+        bottom: -15px;
         left: 50%;
         transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: #FF6B35;
-        border-radius: 3px;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #FF9800, #4CAF50);
+        border-radius: 2px;
     }
     
     /* Steps Section */
@@ -101,191 +186,247 @@ st.markdown("""
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
-        gap: 1.5rem;
-        margin-top: 2rem;
+        gap: 2rem;
+        margin-top: 2.5rem;
     }
     
     .step-card {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 1.8rem 1.5rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 2rem 1.8rem;
         text-align: center;
         flex: 1;
-        min-width: 220px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-        border: 1px solid #e9ecef;
+        min-width: 250px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s ease;
+        border: 1px solid rgba(46, 125, 50, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .step-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #4CAF50, #2E7D32);
     }
     
     .step-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 16px rgba(46, 139, 87, 0.15);
-        border-color: #2E8B57;
+        transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(46, 125, 50, 0.2);
+        border-color: rgba(46, 125, 50, 0.3);
     }
     
     .step-number {
-        width: 40px;
-        height: 40px;
-        background: #2E8B57;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
         color: white;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1rem;
-        font-weight: 600;
-        font-size: 1.1rem;
+        margin: 0 auto 1.2rem;
+        font-weight: 700;
+        font-size: 1.3rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     
     .step-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: #2E8B57;
+        font-size: 3rem;
+        margin-bottom: 1.2rem;
+        color: #4CAF50;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
     
     .step-title {
-        color: #2E8B57;
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
+        color: #2E7D32;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
     }
     
     .step-description {
-        color: #666;
-        font-size: 0.95rem;
-        line-height: 1.5;
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.6;
     }
     
     /* Upload Section */
     .upload-section {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e9ecef;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .upload-section:hover {
+        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
     }
     
     .upload-title {
-        color: #2E8B57;
+        color: #2E7D32;
         text-align: center;
-        font-size: 1.75rem;
-        margin-bottom: 1.5rem;
-        font-weight: 600;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
     }
     
     /* File Uploader */
     .file-uploader {
-        border: 2px dashed #3CB371;
-        border-radius: 10px;
-        padding: 2.5rem;
+        border: 3px dashed #4CAF50;
+        border-radius: 16px;
+        padding: 3rem;
         text-align: center;
-        background-color: #f8fff8;
-        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, rgba(232, 245, 233, 0.5) 0%, rgba(200, 230, 201, 0.3) 100%);
+        margin-bottom: 2rem;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
     .file-uploader:hover {
-        background-color: #e8f5e9;
-        border-color: #2E8B57;
+        background: linear-gradient(135deg, rgba(220, 237, 221, 0.7) 0%, rgba(185, 225, 187, 0.5) 100%);
+        border-color: #2E7D32;
+        transform: scale(1.02);
+    }
+    
+    .file-uploader::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+        z-index: 0;
+        animation: borderAnimation 3s linear infinite;
+    }
+    
+    @keyframes borderAnimation {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
     
     .upload-icon {
-        font-size: 3.5rem;
-        color: #2E8B57;
-        margin-bottom: 1.25rem;
+        font-size: 4rem;
+        color: #2E7D32;
+        margin-bottom: 1.5rem;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
     }
     
     .upload-text {
-        font-size: 1.1rem;
-        color: #333;
-        margin-bottom: 0.75rem;
-        font-weight: 500;
+        font-size: 1.3rem;
+        color: #2E7D32;
+        margin-bottom: 1rem;
+        font-weight: 600;
     }
     
     .file-types {
-        color: #6c757d;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 1.8rem;
     }
     
     /* Analysis Section */
     .analysis-section {
         display: flex;
-        gap: 2rem;
+        gap: 2.5rem;
         flex-wrap: wrap;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
     }
     
     .image-preview-container {
         flex: 1;
-        min-width: 300px;
-        background: white;
-        border-radius: 12px;
-        padding: 1.75rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e9ecef;
+        min-width: 350px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .image-preview-container:hover {
+        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
     }
     
     .results-container {
         flex: 1;
-        min-width: 300px;
-        background: white;
-        border-radius: 12px;
-        padding: 1.75rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e9ecef;
+        min-width: 350px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .results-container:hover {
+        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
     }
     
     .section-subtitle {
-        color: #2E8B57;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 600;
+        color: #2E7D32;
+        font-size: 1.7rem;
+        margin-bottom: 1.8rem;
+        font-weight: 700;
         text-align: center;
     }
     
     .preview-image {
         width: 100%;
-        max-height: 350px;
+        max-height: 400px;
         object-fit: contain;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(46, 125, 50, 0.1);
     }
     
     .reset-button {
-        background: #6c757d;
+        background: linear-gradient(135deg, #9E9E9E, #616161);
         color: white;
         border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
+        padding: 1rem 1.8rem;
+        border-radius: 12px;
         cursor: pointer;
-        font-size: 0.95rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        margin-top: 1.25rem;
+        font-size: 1.05rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 1.5rem;
         width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
     .reset-button:hover {
-        background: #5a6268;
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, #757575, #424242);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
     
     /* Loading State */
     .loading-container {
         text-align: center;
-        padding: 2rem;
+        padding: 3rem;
     }
     
     .spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(46, 139, 87, 0.2);
-        border-top: 4px solid #2E8B57;
+        width: 60px;
+        height: 60px;
+        border: 5px solid rgba(46, 125, 50, 0.2);
+        border-top: 5px solid #2E7D32;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-        margin: 0 auto 1.25rem;
+        margin: 0 auto 1.5rem;
     }
     
     @keyframes spin {
@@ -294,28 +435,29 @@ st.markdown("""
     }
     
     .loading-text {
-        font-size: 1.1rem;
-        color: #2E8B57;
-        font-weight: 500;
+        font-size: 1.3rem;
+        color: #2E7D32;
+        font-weight: 600;
     }
     
     .loading-subtext {
-        color: #6c757d;
-        margin-top: 0.5rem;
-        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.7rem;
+        font-size: 1rem;
     }
     
     /* Results Card */
     .results-card {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e9ecef;
+        background: rgba(241, 248, 233, 0.7);
+        border-radius: 14px;
+        padding: 2rem;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(102, 187, 106, 0.3);
+        margin-bottom: 1.5rem;
     }
     
     .result-item {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
     }
     
     .result-item:last-child {
@@ -323,98 +465,123 @@ st.markdown("""
     }
     
     .result-title {
-        color: #2E8B57;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
+        color: #2E7D32;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.7rem;
     }
     
     .disease-name {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #2E8B57;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #2E7D32;
         text-align: center;
-        margin: 0.75rem 0;
-        padding: 0.75rem;
-        background: #e8f5e9;
-        border-radius: 8px;
-        border-left: 4px solid #2E8B57;
+        margin: 1rem 0;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, rgba(232, 245, 233, 0.8) 0%, rgba(200, 230, 201, 0.6) 100%);
+        border-radius: 12px;
+        border-left: 5px solid #4CAF50;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     
     /* Progress Bar */
     .progress-container {
-        margin: 1rem 0;
+        margin: 1.2rem 0;
     }
     
     .progress-label {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        font-size: 0.95rem;
+        margin-bottom: 0.7rem;
+        font-weight: 600;
+        font-size: 1.05rem;
     }
     
     .progress-bar-bg {
         width: 100%;
-        height: 12px;
-        background-color: #e9ecef;
-        border-radius: 6px;
+        height: 16px;
+        background-color: #e0e0e0;
+        border-radius: 8px;
         overflow: hidden;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .progress-bar-fill {
         height: 100%;
-        background: linear-gradient(90deg, #2E8B57, #3CB371);
-        border-radius: 6px;
-        transition: width 1s ease-in-out;
+        background: linear-gradient(90deg, #4CAF50, #2E7D32);
+        border-radius: 8px;
+        transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        position: relative;
+    }
+    
+    .progress-bar-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: progressGlow 2s infinite;
+    }
+    
+    @keyframes progressGlow {
+        0% { opacity: 0; }
+        50% { opacity: 1; }
+        100% { opacity: 0; }
     }
     
     .confidence-text {
-        font-weight: 600;
-        color: #2E8B57;
+        font-weight: 700;
+        color: #2E7D32;
+        font-size: 1.1rem;
     }
     
     /* Treatment Box */
     .treatment-box {
-        background: #e8f5e9;
-        border-left: 4px solid #2E8B57;
-        padding: 1rem;
-        border-radius: 6px;
-        margin-top: 0.5rem;
+        background: linear-gradient(135deg, rgba(232, 245, 233, 0.9) 0%, rgba(200, 230, 201, 0.7) 100%);
+        border-left: 5px solid #4CAF50;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 0.7rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     
     .treatment-text {
-        line-height: 1.6;
+        line-height: 1.7;
         color: #333;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
+        font-weight: 500;
     }
     
     /* Analyze Button */
     .analyze-button {
-        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
         color: white;
         border: none;
-        padding: 1rem;
-        border-radius: 8px;
+        padding: 1.2rem;
+        border-radius: 12px;
         cursor: pointer;
-        font-size: 1.1rem;
-        font-weight: 600;
+        font-size: 1.2rem;
+        font-weight: 700;
         transition: all 0.3s ease;
         width: 100%;
-        box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
-        margin-top: 1rem;
+        box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);
+        margin-top: 1.2rem;
+        letter-spacing: 0.5px;
     }
     
     .analyze-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 16px rgba(46, 139, 87, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(46, 125, 50, 0.5);
+        background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%);
     }
     
     .analyze-button:disabled {
-        background: #cccccc;
+        background: #BDBDBD;
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
@@ -422,88 +589,104 @@ st.markdown("""
     
     /* Error Message */
     .error-box {
-        background-color: #fff3f3;
-        border-left: 4px solid #dc3545;
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1rem 0;
-        color: #dc3545;
-        font-size: 0.95rem;
+        background: linear-gradient(135deg, rgba(255, 235, 238, 0.9) 0%, rgba(248, 220, 222, 0.7) 100%);
+        border-left: 5px solid #F44336;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        color: #B71C1C;
+        font-size: 1.05rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     
     /* About Section */
     .about-section {
-        background: white;
-        border-radius: 12px;
-        padding: 2.5rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e9ecef;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 3rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .about-section:hover {
+        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
     }
     
     .about-content {
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
         text-align: center;
     }
     
     .about-text {
-        font-size: 1rem;
-        line-height: 1.7;
-        color: #555;
-        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #444;
+        margin-bottom: 2rem;
+        font-weight: 400;
     }
     
     /* Footer */
     .footer {
-        background: linear-gradient(135deg, #2E8B57 0%, #3CB371 100%);
+        background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
         color: white;
         text-align: center;
-        padding: 2rem;
-        margin-top: 2rem;
+        padding: 2.5rem;
+        margin-top: 2.5rem;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
     }
     
     .footer-text {
-        font-size: 1rem;
-        opacity: 0.9;
-        margin: 0.25rem 0;
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin: 0.3rem 0;
+        font-weight: 400;
     }
     
     /* Info Box */
     .info-box {
-        background-color: #e8f5e9;
-        border-left: 4px solid #2E8B57;
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1rem 0;
-        color: #2E8B57;
-        font-size: 0.95rem;
+        background: linear-gradient(135deg, rgba(224, 247, 250, 0.9) 0%, rgba(178, 235, 242, 0.7) 100%);
+        border-left: 5px solid #00BCD4;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        color: #006064;
+        font-size: 1.05rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     
     /* Sidebar Styles */
     [data-testid="stSidebar"] {
-        background-color: #f8f9fa;
-        border-right: 1px solid #e9ecef;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-right: 1px solid rgba(46, 125, 50, 0.2);
+        backdrop-filter: blur(10px);
     }
     
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
-        color: #2E8B57 !important;
+        color: #2E7D32 !important;
     }
     
     [data-testid="stSidebar"] .stMarkdown p {
         color: #333 !important;
+        font-weight: 500;
     }
     
     /* Responsive Design */
     @media (max-width: 768px) {
         .logo-text {
-            font-size: 2.25rem;
+            font-size: 2.2rem;
         }
         
         .tagline {
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         .steps-container {
@@ -515,29 +698,19 @@ st.markdown("""
         }
         
         .file-uploader {
-            padding: 1.75rem 1rem;
+            padding: 2rem 1.2rem;
         }
         
         .section-title {
-            font-size: 1.75rem;
+            font-size: 1.8rem;
         }
         
         .upload-title {
-            font-size: 1.5rem;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .main-header {
-            padding: 2rem 1rem;
-        }
-        
-        .logo-text {
-            font-size: 2rem;
+            font-size: 1.7rem;
         }
         
         .upload-section, .about-section, .image-preview-container, .results-container {
-            padding: 1.5rem;
+            padding: 1.8rem;
         }
         
         .step-card {
@@ -545,39 +718,84 @@ st.markdown("""
         }
         
         .section-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
+        }
+        
+        .disease-name {
+            font-size: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .main-header {
+            padding: 1.8rem 1rem;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+        }
+        
+        .upload-section, .about-section, .image-preview-container, .results-container {
+            padding: 1.5rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.3rem;
+        }
+        
+        .upload-text {
+            font-size: 1.1rem;
+        }
+        
+        .step-icon {
+            font-size: 2.5rem;
         }
     }
     
     /* Custom scrollbar */
     ::-webkit-scrollbar {
-        width: 8px;
+        width: 10px;
     }
     
     ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #e8f5e9;
+        border-radius: 5px;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #2E8B57;
-        border-radius: 4px;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        border-radius: 5px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #3CB371;
+        background: linear-gradient(135deg, #388E3C, #1B5E20);
+    }
+    
+    /* Animation for results */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Main header with professional design
+# Main header with enhanced professional design
 st.markdown("""
 <div class="main-header">
-    <h1 class="logo-text">🌱 Plant Savior AI</h1>
-    <p class="tagline">Instant Plant Disease Detection using Advanced Artificial Intelligence</p>
+    <h1 class="logo-text floating">🌱 Plant Savior AI</h1>
+    <p class="tagline">Advanced AI for Instant Plant Disease Detection & Treatment Recommendations</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar with additional information
+# Enhanced sidebar with additional information
 with st.sidebar:
     st.markdown("### 🌿 About This Tool")
     st.info("""
@@ -586,7 +804,7 @@ with st.sidebar:
     Simply upload a clear photo of a plant leaf and get instant diagnosis with treatment recommendations.
     """)
     
-    st.markdown("### 📋 How to Get Best Results")
+    st.markdown("### 📋 How to Get Best Results <span class='badge badge-secondary'>TIPS</span>", unsafe_allow_html=True)
     st.markdown("""
     1. **Lighting**: Take photo in good natural light
     2. **Focus**: Ensure leaf is in sharp focus
@@ -595,35 +813,46 @@ with st.sidebar:
     5. **Symptoms**: Show affected areas clearly
     """)
     
-    st.markdown("### 🎯 Supported Diseases")
+    st.markdown("### 🎯 Supported Diseases <span class='badge badge-primary'>38 TYPES</span>", unsafe_allow_html=True)
     st.markdown("""
-    - Tomato diseases (10 types)
-    - Potato diseases (3 types)
+    - Apple diseases (4 types)
+    - Blueberry healthy
+    - Cherry diseases (2 types)
+    - Corn diseases (4 types)
+    - Grape diseases (4 types)
+    - Orange disease (1 type)
+    - Peach disease (1 type)
     - Pepper diseases (2 types)
+    - Potato diseases (3 types)
+    - Raspberry healthy
+    - Soybean healthy
+    - Squash Powdery mildew
+    - Strawberry diseases (2 types)
+    - Tomato diseases (10 types)
     """)
     
     st.markdown("### ℹ️ Need Help?")
     st.markdown("Contact: support@plantsavior.ai")
 
-# How it works section with professional design
+# How it works section with enhanced professional design
 st.markdown('<div class="section-container">', unsafe_allow_html=True)
 st.markdown('<div class="glass-container">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">How It Works</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="steps-container">
-    <div class="step-card">
+    <div class="step-card interactive-card">
         <div class="step-number">1</div>
         <div class="step-icon">📸</div>
         <h3 class="step-title">Upload Image</h3>
         <p class="step-description">Take a clear photo of the affected plant leaf and upload it to our system</p>
     </div>
-    <div class="step-card">
+    <div class="step-card interactive-card">
         <div class="step-number">2</div>
-        <div class="step-icon">🤖</div>
+        <div class="step-icon bounce">🤖</div>
         <h3 class="step-title">AI Analysis</h3>
         <p class="step-description">Our advanced AI model analyzes the image to detect any plant diseases</p>
     </div>
-    <div class="step-card">
+    <div class="step-card interactive-card">
         <div class="step-number">3</div>
         <div class="step-icon">📊</div>
         <h3 class="step-title">Get Results</h3>
@@ -666,15 +895,15 @@ if 'model' not in st.session_state:
 
 # Load model and treatments
 if st.session_state.model is None:
-    with st.spinner("Initializing Plant Savior AI System..."):
+    with st.spinner("🚀 Initializing Plant Savior AI System..."):
         model = load_model()
         treatments = load_treatments()
         st.session_state.model = model
         st.session_state.treatments = treatments
 
-# Main content area
+# Main content area with enhanced design
 st.markdown('<div class="upload-section">', unsafe_allow_html=True)
-st.markdown('<h2 class="upload-title">Upload Plant Leaf Image</h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="upload-title">Upload Plant Leaf Image <span class="badge badge-primary">NEW</span></h2>', unsafe_allow_html=True)
 
 # File uploader with enhanced UI
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
@@ -696,11 +925,12 @@ if uploaded_file is not None:
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Right column - Results
-    st.markdown('<div class="results-container">', unsafe_allow_html=True)
+    st.markdown('<div class="results-container interactive-card">', unsafe_allow_html=True)
     st.markdown('<h3 class="section-subtitle">Analysis Results</h3>', unsafe_allow_html=True)
     
     if st.session_state.model is not None and st.session_state.treatments:
-        if st.button("🔍 Analyze Leaf", key="analyze", help="Start AI analysis of the uploaded image"):
+        if st.button("🔍 Analyze Leaf", key="analyze", help="Start AI analysis of the uploaded image", 
+                     type="primary"):
             with st.spinner(""):
                 try:
                     # Save uploaded file temporarily
@@ -722,8 +952,8 @@ if uploaded_file is not None:
                     predicted_disease = class_names[predicted_class]
                     treatment = st.session_state.treatments.get(predicted_disease, "Consult agricultural expert.")
                     
-                    # Display results in enhanced card
-                    st.markdown('<div class="results-card">', unsafe_allow_html=True)
+                    # Display results in enhanced card with animation
+                    st.markdown('<div class="results-card fade-in">', unsafe_allow_html=True)
                     
                     # Disease prediction
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
@@ -774,19 +1004,19 @@ else:
     # Enhanced upload interface
     st.markdown("""
     <div class="file-uploader">
-        <div class="upload-icon">📁</div>
+        <div class="upload-icon floating">📁</div>
         <p class="upload-text">Drag & Drop your image here</p>
         <p class="file-types">Supported formats: JPG, PNG, JPEG (Max 200MB)</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.info("💡 **Tip**: For best results, take a clear photo of the affected leaf with good lighting and upload in JPG or PNG format.")
+    st.markdown('<div class="info-box">💡 <strong>Tip:</strong> For best results, take a clear photo of the affected leaf with good lighting and upload in JPG or PNG format.</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# About section with professional design
+# About section with enhanced professional design
 st.markdown('<div class="about-section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">About Plant Savior AI</h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">About Plant Savior AI <span class="badge badge-primary">AI POWERED</span></h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="about-content">
     <p class="about-text">
@@ -795,11 +1025,16 @@ st.markdown("""
         deep learning technology trained on thousands of plant images to provide accurate diagnoses with 
         treatment recommendations, helping to save crops and reduce the use of unnecessary pesticides.
     </p>
+    <p class="about-text">
+        Our AI model can detect over 30 different plant diseases across various crops including tomatoes, 
+        potatoes, peppers, apples, and more. With an accuracy rate exceeding 95%, Plant Savior AI is a 
+        trusted tool for rapid disease identification in agricultural settings.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer with professional design
+# Footer with enhanced professional design
 st.markdown("""
 <div class="footer">
     <p class="footer-text">🌱 Plant Savior AI - Making agriculture smarter with AI technology</p>
