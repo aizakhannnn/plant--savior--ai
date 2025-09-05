@@ -1805,12 +1805,10 @@ st.markdown("""
         <div class="footer-text">🎯 <strong>MODEL ACCURACY:</strong> 99.2% on validation data</div>
         <div class="footer-text">⚡ <strong>PROCESSING SPEED:</strong> Sub-3-second analysis</div>
         <div class="footer-text">🌍 <strong>IMPACT:</strong> Helping farmers worldwide save crops and reduce pesticide use</div>
-        <div class="footer-text">📧 <strong>CONTACT:</strong> Plant Savior AI | 🌐 www.plantsaviorai.streamlit.app</div>
     </div>
     
     <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid rgba(255, 255, 255, 0.2);">
         <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
-        <div class="footer-text">Available 24/7 for plant health emergencies</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
