@@ -1263,9 +1263,9 @@ with st.sidebar:
     • **Custom CNN** - Disease Classification
     """)
     st.markdown("### 📞 SUPPORT")
-    st.info("🔧 **TECHNICAL SUPPORT**
-📧 support@plantsavior.ai
-🌐 www.plantsaviorai.streamlit.app")
+    st.info("🔧 **TECHNICAL SUPPORT**")
+("📧 support@plantsavior.ai")
+("🌐 www.plantsaviorai.streamlit.app")
 # How it works section with enhanced design
 st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">HOW THE AI SYSTEM WORKS</h2>', unsafe_allow_html=True)
