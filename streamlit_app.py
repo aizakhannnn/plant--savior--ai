@@ -1262,9 +1262,9 @@ with st.sidebar:
     • **NumPy** - Numerical Computing
     • **Custom CNN** - Disease Classification
     """)
-    st.markdown("### 📞 SUPPORT")
-    st.info("🔧 **TECHNICAL SUPPORT**")
-("📧 support@plantsavior.ai")
+   
+    
+("📧 Plantsavior AI")
 ("🌐 www.plantsaviorai.streamlit.app")
 # How it works section with enhanced design
 st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
