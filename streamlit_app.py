@@ -1415,7 +1415,7 @@ def load_model():
 # Load treatment dictionary with enhanced error handling
 @st.cache_resource(show_spinner=False)
 def load_treatments():
-    """Load treatment recommendations with enhanced error handling"""
+    """Load treatment recommendations with enhanced error handling - Updated for healthy classes"""
     try:
         with open('treatment_dict_complete.json', 'r') as f:
             treatments = json.load(f)
@@ -1457,12 +1457,13 @@ if 'model' not in st.session_state:
 if st.session_state.model is None:
     with st.spinner("⚡ BOOTING UP PLANT SAVIOR AI SYSTEM..."):
         model = load_model()
-        treatments = load_treatments()
         st.session_state.model = model
-        st.session_state.treatments = treatments
         if model is not None:
             st.success("🚀 **SYSTEM READY**: Plant Savior AI is now fully operational!")
             time.sleep(1)  # Brief pause for effect
+
+# Always load treatments to ensure updates are picked up
+st.session_state.treatments = load_treatments()
 
 # Main upload section with enhanced design
 st.markdown('<div class="upload-section glass-container fade-in-up">', unsafe_allow_html=True)
