@@ -1604,7 +1604,10 @@ if uploaded_file is not None:
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Treatment recommendation with enhanced styling
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
-                    st.markdown('<h4 class="result-title">💊 TREATMENT PROTOCOL</h4>', unsafe_allow_html=True)
+                    if "healthy" in predicted_disease.lower():
+                        st.markdown('<h4 class="result-title">🌿 CARE RECOMMENDATION</h4>', unsafe_allow_html=True)
+                    else:
+                        st.markdown('<h4 class="result-title">💊 TREATMENT PROTOCOL</h4>', unsafe_allow_html=True)
                     st.markdown(f'<div class="treatment-box"><p class="treatment-text">{treatment}</p></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Analysis summary
