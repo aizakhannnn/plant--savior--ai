@@ -1,4 +1,4 @@
-# streamlit_app.py...
+# streamlit_app.py
 import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
