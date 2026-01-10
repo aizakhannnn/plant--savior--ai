@@ -1316,7 +1316,7 @@ def login_page():
         
         # Login Button
         if st.button("🚀 INITIATE SYSTEM", use_container_width=True):
-            if username == "aiza" and password == "plant123":
+            if username == "aiza" and password == "pakistan2313":
                 st.session_state.logged_in = True
                 st.session_state.login_time = time.time()
                 st.session_state.last_activity_time = time.time()
