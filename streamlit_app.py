@@ -1328,7 +1328,7 @@ def login_page():
         st.markdown("""
         <div style="margin-top: 2rem; text-align: center; color: #a0d0ff; font-size: 0.9rem; background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px;">
             <p style="margin:0;">🔒 SECURE TERMINAL</p>
-            <p style="margin:5px 0 0 0;">DEFAULT ID: <strong>admin</strong> | CODE: <strong>plant123</strong></p>
+            <p style="margin:5px © 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</p>
         </div>
         """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
