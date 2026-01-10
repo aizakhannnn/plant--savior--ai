@@ -1318,6 +1318,8 @@ def login_page():
         if st.button("🚀 INITIATE SYSTEM", use_container_width=True):
             if username == "aiza" and password == "plant123":
                 st.session_state.logged_in = True
+                st.session_state.login_time = time.time()
+                st.session_state.last_activity_time = time.time()
                 st.success("✅ ACCESS GRANTED. INITIALIZING DASHBOARD...")
                 time.sleep(1)
                 st.rerun()
@@ -1328,7 +1330,6 @@ def login_page():
         st.markdown("""
         <div style="margin-top: 2rem; text-align: center; color: #a0d0ff; font-size: 0.9rem; background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px;">
             <p style="margin:0;">🔒 SECURE TERMINAL</p>
-            <p style="margin:5px © 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</p>
         </div>
         """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
@@ -1337,6 +1338,22 @@ def login_page():
 if not st.session_state.logged_in:
     login_page()
     st.stop()
+
+# Auto-logout logic
+current_time = time.time()
+
+# Check 20 minutes session limit (20 * 60 = 1200 seconds)
+if 'login_time' in st.session_state and (current_time - st.session_state.login_time > 1200):
+    st.session_state.logged_in = False
+    st.rerun()
+
+# Check 10 minutes inactivity limit (10 * 60 = 600 seconds)
+if 'last_activity_time' in st.session_state and (current_time - st.session_state.last_activity_time > 600):
+    st.session_state.logged_in = False
+    st.rerun()
+
+# Update last activity time
+st.session_state.last_activity_time = current_time
 
 # Main header with enhanced futuristic design
 st.markdown("""
