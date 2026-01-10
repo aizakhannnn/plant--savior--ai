@@ -1291,6 +1291,53 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Initialize session state for login
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+
+def login_page():
+    # Login Page Header
+    st.markdown("""
+    <div class="main-header" style="padding: 2rem; margin-bottom: 2rem; animation: none;">
+        <h1 class="logo-text" style="font-size: 3.5rem;">🔐 ACCESS CONTROL</h1>
+        <p class="tagline">SECURE GATEWAY TO PLANT SAVIOR AI SYSTEM</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Login Form Container
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown('<div class="glass-container fade-in-up" style="padding: 3rem; border: 1px solid rgba(0, 245, 255, 0.3);">', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-title" style="font-size: 2rem; margin-bottom: 2rem;">IDENTITY VERIFICATION</h2>', unsafe_allow_html=True)
+        
+        # Login Inputs
+        username = st.text_input("👤 OPERATOR ID", placeholder="Enter Username")
+        password = st.text_input("🔑 ACCESS CODE", type="password", placeholder="Enter Password")
+        
+        # Login Button
+        if st.button("🚀 INITIATE SYSTEM", use_container_width=True):
+            if username == "aiza" and password == "plant123":
+                st.session_state.logged_in = True
+                st.success("✅ ACCESS GRANTED. INITIALIZING DASHBOARD...")
+                time.sleep(1)
+                st.rerun()
+            else:
+                st.error("❌ ACCESS DENIED. INVALID CREDENTIALS.")
+        
+        # Demo Credentials Hint
+        st.markdown("""
+        <div style="margin-top: 2rem; text-align: center; color: #a0d0ff; font-size: 0.9rem; background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px;">
+            <p style="margin:0;">🔒 SECURE TERMINAL</p>
+            <p style="margin:5px 0 0 0;">DEFAULT ID: <strong>admin</strong> | CODE: <strong>plant123</strong></p>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# Check login status
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
 # Main header with enhanced futuristic design
 st.markdown("""
 <div class="main-header">
@@ -1319,6 +1366,10 @@ st.markdown("""
 
 # Enhanced Sidebar
 with st.sidebar:
+    if st.button("🔒 LOGOUT SYSTEM", use_container_width=True):
+        st.session_state.logged_in = False
+        st.rerun()
+    st.markdown("---")
     st.markdown("### 🚀 AI SYSTEM STATUS")
     st.success("🟢 NEURAL NETWORK: ACTIVE")
     st.success("🟢 IMAGE PROCESSOR: READY")
