@@ -1569,7 +1569,9 @@ if uploaded_file is not None:
         if st.session_state.model is not None and st.session_state.treatments:
             if st.button("🚀 **ANALYZE WITH AI**", key="analyze", help="Start advanced AI analysis", use_container_width=True):
                 # Enhanced loading animation
-                with st.empty():
+                # Enhanced loading animation
+                loading_placeholder = st.empty()
+                with loading_placeholder:
                     st.markdown("""
                     <div class="loading-container">
                         <div class="spinner"></div>
@@ -1594,6 +1596,9 @@ if uploaded_file is not None:
                     </div>
                     """, unsafe_allow_html=True)
                     time.sleep(1)
+                
+                # Clear the loading animation
+                loading_placeholder.empty()
                 try:
                     # Save uploaded file temporarily
                     with open("temp_image.jpg", "wb") as f:
@@ -1658,19 +1663,7 @@ if uploaded_file is not None:
                     st.markdown(f'<p style="color: {conf_color}; font-weight: 600; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Top 3 predictions
-                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
-                    st.markdown('<h4 class="result-title">📊 TOP PREDICTIONS</h4>', unsafe_allow_html=True)
-                    for i, idx in enumerate(top_3_indices):
-                        disease_name = class_names[idx].replace('_', ' ').title()
-                        score = predictions[0][idx] * 100
-                        rank_emoji = ["🥇", "🥈", "🥉"][i]
-                        st.markdown(f"""
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(0, 197, 255, 0.2);">
-                            <span style="color: #e0f7ff;">{rank_emoji} {disease_name}</span>
-                            <span style="color: #00f5ff; font-weight: bold;">{score:.1f}%</span>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
+
                     # Treatment recommendation with enhanced styling
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     if "healthy" in predicted_disease.lower():
