@@ -1338,19 +1338,13 @@ def login_page():
         # Using provided credentials for real Google Sign-In
         google_client_id = "351572421259-l5njghok477nemk3fthgg4q1025nimqj.apps.googleusercontent.com"
         google_client_secret = "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"
+        # Your deployed Streamlit Cloud URL
+        deployed_url = "https://plantsaviorai.streamlit.app"
         
         def real_google_sign_in():
             try:
-                # Detect the current URL for redirect
-                # Get the current URL from query params or use default
-                current_url = st.query_params.get("url", ["http://localhost:8501"])[0] if isinstance(st.query_params.get("url", []), list) else st.query_params.get("url", "http://localhost:8501")
-                
-                # For deployed apps, detect the base URL
-                try:
-                    base_url = urllib.parse.urlparse(current_url)
-                    redirect_uri = f"{base_url.scheme}://{base_url.netloc}"
-                except:
-                    redirect_uri = "http://localhost:8501"
+                # Use the deployed Streamlit Cloud URL as redirect URI
+                redirect_uri = deployed_url
                 
                 # Create Flow instance with the correct redirect URI
                 client_config = {
@@ -1360,7 +1354,7 @@ def login_page():
                         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                         "token_uri": "https://oauth2.googleapis.com/token",
                         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                        "redirect_uris": [redirect_uri, "http://localhost:8501", "http://localhost:8502", "http://127.0.0.1:8501"]
+                        "redirect_uris": [deployed_url, "http://localhost:8501", "http://localhost:8502", "http://127.0.0.1:8501"]
                     }
                 }
                 
@@ -1467,31 +1461,30 @@ def login_page():
             
             # Show info about OAuth
             with st.expander("ℹ️ Google Sign-In Setup"):
-                # Get current URL to show the correct redirect URI
-                try:
-                    current_url = st.query_params.get("url", ["http://localhost:8501"])[0] if isinstance(st.query_params.get("url", []), list) else st.query_params.get("url", "http://localhost:8501")
-                    base_url = urllib.parse.urlparse(current_url)
-                    detected_redirect = f"{base_url.scheme}://{base_url.netloc}"
-                except:
-                    detected_redirect = "http://localhost:8501"
-                
                 st.markdown(f"""
                 **✅ Real Google Sign-In is configured!**
                 
-                **Important: Add this Redirect URI to Google Cloud Console:**
+                **Your Deployed URL:**
                 ```
-                {detected_redirect}
+                {deployed_url}
                 ```
                 
                 **Steps to fix 403 error:**
                 1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-                2. Find your OAuth 2.0 Client ID and click Edit
-                3. Under "Authorized redirect URIs", add EXACTLY:
-                   - `{detected_redirect}`
-                4. Click Save
-                5. Try signing in again
+                2. Find your OAuth 2.0 Client ID and click **Edit**
+                3. Under **"Authorized redirect URIs"**, add EXACTLY:
+                   ```
+                   {deployed_url}
+                   ```
+                4. Click **Save**
+                5. Wait 2-3 minutes for changes to propagate
+                6. Try signing in again
                 
-                **Note:** The redirect URI must match exactly (including http/https, port, and path).
+                **⚠️ Common issues:**
+                - Make sure there's NO trailing slash (`/`)
+                - Must be exactly `https://plantsaviorai.streamlit.app`
+                - Don't add it to "Authorized JavaScript origins" - add to "Authorized redirect URIs"
+                - Changes may take a few minutes to take effect
                 
                 **How it works:**
                 - You'll be redirected to Google's secure login page
