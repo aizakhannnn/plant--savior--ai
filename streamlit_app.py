@@ -9,6 +9,7 @@ import os
 import base64
 from io import BytesIO
 import time
+import urllib.parse
 # Google OAuth imports
 from google_auth_oauthlib.flow import Flow
 from google.oauth2 import id_token
@@ -1340,25 +1341,45 @@ def login_page():
         
         def real_google_sign_in():
             try:
-                # Create Flow instance
+                # Detect the current URL for redirect
+                # Get the current URL from query params or use default
+                current_url = st.query_params.get("url", ["http://localhost:8501"])[0] if isinstance(st.query_params.get("url", []), list) else st.query_params.get("url", "http://localhost:8501")
+                
+                # For deployed apps, detect the base URL
+                try:
+                    base_url = urllib.parse.urlparse(current_url)
+                    redirect_uri = f"{base_url.scheme}://{base_url.netloc}"
+                except:
+                    redirect_uri = "http://localhost:8501"
+                
+                # Create Flow instance with the correct redirect URI
+                client_config = {
+                    "web": {
+                        "client_id": google_client_id,
+                        "client_secret": google_client_secret,
+                        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                        "token_uri": "https://oauth2.googleapis.com/token",
+                        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                        "redirect_uris": [redirect_uri, "http://localhost:8501", "http://localhost:8502", "http://127.0.0.1:8501"]
+                    }
+                }
+                
                 flow = Flow.from_client_config(
-                    {
-                        "web": {
-                            "client_id": google_client_id,
-                            "client_secret": google_client_secret,
-                            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                            "token_uri": "https://oauth2.googleapis.com/token",
-                            "redirect_uris": ["http://localhost:8501"]
-                        }
-                    },
-                    scopes=["openid", "https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"]
+                    client_config,
+                    scopes=["openid", "https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"],
+                    redirect_uri=redirect_uri
                 )
                 
-                # Generate authorization URL
-                auth_url, _ = flow.authorization_url(prompt="consent")
+                # Generate authorization URL with all necessary parameters
+                auth_url, state = flow.authorization_url(
+                    access_type="offline",
+                    include_granted_scopes="true",
+                    prompt="select_account"
+                )
                 
-                # Store flow in session state
+                # Store flow and state in session state
                 st.session_state["oauth_flow"] = flow
+                st.session_state["oauth_state"] = state
                 
                 # Show authentication link styled as Google button
                 st.markdown(f"""
@@ -1445,20 +1466,37 @@ def login_page():
                 st.rerun()
             
             # Show info about OAuth
-            with st.expander("ℹ️ About Google Sign-In"):
-                st.markdown("""
+            with st.expander("ℹ️ Google Sign-In Setup"):
+                # Get current URL to show the correct redirect URI
+                try:
+                    current_url = st.query_params.get("url", ["http://localhost:8501"])[0] if isinstance(st.query_params.get("url", []), list) else st.query_params.get("url", "http://localhost:8501")
+                    base_url = urllib.parse.urlparse(current_url)
+                    detected_redirect = f"{base_url.scheme}://{base_url.netloc}"
+                except:
+                    detected_redirect = "http://localhost:8501"
+                
+                st.markdown(f"""
                 **✅ Real Google Sign-In is configured!**
                 
-                Click the "Sign in with Google" button above to authenticate with your Google account.
+                **Important: Add this Redirect URI to Google Cloud Console:**
+                ```
+                {detected_redirect}
+                ```
+                
+                **Steps to fix 403 error:**
+                1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+                2. Find your OAuth 2.0 Client ID and click Edit
+                3. Under "Authorized redirect URIs", add EXACTLY:
+                   - `{detected_redirect}`
+                4. Click Save
+                5. Try signing in again
+                
+                **Note:** The redirect URI must match exactly (including http/https, port, and path).
                 
                 **How it works:**
                 - You'll be redirected to Google's secure login page
                 - After signing in, Google sends back a secure token
                 - The app verifies the token and grants access
-                - Your Google email and name will be displayed in the app
-                
-                **Security note:**
-                Your credentials are handled securely through Google's OAuth 2.0 protocol. The app never sees your Google password.
                 """)
         
         # Demo Credentials Hint
