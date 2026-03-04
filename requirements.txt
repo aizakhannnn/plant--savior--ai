@@ -2,3 +2,5 @@ streamlit
 tensorflow
 numpy
 Pillow
+google-auth-oauthlib
+google-auth
