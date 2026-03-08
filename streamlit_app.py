@@ -105,8 +105,8 @@ st.markdown("""
         flex: 1;
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding: 2rem;
+        justify-content: flex-start;
+        padding: 2rem 5%;
     }
     .login-card-wrapper {
         width: 100%;
@@ -987,13 +987,83 @@ st.markdown("""
     .stTextInput > div > div > input {
         font-family: 'Space Grotesk', sans-serif;
         border-radius: 0.75rem;
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        background: white !important;
         padding: 0.875rem 1rem;
+        color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
+    }
+    .stTextInput > div > div > input::selection {
+        background: #13ec92 !important;
+        color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
+    }
+    .stTextInput > div > div > input::placeholder {
+        color: #94a3b8 !important;
+        -webkit-text-fill-color: #94a3b8 !important;
     }
     .stTextInput > div > div > input:focus {
         border-color: #13ec92;
         box-shadow: 0 0 0 2px rgba(19,236,146,0.2);
+        color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
+    }
+    .stTextInput label {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+        font-size: 0.875rem !important;
+    }
+    /* Login Video Background */
+    .login-video-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .login-video-wrapper video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+    }
+    .login-video-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.65);
+        z-index: 1;
+    }
+    .login-content-over-video {
+        position: relative;
+        z-index: 2;
+    }
+    .login-content-over-video .login-header {
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .login-content-over-video .login-header-title {
+        color: #ffffff;
+    }
+    .login-content-over-video .login-title {
+        color: #ffffff;
+    }
+    .login-content-over-video .login-subtitle {
+        color: #cbd5e1;
+    }
+    .login-content-over-video .login-bottom-text {
+        color: #94a3b8;
+    }
+    .login-content-over-video .login-footer-link {
+        color: #cbd5e1;
+    }
+    .login-content-over-video .login-footer-icons span {
+        color: #cbd5e1;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1003,6 +1073,19 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 def login_page():
+    # Background Video for Login
+    st.markdown("""
+    <div class="login-video-wrapper">
+        <video autoplay muted loop playsinline>
+            <source src="https://videos.pexels.com/video-files/2491284/2491284-uhd_2560_1440_24fps.mp4" type="video/mp4">
+        </video>
+        <div class="login-video-overlay"></div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Wrap all login content to layer above video
+    st.markdown('<div class="login-content-over-video">', unsafe_allow_html=True)
+    
     # Login Page Header - Clean Modern Design
     st.markdown("""
     <div class="login-header">
@@ -1017,9 +1100,11 @@ def login_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Login Form Container
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
+    # Login Form Container - Left aligned
+    st.markdown('<div class="login-main">', unsafe_allow_html=True)
+    col1, col2 = st.columns([5, 7])
+    with col1:
+        st.markdown('<div class="login-card-wrapper">', unsafe_allow_html=True)
         # Hero image and title
         st.markdown("""
         <div class="login-hero-image">
@@ -1234,6 +1319,9 @@ def login_page():
             </div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # close login-card-wrapper
+    st.markdown('</div>', unsafe_allow_html=True) # close login-main
+    st.markdown('</div>', unsafe_allow_html=True) # close login-content-over-video
 
 # Check login status
 if not st.session_state.logged_in:
