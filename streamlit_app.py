@@ -39,7 +39,12 @@ st.markdown("""
         background: #f6f8f7;
         color: #0f172a;
         overflow-x: hidden;
-        min-height: 100vh;
+    }
+    
+    /* Make block container responsive */
+    .main .block-container {
+        max-width: 1200px;
+        padding: 3rem 1rem;
     }
 
     /* ===== LOGIN PAGE STYLES ===== */
@@ -106,7 +111,9 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding: 2rem 5%;
+        padding: 0 5%;
+        height: calc(100vh - 72px); /* Subtract header height */
+        box-sizing: border-box;
     }
     .login-card-wrapper {
         width: 100%;
@@ -114,12 +121,12 @@ st.markdown("""
     }
     .login-hero-image {
         width: 100%;
-        height: 192px;
+        height: 160px; /* Reduced from 192px */
         border-radius: 1rem;
         overflow: hidden;
         position: relative;
-        border: 1px solid #e2e8f0;
-        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.2);
+        margin-bottom: 1rem; /* Reduced from 1.5rem */
     }
     .login-hero-image img {
         width: 100%;
@@ -134,7 +141,7 @@ st.markdown("""
     }
     .login-title-section {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem; /* Reduced from 2rem */
     }
     .login-title {
         font-size: 1.875rem;
@@ -148,12 +155,13 @@ st.markdown("""
         font-size: 0.95rem;
     }
     .login-form-card {
-        background: white;
-        padding: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
         border-radius: 1rem;
-        box-shadow: 0 20px 40px rgba(19,236,146,0.05), 0 1px 3px rgba(0,0,0,0.05);
-        border: 1px solid #f1f5f9;
-        margin-bottom: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        margin-bottom: 0.75rem;
     }
     .login-divider {
         display: flex;
@@ -1013,6 +1021,7 @@ st.markdown("""
         font-weight: 600 !important;
         font-size: 0.875rem !important;
     }
+    
     /* Login Video Background */
     .login-video-wrapper {
         position: fixed;
@@ -1039,13 +1048,21 @@ st.markdown("""
         z-index: 1;
     }
     .login-content-over-video {
-        position: relative;
+        position: fixed;
+        inset: 0;
         z-index: 2;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
     .login-content-over-video .login-header {
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.05);
         backdrop-filter: blur(16px);
         border-bottom: 1px solid rgba(255,255,255,0.1);
+        height: 72px;
+        box-sizing: border-box;
     }
     .login-content-over-video .login-header-title {
         color: #ffffff;
@@ -1073,6 +1090,33 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 def login_page():
+    # Critical CSS Overrides for Login Page (Transparency & Fixed Viewport)
+    st.markdown("""
+    <style>
+        /* Hide Streamlit elements during login */
+        header, footer {visibility: hidden !important;}
+        #MainMenu {visibility: hidden !important;}
+        .stDeployButton {display:none !important;}
+        [data-testid="stHeader"] {display:none !important;}
+        
+        /* Force full viewport and transparency */
+        .main .block-container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            height: 100vh !important;
+            overflow: hidden !important;
+        }
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stSidebarNav"] {
+            background: transparent !important;
+        }
+        footer {visibility: hidden !important;}
+        [data-testid="stToolbar"] {display: none !important;}
+        [data-testid="column"] {
+            padding: 0 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     # Background Video for Login
     st.markdown("""
     <div class="login-video-wrapper">
