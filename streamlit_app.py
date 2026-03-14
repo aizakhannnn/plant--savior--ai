@@ -308,60 +308,28 @@ if 'current_page' not in st.session_state:
 
 local_css()
 
-@st.cache_data
-def get_video_base64(path):
-    import base64
-    try:
-        with open(path, "rb") as video_file:
-            return base64.b64encode(video_file.read()).decode('utf-8')
-    except Exception:
-        return ""
-
 def show_login():
-    video_b64 = get_video_base64("static/8514997-uhd_3840_2160_24fps.mp4")
-    video_html = f"""
-    <video autoplay loop muted playsinline style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -100; object-fit: cover;">
-        <source src="data:video/mp4;base64,{video_b64}" type="video/mp4">
-    </video>
-    """
-
-    st.markdown(f"""
+    st.markdown("""
     <style>
-    .block-container {{
-        padding-top: 5vh !important;
-        padding-bottom: 5vh !important;
-        max-width: 100% !important;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-    }}
-    .stApp {{
-        background: transparent !important;
-    }}
-    /* Target the first column to be the login card overlay */
-    div[data-testid="column"]:nth-of-type(1) {{
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
+    div[data-testid="column"]:nth-of-type(2) {
+        background-color: #ffffff;
         border-radius: 1.5rem;
-        padding: 3rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        min-width: 440px;
-        height: auto;
-    }}
+        padding: 2.5rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+    }
+    .block-container { padding-top: 10vh !important; }
     </style>
-    {video_html}
     """, unsafe_allow_html=True)
 
-    c1, c2 = st.columns([1, 1.5])
-    with c1:
+    c1, c2, c3 = st.columns([1.5, 2.5, 1.5])
+    with c2:
         st.markdown("""
-            <div style="width: 100%; height: 8rem; background-color: rgba(19, 236, 146, 0.1); border-radius: 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(19, 236, 146, 0.3);">
-               <span style="font-size: 4rem;">🌱</span>
+            <div style="width: 100%; height: 10rem; background-color: #f1f5f9; border-radius: 1rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1;">
+               <span style="font-size: 5rem;">🌱</span>
             </div>
             <h1 style="text-align: center; color: #0f172a; font-weight: 800; font-size: 1.875rem; margin-bottom: 0.25rem;">System Authentication</h1>
-            <p style="text-align: center; color: #64748b; font-weight: 500; margin-bottom: 2rem;">Bio-Hazard Lab & Research Access</p>
+            <p style="text-align: center; color: #64748b; font-weight: 500; margin-bottom: 2rem;">Authorized Personnel Access Only</p>
         """, unsafe_allow_html=True)
 
         st.markdown('<span style="font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; display: block;">Operator ID</span>', unsafe_allow_html=True)
@@ -406,9 +374,10 @@ def show_login():
 
         st.markdown("""
             <div style="text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 2rem; line-height: 1.5;">
-                This system is monitored for security purposes. Unauthorized access attempts are logged and reported.
+                This system is monitored for security purposes. Unauthorized access attempts are logged and reported to the Bio-Security Department.
             </div>
         """, unsafe_allow_html=True)
+
 
 @st.cache_resource(show_spinner=False)
 def load_sys_model():
@@ -524,37 +493,8 @@ def show_dashboard():
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Restoring the How it works section
-        st.markdown('<h2 style="font-weight: 800; color: var(--slate-900); margin-top: 3rem; margin-bottom: 1.5rem;">How It Works</h2>', unsafe_allow_html=True)
-        h1, h2, h3 = st.columns(3)
-        with h1:
-            st.markdown("""
-            <div class="stat-card" style="text-align: center;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">📸</div>
-                <h3 style="font-weight: 700; color: var(--slate-900); margin-bottom: 0.5rem; font-size: 1.25rem;">Image Capture</h3>
-                <p style="color: var(--slate-500); font-size: 0.9rem;">Upload a clear photo of the affected plant leaf.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with h2:
-            st.markdown("""
-            <div class="stat-card" style="text-align: center;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🧠</div>
-                <h3 style="font-weight: 700; color: var(--slate-900); margin-bottom: 0.5rem; font-size: 1.25rem;">AI Processing</h3>
-                <p style="color: var(--slate-500); font-size: 0.9rem;">Our neural network extracts deep visual features.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with h3:
-            st.markdown("""
-            <div class="stat-card" style="text-align: center;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
-                <h3 style="font-weight: 700; color: var(--slate-900); margin-bottom: 0.5rem; font-size: 1.25rem;">Diagnosis</h3>
-                <p style="color: var(--slate-500); font-size: 0.9rem;">Receive instant classification and protocol.</p>
-            </div>
-            """, unsafe_allow_html=True)
 
     if st.session_state.current_page in ["Dashboard", "Analysis"]:
-        st.markdown('<hr style="margin-top: 3rem; border-color: var(--slate-200);">', unsafe_allow_html=True)
         st.markdown("""
         <div class="analysis-panel">
             <div class="panel-header-flex">
@@ -604,8 +544,28 @@ def show_dashboard():
                                 pill_icon = '✅' if is_healthy else '⚠️'
                                 pill_msg = 'Healthy Plant' if is_healthy else 'Disease Detected'
                                 
-                                # Fully minified HTML string so Streamlit does NOT parse it as a markdown code block
-                                html_result = f"<div style='background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;'><div class='result-pill {pill_class}'>{pill_icon} {pill_msg}</div><h2 style='font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;'>{d_name}</h2><p style='color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;'>Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p><div style='margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;'><span style='font-size: 0.875rem; font-weight: 600; color: var(--slate-700);'>Diagnostic Confidence</span><span style='font-size: 0.875rem; font-weight: 800; color: var(--slate-900);'>{con*100:.1f}%</span></div><div class='progress-bar'><div class='progress-fill' style='width: {con*100}%;'></div></div><div class='treatment-box'><div class='treatment-title'>Recommended Protocol</div><p class='treatment-text'>{tx}</p></div></div>"
+                                html_result = f"""
+<div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">
+    <div class="result-pill {pill_class}">
+        {pill_icon} {pill_msg}
+    </div>
+    <h2 style="font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;">{d_name}</h2>
+    <p style="color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p>
+    
+    <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.875rem; font-weight: 600; color: var(--slate-700);">Diagnostic Confidence</span>
+        <span style="font-size: 0.875rem; font-weight: 800; color: var(--slate-900);">{con*100:.1f}%</span>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: {con*100}%;"></div>
+    </div>
+    
+    <div class="treatment-box">
+        <div class="treatment-title">Recommended Protocol</div>
+        <p class="treatment-text">{tx}</p>
+    </div>
+</div>
+"""
                                 st.markdown(html_result, unsafe_allow_html=True)
                             else:
                                 st.error("Engine failure: Neural weights unassigned.")
