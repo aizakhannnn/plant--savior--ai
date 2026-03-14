@@ -6,7 +6,6 @@ import json
 from PIL import Image
 import os
 import time
-import base64
 
 st.set_page_config(
     page_title="Plant Savior AI",
@@ -309,26 +308,13 @@ if 'current_page' not in st.session_state:
 
 local_css()
 
-@st.cache_data(show_spinner=False)
-def load_bg_video():
-    try:
-        with open("8514997-uhd_3840_2160_24fps.mp4", "rb") as v:
-            return base64.b64encode(v.read()).decode()
-    except Exception:
-        return ""
-
 def show_login():
-    bg_b64 = load_bg_video()
-    video_html = f"""
+    st.markdown("""
     <div style="position: fixed; inset: 0; z-index: -1;">
         <video autoplay loop muted playsinline style="width: 100vw; height: 100vh; object-fit: cover; filter: brightness(0.6) sepia(0.2) hue-rotate(180deg);">
-            <source src="data:video/mp4;base64,{bg_b64}" type="video/mp4">
+            <source src="app/static/8514997-uhd_3840_2160_24fps.mp4" type="video/mp4">
         </video>
     </div>
-    """ if bg_b64 else ""
-
-    st.markdown(f"""
-    {video_html}
     <style>
     [data-testid="stAppViewContainer"] {{ background: transparent !important; background-color: transparent !important; }}
     [data-testid="stHeader"] {{ background: transparent !important; display: none !important; }}
