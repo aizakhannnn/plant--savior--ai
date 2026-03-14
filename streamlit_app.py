@@ -310,9 +310,11 @@ local_css()
 
 def show_login():
     st.markdown("""
-    <video autoplay loop muted playsinline style="position: fixed; right: 0; bottom: 0; min-width: 100vw; min-height: 100vh; object-fit: cover; z-index: -10; filter: brightness(0.6) sepia(0.2) hue-rotate(90deg);">
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-scientist-working-in-a-laboratory-with-a-microscope-41662-large.mp4" type="video/mp4">
-    </video>
+    <div style="position: fixed; inset: 0; z-index: -1;">
+        <video autoplay loop muted playsinline style="width: 100vw; height: 100vh; object-fit: cover; filter: brightness(0.4) sepia(0.3) hue-rotate(90deg);">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-scientist-working-in-a-laboratory-with-a-microscope-41662-large.mp4" type="video/mp4">
+        </video>
+    </div>
     <style>
     div[data-testid="column"]:nth-of-type(2) {
         background-color: #ffffff;
@@ -321,7 +323,8 @@ def show_login():
         border: 1px solid #e2e8f0;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
-    .block-container { padding-top: 10vh !important; }
+    .block-container { padding-top: 10vh !important; background-color: transparent !important; }
+    .stApp { background-color: transparent !important; }
     </style>
     """, unsafe_allow_html=True)
 
