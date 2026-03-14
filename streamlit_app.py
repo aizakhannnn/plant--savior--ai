@@ -5,16 +5,10 @@ import numpy as np
 import json
 from PIL import Image
 import os
-import base64
-from io import BytesIO
 import time
-import urllib.parse
-from google_auth_oauthlib.flow import Flow
-from google.oauth2 import id_token
-import google.auth.transport.requests
 
 st.set_page_config(
-    page_title="Plant Savior AI - Dashboard",
+    page_title="Plant Savior AI",
     page_icon="🌱",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -118,23 +112,6 @@ def local_css():
         width: 400px;
         gap: 0.75rem;
         box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
-    }
-    .profile-icons {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    .notification-btn {
-        height: 2.5rem;
-        width: 2.5rem;
-        border-radius: 9999px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--slate-500);
-        border: 1px solid var(--slate-200);
-        background: #fff;
-        font-size: 1.25rem;
     }
 
     /* Hero Component safely styled */
@@ -259,24 +236,6 @@ def local_css():
         font-size: 0.95rem;
         margin: 0;
     }
-    .system-status {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .system-dot {
-        height: 0.75rem;
-        width: 0.75rem;
-        background-color: var(--primary);
-        border-radius: 9999px;
-    }
-    .system-text {
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--primary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
     
     /* Result styling */
     .result-pill {
@@ -289,14 +248,9 @@ def local_css():
         font-size: 0.875rem;
         margin-bottom: 1rem;
     }
-    .result-pill.healthy {
-        background-color: #dcfce7;
-        color: #166534;
-    }
-    .result-pill.disease {
-        background-color: #fee2e2;
-        color: #991b1b;
-    }
+    .result-pill.healthy { background-color: #dcfce7; color: #166534; }
+    .result-pill.disease { background-color: #fee2e2; color: #991b1b; }
+    
     .treatment-box {
         background-color: #ffffff;
         border: 1px solid var(--slate-200);
@@ -333,7 +287,6 @@ def local_css():
         transition: width 1s ease-in-out;
     }
     
-    /* Clean up streamlit UI elements slightly without breaking them */
     div[data-testid="stFileUploader"] {
         background-color: var(--slate-50);
         border-radius: 0.75rem;
@@ -343,73 +296,81 @@ def local_css():
     </style>
     """, unsafe_allow_html=True)
 
-# Main Authentication and Routing Logic
+# Application State
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
+if 'auth_mode' not in st.session_state:
+    st.session_state.auth_mode = 'login'
 if 'analysis_count' not in st.session_state:
     st.session_state.analysis_count = 0
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "Dashboard"
 
 local_css()
 
 def show_login():
-    # Inject CSS specific to the login page column to make it a unified card without relying on unclosed markdown tags
     st.markdown("""
     <style>
-    /* Specifically target the center column in the login view to act as the rounded white card */
     div[data-testid="column"]:nth-of-type(2) {
         background-color: #ffffff;
         border-radius: 1.5rem;
         padding: 2.5rem;
-        border: 1px solid var(--slate-200);
+        border: 1px solid #e2e8f0;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
     }
-    
-    /* Vertically center the view */
-    .block-container {
-        padding-top: 10vh !important;
-    }
+    .block-container { padding-top: 10vh !important; }
     </style>
     """, unsafe_allow_html=True)
 
-    c1, c2, c3 = st.columns([1.5, 2.5, 1.5]) # Adjusted proportions for a nice center block
+    c1, c2, c3 = st.columns([1.5, 2.5, 1.5])
     with c2:
-        # Header graphic and Titles rendered cleanly inside the column
         st.markdown("""
-            <div style="width: 100%; height: 10rem; background-image: url('https://images.unsplash.com/photo-1530836369250-ef71a3fb90e6?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; border-radius: 1rem; margin-bottom: 1.5rem; position: relative; overflow: hidden;">
-               <div style="position: absolute; inset: 0; background: linear-gradient(to bottom right, rgba(19, 236, 146, 0.2), transparent);"></div>
+            <div style="width: 100%; height: 10rem; background-color: #f1f5f9; border-radius: 1rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1;">
+               <span style="font-size: 5rem;">🌱</span>
             </div>
-            <h1 class="auth-title">System Authentication</h1>
-            <p class="auth-subtitle">Authorized Personnel Access Only</p>
+            <h1 style="text-align: center; color: #0f172a; font-weight: 800; font-size: 1.875rem; margin-bottom: 0.25rem;">System Authentication</h1>
+            <p style="text-align: center; color: #64748b; font-weight: 500; margin-bottom: 2rem;">Authorized Personnel Access Only</p>
         """, unsafe_allow_html=True)
 
-        st.markdown('<span class="auth-label">Operator ID</span>', unsafe_allow_html=True)
+        st.markdown('<span style="font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; display: block;">Operator ID</span>', unsafe_allow_html=True)
         username = st.text_input("Operator ID", label_visibility="collapsed", placeholder="Enter unique ID")
         
-        st.markdown('<span class="auth-label" style="margin-top: 1rem;">Access Code</span>', unsafe_allow_html=True)
+        st.markdown('<span style="font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; display: block; margin-top: 1rem;">Access Code</span>', unsafe_allow_html=True)
         password = st.text_input("Access Code", type="password", label_visibility="collapsed", placeholder="••••••••")
         
         st.markdown('<div style="margin-bottom: 2rem;"></div>', unsafe_allow_html=True)
         
-        if st.button("⚡ Initiate System", type="primary"):
-            if username == "aiza" and password == "pakistan2313":
-                st.session_state.logged_in = True
+        if st.session_state.auth_mode == 'login':
+            if st.button("⚡ Initiate System", type="primary", use_container_width=True):
+                if username == "aiza" and password == "pakistan2313":
+                    st.session_state.logged_in = True
+                    st.rerun()
+                else:
+                    st.error("Invalid credentials.")
+            
+            st.markdown('<div style="text-align: center; margin-top: 1rem;">', unsafe_allow_html=True)
+            if st.button("Need an account? Sign Up", type="secondary", use_container_width=True):
+                st.session_state.auth_mode = 'signup'
                 st.rerun()
-            else:
-                st.error("Invalid credentials.")
-                
-        st.markdown("""
-            <div style="display: flex; align-items: center; justify-content: center; margin: 1.5rem 0;">
-                <div style="height: 1px; flex-grow: 1; background-color: #e2e8f0;"></div>
-                <span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 1rem; font-weight: 700;">or secure login via</span>
-                <div style="height: 1px; flex-grow: 1; background-color: #e2e8f0;"></div>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""<style>div:has(> button[key="google"]) > button { background-color: #fff !important; color: #334155 !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important; }</style>""", unsafe_allow_html=True)
-        
-        if st.button("Google Operations Account", key="google", type="secondary"):
-            st.session_state.logged_in = True
-            st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        else:
+            if st.button("🚀 Register Account", type="primary", use_container_width=True):
+                if username == "aiza":
+                    st.error("Username already exists. Please choose another username.")
+                elif username == "" or password == "":
+                    st.warning("Please fill out all fields.")
+                else:
+                    st.success("Account successfully created! Please log in.")
+                    time.sleep(1)
+                    st.session_state.auth_mode = 'login'
+                    st.rerun()
+                    
+            st.markdown('<div style="text-align: center; margin-top: 1rem;">', unsafe_allow_html=True)
+            if st.button("Already have an account? Log In", type="secondary", use_container_width=True):
+                st.session_state.auth_mode = 'login'
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("""
             <div style="text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 2rem; line-height: 1.5;">
@@ -439,7 +400,6 @@ def load_sys_treatments():
         }
 
 def show_dashboard():
-    # Load requirements silently
     model = load_sys_model()
     treatments = load_sys_treatments()
 
@@ -447,9 +407,7 @@ def show_dashboard():
     with st.sidebar:
         st.markdown("""
         <div class="brand-container">
-            <div class="brand-icon">
-                🌱
-            </div>
+            <div class="brand-icon">🌱</div>
             <div>
                 <div class="brand-title">Plant Savior</div>
                 <div class="brand-subtitle">Global AI</div>
@@ -457,175 +415,165 @@ def show_dashboard():
         </div>
         """, unsafe_allow_html=True)
         
-        st.button("📊 Dashboard", use_container_width=True, type="secondary")
-        st.button("🔬 Analysis", use_container_width=True, type="secondary")
-        st.button("👥 About Team", use_container_width=True, type="secondary")
+        if st.button("📊 Dashboard", use_container_width=True, type="primary" if st.session_state.current_page == "Dashboard" else "secondary"):
+            st.session_state.current_page = "Dashboard"
+            st.rerun()
+        if st.button("🔬 Analysis", use_container_width=True, type="primary" if st.session_state.current_page == "Analysis" else "secondary"):
+            st.session_state.current_page = "Analysis"
+            st.rerun()
+        if st.button("👥 About Team", use_container_width=True, type="primary" if st.session_state.current_page == "About" else "secondary"):
+            st.session_state.current_page = "About"
+            st.rerun()
         
         st.markdown("<hr/>", unsafe_allow_html=True)
-        
         if st.button("🚪 Logout", use_container_width=True, type="secondary"):
             st.session_state.logged_in = False
             st.rerun()
-            
-        st.markdown("""
-        <div style="margin-top: 2rem; padding: 1.5rem; background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem;">
-            <p style="font-size: 0.75rem; font-weight: 700; color: var(--slate-400); text-transform: uppercase; margin-bottom: 0.75rem; letter-spacing: 0.05em;">Current Plan</p>
-            <p style="font-size: 0.875rem; font-weight: 700; color: var(--slate-900); margin-bottom: 0.75rem;">Enterprise Pro</p>
-            <div style="width: 100%; height: 0.375rem; background-color: var(--slate-200); border-radius: 9999px; overflow: hidden;">
-                <div style="width: 75%; height: 100%; background-color: var(--primary); border-radius: 9999px;"></div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
 
     # Top Header Banner
     st.markdown("""
     <div class="top-header">
         <div class="search-mockup">
-            🔍
-            <span style="color: var(--slate-400); font-size: 0.875rem;">Search crops, diseases, or reports...</span>
-        </div>
-        <div class="profile-icons">
-            <div class="notification-btn">
-                🔔
-            </div>
-            <div class="avatar-mockup"></div>
+            🔍 <span style="color: var(--slate-400); font-size: 0.875rem;">Search crops, diseases, or reports...</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Hero Banner Container
-    st.markdown("""
-    <div class="hero-container">
-        <div class="hero-content">
-            <div class="hero-badge">Next-Gen Farming</div>
-            <h1 class="hero-title">Empowering Global Agriculture with AI</h1>
-            <p class="hero-description">Revolutionizing crop health with instant disease detection and precision farming insights using state-of-the-art neural networks.</p>
+    if st.session_state.current_page == "About":
+        st.markdown('<h1 style="color: var(--slate-900); font-weight: 800; font-size: 2.5rem; margin-bottom: 2rem;">Meet The Team</h1>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="background-color: white; border-radius: 1.5rem; padding: 2.5rem; border: 1px solid var(--slate-200); box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);">
+            <div style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem;">
+                <div style="width: 100px; height: 100px; border-radius: 50%; background-color: var(--slate-100); display: flex; align-items: center; justify-content: center; font-size: 3rem;">👩‍💻</div>
+                <div>
+                    <h3 style="margin: 0; color: var(--slate-900); font-size: 1.5rem; font-weight: 800;">Aiza</h3>
+                    <p style="margin: 0; color: var(--primary); font-weight: 700;">Lead AI Researcher & Engineer</p>
+                    <p style="margin-top: 0.5rem; color: var(--slate-600);">Passionate about leveraging deep learning capabilities to revolutionize global agriculture and sustainable farming practices.</p>
+                </div>
+            </div>
+            <h4 style="color: var(--slate-900); font-weight: 700; margin-bottom: 0.5rem;">The Mission</h4>
+            <p style="color: var(--slate-600); line-height: 1.6;">The Plant Savior AI project aims to build accessible, lightning-fast disease classification networks deployed directly to farmers worldwide. By uniting modern web technologies with advanced TensorFlow architectures, we are mitigating crop losses on a massive scale.</p>
         </div>
+        """, unsafe_allow_html=True)
+        return
+
+    if st.session_state.current_page == "Dashboard":
+        st.markdown("""
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Next-Gen Farming</div>
+                <h1 class="hero-title">Empowering Global Agriculture with AI</h1>
+                <p class="hero-description">Revolutionizing crop health with instant disease detection and precision farming insights using state-of-the-art neural networks.</p>
+            </div>
+        </div>
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background-color: #eff6ff; color: #3b82f6;">🎯</div>
+                    <div class="stat-badge">+0.5%</div>
+                </div>
+                <div class="stat-label">Accuracy</div>
+                <div class="stat-value">99.2%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background-color: rgba(19,236,146,0.1); color: var(--primary);">🧠</div>
+                    <div class="stat-badge">+2 New</div>
+                </div>
+                <div class="stat-label">Plant Diseases</div>
+                <div class="stat-value">15+</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background-color: #fff7ed; color: #f97316;">⚡</div>
+                    <div class="stat-badge">-0.2s</div>
+                </div>
+                <div class="stat-label">Analysis Time</div>
+                <div class="stat-value"><3s</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    if st.session_state.current_page in ["Dashboard", "Analysis"]:
+        st.markdown("""
+        <div class="analysis-panel">
+            <div class="panel-header-flex">
+                <div>
+                    <h2 class="panel-header-title">AI-Powered Plant Analysis</h2>
+                    <p class="panel-header-desc">Identify diseases and nutrient deficiencies instantly</p>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        img_file = st.file_uploader("Upload Plant Image to Analyze", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+        
+        if img_file is not None:
+            st.markdown('<div style="margin-top:2rem;"></div>', unsafe_allow_html=True)
+            img_col, info_col = st.columns([1, 1], gap="large")
+            with img_col:
+                st.markdown('<p style="font-weight:700; color:var(--slate-900); font-size:1.125rem; margin-bottom:1rem;">Source Image</p>', unsafe_allow_html=True)
+                image = Image.open(img_file)
+                st.image(image, use_column_width=True, clamp=True)
+                
+            with info_col:
+                st.markdown('<p style="font-weight:700; color:var(--slate-900); font-size:1.125rem; margin-bottom:1rem;">Neural Diagnostics</p>', unsafe_allow_html=True)
+                
+                if st.button("Run Global Analysis", use_container_width=True, type="primary"):
+                    with st.spinner("Processing structural geometry with Vision AI..."):
+                        time.sleep(1)
+                        try:
+                            with open("temp.jpg", "wb") as f: f.write(img_file.getbuffer())
+                            
+                            if model:
+                                loaded_img = load_img("temp.jpg", target_size=(224, 224))
+                                arr = img_to_array(loaded_img)
+                                arr = arr.reshape(1, 224, 224, 3) / 255.0
+                                preds = model.predict(arr, verbose=0)
+                                cls = np.argmax(preds[0])
+                                con = float(preds[0][cls])
+                                keys = list(treatments.keys())
+                                disease = keys[cls]
+                                tx = treatments.get(disease, "Consult with an agricultural expert.")
+                                st.session_state.analysis_count += 1
+                                os.remove("temp.jpg")
+                                
+                                is_healthy = "healthy" in disease.lower()
+                                d_name = disease.replace('_', ' ').title()
+                                
+                                pill_class = 'healthy' if is_healthy else 'disease'
+                                pill_icon = '✅' if is_healthy else '⚠️'
+                                pill_msg = 'Healthy Plant' if is_healthy else 'Disease Detected'
+                                
+                                html_result = f"""
+<div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">
+    <div class="result-pill {pill_class}">
+        {pill_icon} {pill_msg}
     </div>
-    """, unsafe_allow_html=True)
-
-    # Stats Summary
-    st.markdown('<div class="dashboard-stats">', unsafe_allow_html=True)
-    sc1, sc2, sc3 = st.columns(3)
-    with sc1:
-        st.markdown("""
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon" style="background-color: #eff6ff; color: #3b82f6;">🎯</div>
-                <div class="stat-badge">+0.5%</div>
-            </div>
-            <div class="stat-label">Accuracy</div>
-            <div class="stat-value">99.2%</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with sc2:
-        st.markdown("""
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon" style="background-color: rgba(19,236,146,0.1); color: var(--primary);">🧠</div>
-                <div class="stat-badge">+2 New</div>
-            </div>
-            <div class="stat-label">Plant Diseases</div>
-            <div class="stat-value">15+</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with sc3:
-        st.markdown("""
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon" style="background-color: #fff7ed; color: #f97316;">⚡</div>
-                <div class="stat-badge">-0.2s</div>
-            </div>
-            <div class="stat-label">Analysis Time</div>
-            <div class="stat-value"><3s</div>
-        </div>
-        """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # Engine Core Container
-    st.markdown("""
-    <div class="analysis-panel">
-        <div class="panel-header-flex">
-            <div>
-                <h2 class="panel-header-title">AI-Powered Plant Analysis</h2>
-                <p class="panel-header-desc">Identify diseases and nutrient deficiencies instantly</p>
-            </div>
-            <div class="system-status">
-                <div class="system-dot"></div>
-                <span class="system-text">System Active</span>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    img_file = st.file_uploader("Upload Plant Image to Analyze", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+    <h2 style="font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;">{d_name}</h2>
+    <p style="color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p>
     
-    if img_file is not None:
-        st.markdown('<div style="margin-top:2rem;"></div>', unsafe_allow_html=True)
-        img_col, info_col = st.columns([1, 1], gap="large")
-        with img_col:
-            st.markdown('<p style="font-weight:700; color:var(--slate-900); font-size:1.125rem; margin-bottom:1rem;">Source Image</p>', unsafe_allow_html=True)
-            image = Image.open(img_file)
-            st.image(image, use_column_width=True, clamp=True)
-            
-        with info_col:
-            st.markdown('<p style="font-weight:700; color:var(--slate-900); font-size:1.125rem; margin-bottom:1rem;">Neural Diagnostics</p>', unsafe_allow_html=True)
-            
-            if st.button("Run Global Analysis", use_container_width=True, type="primary"):
-                with st.spinner("Processing structural geometry with Vision AI..."):
-                    time.sleep(1)
-                    try:
-                        with open("temp.jpg", "wb") as f: f.write(img_file.getbuffer())
-                        
-                        if model:
-                            loaded_img = load_img("temp.jpg", target_size=(224, 224))
-                            arr = img_to_array(loaded_img)
-                            arr = arr.reshape(1, 224, 224, 3) / 255.0
-                            preds = model.predict(arr, verbose=0)
-                            cls = np.argmax(preds[0])
-                            con = float(preds[0][cls])
-                            keys = list(treatments.keys())
-                            disease = keys[cls]
-                            tx = treatments.get(disease, "Consult with an agricultural expert.")
-                            st.session_state.analysis_count += 1
-                            os.remove("temp.jpg")
-                            
-                            is_healthy = "healthy" in disease.lower()
-                            d_name = disease.replace('_', ' ').title()
-                            
-                            pill_class = 'healthy' if is_healthy else 'disease'
-                            pill_icon = '✅' if is_healthy else '⚠️'
-                            pill_msg = 'Healthy Plant' if is_healthy else 'Disease Detected'
-                            
-                            st.markdown(f"""
-                            <div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">
-                                <div class="result-pill {pill_class}">
-                                    {pill_icon} {pill_msg}
-                                </div>
-                                <h2 style="font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;">{d_name}</h2>
-                                <p style="color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p>
+    <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.875rem; font-weight: 600; color: var(--slate-700);">Diagnostic Confidence</span>
+        <span style="font-size: 0.875rem; font-weight: 800; color: var(--slate-900);">{con*100:.1f}%</span>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: {con*100}%;"></div>
+    </div>
+    
+    <div class="treatment-box">
+        <div class="treatment-title">Recommended Protocol</div>
+        <p class="treatment-text">{tx}</p>
+    </div>
+</div>
+"""
+                                st.markdown(html_result, unsafe_allow_html=True)
+                            else:
+                                st.error("Engine failure: Neural weights unassigned.")
                                 
-                                <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: var(--slate-700);">Diagnostic Confidence</span>
-                                    <span style="font-size: 0.875rem; font-weight: 800; color: var(--slate-900);">{con*100:.1f}%</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: {con*100}%;"></div>
-                                </div>
-                                
-                                <div class="treatment-box">
-                                    <div class="treatment-title">Recommended Protocol</div>
-                                    <p class="treatment-text">{tx}</p>
-                                </div>
-                            </div>
-                            """, unsafe_allow_html=True)
-                            
-                        else:
-                            st.error("Engine failure: Neural weights unassigned.")
-                            
-                    except Exception as e:
-                        st.error(f"Analysis Failed: {e}")
+                        except Exception as e:
+                            st.error(f"Analysis Failed: {e}")
 
-    st.markdown('</div>', unsafe_allow_html=True) 
+        st.markdown('</div>', unsafe_allow_html=True) 
 
 if st.session_state.logged_in:
     show_dashboard()
