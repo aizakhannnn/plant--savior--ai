@@ -310,13 +310,16 @@ local_css()
 
 def show_login():
     st.markdown("""
+    <video autoplay loop muted playsinline style="position: fixed; right: 0; bottom: 0; min-width: 100vw; min-height: 100vh; object-fit: cover; z-index: -10; filter: brightness(0.6) sepia(0.2) hue-rotate(90deg);">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-scientist-working-in-a-laboratory-with-a-microscope-41662-large.mp4" type="video/mp4">
+    </video>
     <style>
     div[data-testid="column"]:nth-of-type(2) {
         background-color: #ffffff;
         border-radius: 1.5rem;
         padding: 2.5rem;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
     .block-container { padding-top: 10vh !important; }
     </style>
@@ -493,6 +496,34 @@ def show_dashboard():
             </div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown('<h2 style="font-weight: 800; color: var(--slate-900); font-size: 1.875rem; margin-top: 2rem; margin-bottom: 1.5rem;">HOW THE AI SYSTEM WORKS</h2>', unsafe_allow_html=True)
+        st.markdown('<div class="dashboard-stats">', unsafe_allow_html=True)
+        h1, h2, h3 = st.columns(3)
+        with h1:
+            st.markdown("""
+            <div class="stat-card" style="border-top: 4px solid var(--primary);">
+                <div class="stat-icon" style="background-color: rgba(19,236,146,0.1); color: var(--primary); font-size: 2rem; margin-bottom: 1rem;">📱</div>
+                <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--slate-900);">IMAGE CAPTURE</h3>
+                <p style="color: var(--slate-600); line-height: 1.6; font-size: 0.95rem;">Upload a high-quality image of the affected plant leaf. Our system accepts JPG, JPEG, and PNG formats for maximum compatibility.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        with h2:
+            st.markdown("""
+            <div class="stat-card" style="border-top: 4px solid #3b82f6;">
+                <div class="stat-icon" style="background-color: #eff6ff; color: #3b82f6; font-size: 2rem; margin-bottom: 1rem;">🧠</div>
+                <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--slate-900);">AI PROCESSING</h3>
+                <p style="color: var(--slate-600); line-height: 1.6; font-size: 0.95rem;">Advanced convolutional neural network analyzes the image using deep learning algorithms trained on 50,000+ plant images.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        with h3:
+            st.markdown("""
+            <div class="stat-card" style="border-top: 4px solid #f97316;">
+                <div class="stat-icon" style="background-color: #fff7ed; color: #f97316; font-size: 2rem; margin-bottom: 1rem;">📊</div>
+                <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--slate-900);">INSTANT DIAGNOSIS</h3>
+                <p style="color: var(--slate-600); line-height: 1.6; font-size: 0.95rem;">Receive comprehensive results with disease identification, confidence score, and professional treatment recommendations.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     if st.session_state.current_page in ["Dashboard", "Analysis"]:
         st.markdown("""
@@ -544,28 +575,24 @@ def show_dashboard():
                                 pill_icon = '✅' if is_healthy else '⚠️'
                                 pill_msg = 'Healthy Plant' if is_healthy else 'Disease Detected'
                                 
-                                html_result = f"""
-<div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">
-    <div class="result-pill {pill_class}">
-        {pill_icon} {pill_msg}
-    </div>
-    <h2 style="font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;">{d_name}</h2>
-    <p style="color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p>
-    
-    <div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.875rem; font-weight: 600; color: var(--slate-700);">Diagnostic Confidence</span>
-        <span style="font-size: 0.875rem; font-weight: 800; color: var(--slate-900);">{con*100:.1f}%</span>
-    </div>
-    <div class="progress-bar">
-        <div class="progress-fill" style="width: {con*100}%;"></div>
-    </div>
-    
-    <div class="treatment-box">
-        <div class="treatment-title">Recommended Protocol</div>
-        <p class="treatment-text">{tx}</p>
-    </div>
-</div>
-"""
+                                html_result = (
+'<div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">'
+f'<div class="result-pill {pill_class}">{pill_icon} {pill_msg}</div>'
+f'<h2 style="font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;">{d_name}</h2>'
+f'<p style="color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p>'
+'<div style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">'
+'<span style="font-size: 0.875rem; font-weight: 600; color: var(--slate-700);">Diagnostic Confidence</span>'
+f'<span style="font-size: 0.875rem; font-weight: 800; color: var(--slate-900);">{con*100:.1f}%</span>'
+'</div>'
+'<div class="progress-bar">'
+f'<div class="progress-fill" style="width: {con*100}%;"></div>'
+'</div>'
+'<div class="treatment-box">'
+'<div class="treatment-title">Recommended Protocol</div>'
+f'<p class="treatment-text">{tx}</p>'
+'</div>'
+'</div>'
+)
                                 st.markdown(html_result, unsafe_allow_html=True)
                             else:
                                 st.error("Engine failure: Neural weights unassigned.")
