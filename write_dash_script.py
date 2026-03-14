@@ -1,4 +1,4 @@
-﻿import streamlit as st
+code = """import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import numpy as np
@@ -21,7 +21,7 @@ st.set_page_config(
 )
 
 def local_css():
-    st.markdown("""
+    st.markdown(\"\"\"
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
@@ -538,7 +538,7 @@ def local_css():
         transition: width 1s ease-in-out;
     }
     </style>
-    """, unsafe_allow_html=True)
+    \"\"\", unsafe_allow_html=True)
 
 # Main Authentication and Routing Logic
 if 'logged_in' not in st.session_state:
@@ -549,14 +549,14 @@ if 'analysis_count' not in st.session_state:
 local_css()
 
 def show_login():
-    st.markdown("""
+    st.markdown(\"\"\"
     <div class="auth-wrapper">
         <div class="auth-card">
             <div class="auth-header"></div>
             <div class="auth-body">
                 <h1 class="auth-title">System Authentication</h1>
                 <p class="auth-subtitle">Authorized Personnel Access Only</p>
-    """, unsafe_allow_html=True)
+    \"\"\", unsafe_allow_html=True)
 
     c1, c2, c3 = st.columns([1, 4, 1])
     with c2:
@@ -575,13 +575,13 @@ def show_login():
             else:
                 st.error("Invalid credentials.")
                 
-        st.markdown("""
+        st.markdown(\"\"\"
             <div style="display: flex; align-items: center; justify-content: center; margin: 1.5rem 0;">
                 <div style="height: 1px; flex-grow: 1; background-color: #e2e8f0;"></div>
                 <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 1rem; font-weight: 600;">or secure login via</span>
                 <div style="height: 1px; flex-grow: 1; background-color: #e2e8f0;"></div>
             </div>
-        """, unsafe_allow_html=True)
+        \"\"\", unsafe_allow_html=True)
         
         st.markdown("""<style>div:has(> button[key="google"]) > button { background-color: #fff !important; color: #334155 !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important; }</style>""", unsafe_allow_html=True)
         
@@ -589,14 +589,14 @@ def show_login():
             st.session_state.logged_in = True
             st.rerun()
 
-    st.markdown("""
+    st.markdown(\"\"\"
             </div>
         </div>
         <div style="text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 1.5rem; max-width: 400px; line-height: 1.5;">
             This system is monitored for security purposes. Unauthorized access attempts are logged and reported to the Bio-Security Department.
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    \"\"\", unsafe_allow_html=True)
 
 
 @st.cache_resource(show_spinner=False)
@@ -626,7 +626,7 @@ def show_dashboard():
 
     # Build Sidebar
     with st.sidebar:
-        st.markdown("""
+        st.markdown(\"\"\"
         <div class="brand-container">
             <div class="brand-icon">
                 <span class="material-symbols-outlined" style="color:var(--slate-900);">potted_plant</span>
@@ -636,7 +636,7 @@ def show_dashboard():
                 <div class="brand-subtitle">Global AI</div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        \"\"\", unsafe_allow_html=True)
         
         st.button("📊 Dashboard", use_container_width=True, type="secondary")
         st.button("🔬 Analysis", use_container_width=True, type="secondary")
@@ -648,7 +648,7 @@ def show_dashboard():
             st.session_state.logged_in = False
             st.rerun()
             
-        st.markdown("""
+        st.markdown(\"\"\"
         <div style="margin-top: 2rem; padding: 1.5rem; background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem;">
             <p style="font-size: 0.75rem; font-weight: 700; color: var(--slate-400); text-transform: uppercase; margin-bottom: 0.75rem; letter-spacing: 0.05em;">Current Plan</p>
             <p style="font-size: 0.875rem; font-weight: 700; color: var(--slate-900); margin-bottom: 0.75rem;">Enterprise Pro</p>
@@ -656,10 +656,10 @@ def show_dashboard():
                 <div style="width: 75%; height: 100%; background-color: var(--primary); border-radius: 9999px;"></div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        \"\"\", unsafe_allow_html=True)
 
     # Top Header Banner
-    st.markdown("""
+    st.markdown(\"\"\"
     <div class="top-header">
         <div class="search-mockup">
             <span class="material-symbols-outlined" style="color: var(--slate-400); font-size: 1.25rem;">search</span>
@@ -672,10 +672,10 @@ def show_dashboard():
             <div class="avatar-mockup"></div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    \"\"\", unsafe_allow_html=True)
 
     # Hero Banner Container
-    st.markdown("""
+    st.markdown(\"\"\"
     <div class="hero-container">
         <div class="hero-bg-img"></div>
         <div class="hero-gradient"></div>
@@ -685,13 +685,13 @@ def show_dashboard():
             <p class="hero-description">Revolutionizing crop health with instant disease detection and precision farming insights using state-of-the-art neural networks.</p>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    \"\"\", unsafe_allow_html=True)
 
     # Stats Summary
     st.markdown('<div class="dashboard-stats">', unsafe_allow_html=True)
     sc1, sc2, sc3 = st.columns(3)
     with sc1:
-        st.markdown("""
+        st.markdown(\"\"\"
         <div class="stat-card">
             <div class="stat-header">
                 <div class="stat-icon" style="background-color: #eff6ff; color: #3b82f6;"><span class="material-symbols-outlined">verified</span></div>
@@ -700,9 +700,9 @@ def show_dashboard():
             <div class="stat-label">Accuracy</div>
             <div class="stat-value">99.2%</div>
         </div>
-        """, unsafe_allow_html=True)
+        \"\"\", unsafe_allow_html=True)
     with sc2:
-        st.markdown("""
+        st.markdown(\"\"\"
         <div class="stat-card">
             <div class="stat-header">
                 <div class="stat-icon" style="background-color: rgba(19,236,146,0.1); color: var(--primary);"><span class="material-symbols-outlined">psychology</span></div>
@@ -711,9 +711,9 @@ def show_dashboard():
             <div class="stat-label">Plant Diseases</div>
             <div class="stat-value">15+</div>
         </div>
-        """, unsafe_allow_html=True)
+        \"\"\", unsafe_allow_html=True)
     with sc3:
-        st.markdown("""
+        st.markdown(\"\"\"
         <div class="stat-card">
             <div class="stat-header">
                 <div class="stat-icon" style="background-color: #fff7ed; color: #f97316;"><span class="material-symbols-outlined">speed</span></div>
@@ -722,11 +722,11 @@ def show_dashboard():
             <div class="stat-label">Analysis Time</div>
             <div class="stat-value"><3s</div>
         </div>
-        """, unsafe_allow_html=True)
+        \"\"\", unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Engine Core Container
-    st.markdown("""
+    st.markdown(\"\"\"
     <div class="analysis-panel">
         <div class="panel-header-flex">
             <div>
@@ -741,7 +741,7 @@ def show_dashboard():
                 <span class="system-text">System Active</span>
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    \"\"\", unsafe_allow_html=True)
 
     img_file = st.file_uploader("Upload Plant Image to Analyze", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
     
@@ -782,7 +782,7 @@ def show_dashboard():
                             pill_icon = 'check_circle' if is_healthy else 'warning'
                             pill_msg = 'Healthy Plant' if is_healthy else 'Disease Detected'
                             
-                            st.markdown(f"""
+                            st.markdown(f\"\"\"
                             <div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">
                                 <div class="result-pill {pill_class}">
                                     <span class="material-symbols-outlined" style="font-size: 1.125rem;">{pill_icon}</span>
@@ -804,7 +804,7 @@ def show_dashboard():
                                     <p class="treatment-text">{tx}</p>
                                 </div>
                             </div>
-                            """, unsafe_allow_html=True)
+                            \"\"\", unsafe_allow_html=True)
                             
                         else:
                             st.error("Engine failure: Neural weights unassigned.")
@@ -818,3 +818,7 @@ if st.session_state.logged_in:
     show_dashboard()
 else:
     show_login()
+"""
+
+with open("c:/Users/hp/Documents/GitHub/plant--savior--ai/replace_app.py", "w", encoding="utf-8") as f:
+    f.write(code)
