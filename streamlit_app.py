@@ -6,6 +6,7 @@ import json
 from PIL import Image
 import os
 import time
+import base64
 
 st.set_page_config(
     page_title="Plant Savior AI",
@@ -308,43 +309,58 @@ if 'current_page' not in st.session_state:
 
 local_css()
 
+@st.cache_data(show_spinner=False)
+def load_bg_video():
+    try:
+        with open("8514997-uhd_3840_2160_24fps.mp4", "rb") as v:
+            return base64.b64encode(v.read()).decode()
+    except Exception:
+        return ""
+
 def show_login():
-    st.markdown("""
+    bg_b64 = load_bg_video()
+    video_html = f"""
     <div style="position: fixed; inset: 0; z-index: -1;">
-        <video autoplay loop muted playsinline style="width: 100vw; height: 100vh; object-fit: cover; filter: brightness(0.4) sepia(0.3) hue-rotate(90deg);">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-scientist-working-in-a-laboratory-with-a-microscope-41662-large.mp4" type="video/mp4">
+        <video autoplay loop muted playsinline style="width: 100vw; height: 100vh; object-fit: cover; filter: brightness(0.6) sepia(0.2) hue-rotate(180deg);">
+            <source src="data:video/mp4;base64,{bg_b64}" type="video/mp4">
         </video>
     </div>
+    """ if bg_b64 else ""
+
+    st.markdown(f"""
+    {video_html}
     <style>
-    div[data-testid="column"]:nth-of-type(2) {
+    [data-testid="stAppViewContainer"] {{ background: transparent !important; background-color: transparent !important; }}
+    [data-testid="stHeader"] {{ background: transparent !important; display: none !important; }}
+    .stApp {{ background: transparent !important; }}
+    .block-container {{ padding-top: 8vh !important; background-color: transparent !important; max-width: 100% !important; }}
+    div[data-testid="column"]:nth-of-type(2) {{
         background-color: #ffffff;
-        border-radius: 1.5rem;
-        padding: 2.5rem;
+        border-radius: 1rem;
+        padding: 2rem;
         border: 1px solid #e2e8f0;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-    .block-container { padding-top: 10vh !important; background-color: transparent !important; }
-    .stApp { background-color: transparent !important; }
+    }}
     </style>
     """, unsafe_allow_html=True)
 
-    c1, c2, c3 = st.columns([1.5, 2.5, 1.5])
+    c1, c2, c3 = st.columns([0.5, 3, 6])
     with c2:
         st.markdown("""
-            <div style="width: 100%; height: 10rem; background-color: #f1f5f9; border-radius: 1rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1;">
-               <span style="font-size: 5rem;">🌱</span>
+            <div style="width: 100%; height: 5rem; background-color: #f1f5f9; border-radius: 0.75rem; margin-bottom: 1rem; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1;">
+               <span style="font-size: 3rem;">🌱</span>
             </div>
-            <h1 style="text-align: center; color: #0f172a; font-weight: 800; font-size: 1.875rem; margin-bottom: 0.25rem;">System Authentication</h1>
-            <p style="text-align: center; color: #64748b; font-weight: 500; margin-bottom: 2rem;">Authorized Personnel Access Only</p>
+            <h1 style="text-align: center; color: #0f172a; font-weight: 800; font-size: 1.5rem; margin-bottom: 0.25rem;">System Authentication</h1>
+            <p style="text-align: center; color: #64748b; font-weight: 500; margin-bottom: 1.5rem; font-size: 0.85rem;">Authorized Personnel Access Only</p>
         """, unsafe_allow_html=True)
 
-        st.markdown('<span style="font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; display: block;">Operator ID</span>', unsafe_allow_html=True)
+        st.markdown('<span style="font-size: 0.8rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; display: block;">Operator ID</span>', unsafe_allow_html=True)
         username = st.text_input("Operator ID", label_visibility="collapsed", placeholder="Enter unique ID")
         
-        st.markdown('<span style="font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; display: block; margin-top: 1rem;">Access Code</span>', unsafe_allow_html=True)
+        st.markdown('<span style="font-size: 0.8rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; display: block; margin-top: 0.75rem;">Access Code</span>', unsafe_allow_html=True)
         password = st.text_input("Access Code", type="password", label_visibility="collapsed", placeholder="••••••••")
         
-        st.markdown('<div style="margin-bottom: 2rem;"></div>', unsafe_allow_html=True)
+        st.markdown('<div style="margin-bottom: 1.5rem;"></div>', unsafe_allow_html=True)
         
         if st.session_state.auth_mode == 'login':
             if st.button("⚡ Initiate System", type="primary", use_container_width=True):
