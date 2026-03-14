@@ -23,13 +23,10 @@ st.set_page_config(
 def local_css():
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
     :root {
         --primary: #13ec92;
-        --background-light: #f6f8f7;
-        --background-dark: #10221a;
         --slate-900: #0f172a;
         --slate-800: #1e293b;
         --slate-700: #334155;
@@ -46,7 +43,7 @@ def local_css():
     }
 
     .stApp {
-        background-color: var(--background-light);
+        background-color: #f8fafc;
     }
 
     /* Hide standard headers */
@@ -56,14 +53,10 @@ def local_css():
         padding-top: 2rem !important;
         padding-left: 2rem !important;
         padding-right: 2rem !important;
-        max-width: 1400px !important;
+        max-width: 1200px !important;
     }
 
-    /* Base Typography and Element setup */
-    p, span, div { color: var(--slate-800); }
-    h1, h2, h3, h4, h5, h6 { color: var(--slate-900); }
-    
-    /* Clean Sidebar */
+    /* Safe Sidebar */
     [data-testid="stSidebar"] {
         background-color: #ffffff;
         border-right: 1px solid var(--slate-200);
@@ -90,12 +83,7 @@ def local_css():
         align-items: center;
         justify-content: center;
         box-shadow: 0 4px 14px 0 rgba(19, 236, 146, 0.3);
-    }
-
-    .brand-icon span {
-        color: var(--slate-900);
-        font-weight: bold;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
 
     .brand-title {
@@ -113,7 +101,7 @@ def local_css():
         letter-spacing: 0.05em;
     }
 
-    /* Top Navigation Search / Profile Header styling */
+    /* Top Navigation */
     .top-header {
         display: flex;
         justify-content: space-between;
@@ -146,42 +134,21 @@ def local_css():
         color: var(--slate-500);
         border: 1px solid var(--slate-200);
         background: #fff;
-    }
-    .avatar-mockup {
-        height: 2.5rem;
-        width: 2.5rem;
-        border-radius: 9999px;
-        border: 2px solid var(--primary);
-        background-color: var(--slate-200);
-        background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop');
-        background-size: cover;
+        font-size: 1.25rem;
     }
 
-    /* Hero Component matching Google Stitch */
+    /* Hero Component safely styled */
     .hero-container {
         position: relative;
         overflow: hidden;
         border-radius: 1.5rem;
-        background-color: var(--slate-900);
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: white;
-        min-height: 320px;
+        min-height: 280px;
         display: flex;
         align-items: center;
         margin-bottom: 2.5rem;
-    }
-    .hero-bg-img {
-        position: absolute;
-        inset: 0;
-        background-image: url('https://images.unsplash.com/photo-1628186120894-325d7429188d?q=80&w=2670&auto=format&fit=crop');
-        background-size: cover;
-        background-position: center;
-        opacity: 0.4;
-        mix-blend-mode: overlay;
-    }
-    .hero-gradient {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to right, var(--slate-900) 0%, rgba(15,23,42,0.85) 50%, transparent 100%);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
     .hero-content {
         position: relative;
@@ -203,17 +170,16 @@ def local_css():
         border: 1px solid rgba(19, 236, 146, 0.3);
     }
     .hero-title {
-        font-size: 3rem;
-        font-weight: 900;
-        line-height: 1.1;
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1.2;
         margin-bottom: 1rem;
-        letter-spacing: -0.025em;
         color: white;
     }
     .hero-description {
         color: #cbd5e1;
-        font-size: 1.125rem;
-        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        margin-bottom: 0;
         line-height: 1.6;
         max-width: 40rem;
     }
@@ -231,11 +197,6 @@ def local_css():
         border-radius: 1rem;
         border: 1px solid var(--slate-200);
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
     }
     .stat-header {
         display: flex;
@@ -249,6 +210,7 @@ def local_css():
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 1.25rem;
     }
     .stat-badge {
         background-color: #dcfce7;
@@ -266,10 +228,9 @@ def local_css():
     }
     .stat-value {
         font-size: 1.875rem;
-        font-weight: 900;
+        font-weight: 800;
         color: var(--slate-900);
         line-height: 1;
-        letter-spacing: -0.025em;
     }
 
     /* Analysis Section */
@@ -285,17 +246,17 @@ def local_css():
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
     }
     .panel-header-title {
         font-size: 1.5rem;
-        font-weight: 900;
-        letter-spacing: -0.025em;
-        margin-bottom: 0.25rem;
+        font-weight: 800;
         color: var(--slate-900);
+        margin: 0 0 0.5rem 0;
     }
     .panel-header-desc {
         color: var(--slate-500);
+        font-size: 0.95rem;
         margin: 0;
     }
     .system-status {
@@ -303,183 +264,18 @@ def local_css():
         align-items: center;
         gap: 0.5rem;
     }
-    .ping-dot {
-        position: relative;
-        display: flex;
-        height: 0.75rem;
-        width: 0.75rem;
-    }
-    .ping-dot .pulse {
-        animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        border-radius: 9999px;
-        background-color: var(--primary);
-        opacity: 0.75;
-    }
-    .ping-dot .core {
-        position: relative;
-        border-radius: 9999px;
+    .system-dot {
         height: 0.75rem;
         width: 0.75rem;
         background-color: var(--primary);
+        border-radius: 9999px;
     }
     .system-text {
         font-size: 0.75rem;
         font-weight: 700;
-        color: var(--slate-400);
+        color: var(--primary);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-    }
-
-    @keyframes ping {
-      75%, 100% {
-        transform: scale(2);
-        opacity: 0;
-      }
-    }
-
-    /* Auth Screen CSS */
-    .auth-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 80vh;
-        width: 100%;
-    }
-    .auth-card {
-        background-color: #ffffff;
-        border-radius: 1.5rem;
-        padding: 0;
-        border: 1px solid var(--slate-200);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-        width: 100%;
-        max-width: 480px;
-        overflow: hidden;
-    }
-    .auth-header {
-        width: 100%;
-        height: 12rem;
-        background-image: url('https://images.unsplash.com/photo-1530836369250-ef71a3fb90e6?q=80&w=1600&auto=format&fit=crop');
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-    .auth-header::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom right, rgba(19, 236, 146, 0.2), transparent);
-    }
-    .auth-body {
-        padding: 2.5rem;
-        text-align: center;
-    }
-    .auth-title {
-        font-size: 1.875rem;
-        font-weight: 800;
-        color: var(--slate-900);
-        margin-bottom: 0.25rem;
-        letter-spacing: -0.025em;
-    }
-    .auth-subtitle {
-        color: var(--slate-500);
-        font-weight: 500;
-        margin-bottom: 2rem;
-    }
-    .auth-label {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--slate-700);
-        margin-bottom: 0.5rem;
-        display: block;
-        text-align: left;
-    }
-
-    /* Streamlit overrides for better inputs */
-    [data-baseweb="input"] {
-        border-radius: 0.75rem !important;
-        background-color: var(--slate-50) !important;
-        border: 1px solid var(--slate-200) !important;
-        transition: all 0.2s;
-    }
-    [data-baseweb="input"]:focus-within {
-        border-color: var(--primary) !important;
-        background-color: #ffffff !important;
-        box-shadow: 0 0 0 1px var(--primary) !important;
-    }
-    [data-baseweb="input"] input {
-        color: var(--slate-900) !important;
-        font-weight: 500 !important;
-    }
-
-    /* Primary and Secondary Custom Buttons */
-    .stButton > button {
-        border-radius: 0.75rem !important;
-        padding: 0.75rem 1.5rem !important;
-        font-weight: 700 !important;
-        border: none !important;
-        transition: all 0.2s !important;
-        width: 100% !important;
-    }
-    
-    .stButton > button[kind="primary"] {
-        background-color: var(--primary) !important;
-        color: var(--slate-900) !important;
-        box-shadow: 0 4px 6px -1px rgba(19, 236, 146, 0.2) !important;
-    }
-    .stButton > button[kind="primary"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(19, 236, 146, 0.3) !important;
-        background-color: #10d482 !important;
-    }
-
-    .stButton > button[kind="secondary"] {
-        background-color: var(--slate-900) !important;
-        color: #ffffff !important;
-    }
-    .stButton > button[kind="secondary"]:hover {
-        background-color: var(--slate-800) !important;
-        transform: translateY(-2px);
-    }
-    
-    .stButton > button.google-btn {
-        background-color: #ffffff !important;
-        color: var(--slate-700) !important;
-        border: 1px solid var(--slate-200) !important;
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important;
-    }
-    .stButton > button.google-btn:hover {
-        background-color: var(--slate-50) !important;
-        border-color: var(--slate-300) !important;
-        transform: none;
-    }
-
-    /* Uploader Overrides */
-    [data-testid="stFileUploader"] {
-        margin-top: 2rem;
-    }
-    [data-testid="stFileUploader"] section {
-        padding: 4rem 2rem !important;
-        border-radius: 1.5rem !important;
-        border: 2px dashed var(--slate-300) !important;
-        background-color: var(--slate-50) !important;
-        transition: all 0.2s ease;
-    }
-    [data-testid="stFileUploader"] section:hover {
-        border-color: var(--primary) !important;
-        background-color: rgba(19, 236, 146, 0.05) !important;
-    }
-    .stFileUploaderDropzoneInstructions {
-        color: var(--slate-900) !important;
-        font-weight: 700 !important;
-        font-size: 1.25rem !important;
-    }
-    [data-testid="stFileUploader"] small {
-        color: var(--slate-500) !important;
-        font-size: 1rem !important;
     }
     
     /* Result styling */
@@ -507,7 +303,7 @@ def local_css():
         border-left: 4px solid var(--primary);
         padding: 1.5rem;
         border-radius: 0.75rem;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
     }
     .treatment-title {
         font-size: 0.875rem;
@@ -523,7 +319,6 @@ def local_css():
         margin: 0;
     }
     
-    /* Progress layout */
     .progress-bar {
         width: 100%;
         height: 0.5rem;
@@ -537,6 +332,14 @@ def local_css():
         border-radius: 9999px;
         transition: width 1s ease-in-out;
     }
+    
+    /* Clean up streamlit UI elements slightly without breaking them */
+    div[data-testid="stFileUploader"] {
+        background-color: var(--slate-50);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        border: 1px dashed var(--slate-300);
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -549,17 +352,36 @@ if 'analysis_count' not in st.session_state:
 local_css()
 
 def show_login():
+    # Inject CSS specific to the login page column to make it a unified card without relying on unclosed markdown tags
     st.markdown("""
-    <div class="auth-wrapper">
-        <div class="auth-card">
-            <div class="auth-header"></div>
-            <div class="auth-body">
-                <h1 class="auth-title">System Authentication</h1>
-                <p class="auth-subtitle">Authorized Personnel Access Only</p>
+    <style>
+    /* Specifically target the center column in the login view to act as the rounded white card */
+    div[data-testid="column"]:nth-of-type(2) {
+        background-color: #ffffff;
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        border: 1px solid var(--slate-200);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Vertically center the view */
+    .block-container {
+        padding-top: 10vh !important;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
-    c1, c2, c3 = st.columns([1, 4, 1])
+    c1, c2, c3 = st.columns([1.5, 2.5, 1.5]) # Adjusted proportions for a nice center block
     with c2:
+        # Header graphic and Titles rendered cleanly inside the column
+        st.markdown("""
+            <div style="width: 100%; height: 10rem; background-image: url('https://images.unsplash.com/photo-1530836369250-ef71a3fb90e6?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; border-radius: 1rem; margin-bottom: 1.5rem; position: relative; overflow: hidden;">
+               <div style="position: absolute; inset: 0; background: linear-gradient(to bottom right, rgba(19, 236, 146, 0.2), transparent);"></div>
+            </div>
+            <h1 class="auth-title">System Authentication</h1>
+            <p class="auth-subtitle">Authorized Personnel Access Only</p>
+        """, unsafe_allow_html=True)
+
         st.markdown('<span class="auth-label">Operator ID</span>', unsafe_allow_html=True)
         username = st.text_input("Operator ID", label_visibility="collapsed", placeholder="Enter unique ID")
         
@@ -578,7 +400,7 @@ def show_login():
         st.markdown("""
             <div style="display: flex; align-items: center; justify-content: center; margin: 1.5rem 0;">
                 <div style="height: 1px; flex-grow: 1; background-color: #e2e8f0;"></div>
-                <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 1rem; font-weight: 600;">or secure login via</span>
+                <span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 1rem; font-weight: 700;">or secure login via</span>
                 <div style="height: 1px; flex-grow: 1; background-color: #e2e8f0;"></div>
             </div>
         """, unsafe_allow_html=True)
@@ -589,14 +411,11 @@ def show_login():
             st.session_state.logged_in = True
             st.rerun()
 
-    st.markdown("""
+        st.markdown("""
+            <div style="text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 2rem; line-height: 1.5;">
+                This system is monitored for security purposes. Unauthorized access attempts are logged and reported to the Bio-Security Department.
             </div>
-        </div>
-        <div style="text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 1.5rem; max-width: 400px; line-height: 1.5;">
-            This system is monitored for security purposes. Unauthorized access attempts are logged and reported to the Bio-Security Department.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 
 @st.cache_resource(show_spinner=False)
@@ -629,7 +448,7 @@ def show_dashboard():
         st.markdown("""
         <div class="brand-container">
             <div class="brand-icon">
-                <span class="material-symbols-outlined" style="color:var(--slate-900);">potted_plant</span>
+                🌱
             </div>
             <div>
                 <div class="brand-title">Plant Savior</div>
@@ -662,12 +481,12 @@ def show_dashboard():
     st.markdown("""
     <div class="top-header">
         <div class="search-mockup">
-            <span class="material-symbols-outlined" style="color: var(--slate-400); font-size: 1.25rem;">search</span>
+            🔍
             <span style="color: var(--slate-400); font-size: 0.875rem;">Search crops, diseases, or reports...</span>
         </div>
         <div class="profile-icons">
             <div class="notification-btn">
-                <span class="material-symbols-outlined" style="font-size: 1.25rem;">notifications</span>
+                🔔
             </div>
             <div class="avatar-mockup"></div>
         </div>
@@ -677,8 +496,6 @@ def show_dashboard():
     # Hero Banner Container
     st.markdown("""
     <div class="hero-container">
-        <div class="hero-bg-img"></div>
-        <div class="hero-gradient"></div>
         <div class="hero-content">
             <div class="hero-badge">Next-Gen Farming</div>
             <h1 class="hero-title">Empowering Global Agriculture with AI</h1>
@@ -694,7 +511,7 @@ def show_dashboard():
         st.markdown("""
         <div class="stat-card">
             <div class="stat-header">
-                <div class="stat-icon" style="background-color: #eff6ff; color: #3b82f6;"><span class="material-symbols-outlined">verified</span></div>
+                <div class="stat-icon" style="background-color: #eff6ff; color: #3b82f6;">🎯</div>
                 <div class="stat-badge">+0.5%</div>
             </div>
             <div class="stat-label">Accuracy</div>
@@ -705,7 +522,7 @@ def show_dashboard():
         st.markdown("""
         <div class="stat-card">
             <div class="stat-header">
-                <div class="stat-icon" style="background-color: rgba(19,236,146,0.1); color: var(--primary);"><span class="material-symbols-outlined">psychology</span></div>
+                <div class="stat-icon" style="background-color: rgba(19,236,146,0.1); color: var(--primary);">🧠</div>
                 <div class="stat-badge">+2 New</div>
             </div>
             <div class="stat-label">Plant Diseases</div>
@@ -716,7 +533,7 @@ def show_dashboard():
         st.markdown("""
         <div class="stat-card">
             <div class="stat-header">
-                <div class="stat-icon" style="background-color: #fff7ed; color: #f97316;"><span class="material-symbols-outlined">speed</span></div>
+                <div class="stat-icon" style="background-color: #fff7ed; color: #f97316;">⚡</div>
                 <div class="stat-badge">-0.2s</div>
             </div>
             <div class="stat-label">Analysis Time</div>
@@ -734,10 +551,7 @@ def show_dashboard():
                 <p class="panel-header-desc">Identify diseases and nutrient deficiencies instantly</p>
             </div>
             <div class="system-status">
-                <div class="ping-dot">
-                    <span class="pulse"></span>
-                    <span class="core"></span>
-                </div>
+                <div class="system-dot"></div>
                 <span class="system-text">System Active</span>
             </div>
         </div>
@@ -779,14 +593,13 @@ def show_dashboard():
                             d_name = disease.replace('_', ' ').title()
                             
                             pill_class = 'healthy' if is_healthy else 'disease'
-                            pill_icon = 'check_circle' if is_healthy else 'warning'
+                            pill_icon = '✅' if is_healthy else '⚠️'
                             pill_msg = 'Healthy Plant' if is_healthy else 'Disease Detected'
                             
                             st.markdown(f"""
                             <div style="background-color: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1rem; padding: 1.5rem;">
                                 <div class="result-pill {pill_class}">
-                                    <span class="material-symbols-outlined" style="font-size: 1.125rem;">{pill_icon}</span>
-                                    {pill_msg}
+                                    {pill_icon} {pill_msg}
                                 </div>
                                 <h2 style="font-size: 1.5rem; font-weight: 900; color: var(--slate-900); margin-bottom: 0.5rem;">{d_name}</h2>
                                 <p style="color: var(--slate-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Analysis #{st.session_state.analysis_count} via Advanced CNN v2.1</p>
