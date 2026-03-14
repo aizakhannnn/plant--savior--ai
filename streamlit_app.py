@@ -316,17 +316,17 @@ def show_login():
         </video>
     </div>
     <style>
-    [data-testid="stAppViewContainer"] {{ background: transparent !important; background-color: transparent !important; }}
-    [data-testid="stHeader"] {{ background: transparent !important; display: none !important; }}
-    .stApp {{ background: transparent !important; }}
-    .block-container {{ padding-top: 8vh !important; background-color: transparent !important; max-width: 100% !important; }}
-    div[data-testid="column"]:nth-of-type(2) {{
+    [data-testid="stAppViewContainer"] { background: transparent !important; background-color: transparent !important; }
+    [data-testid="stHeader"] { background: transparent !important; display: none !important; }
+    .stApp { background: transparent !important; }
+    .block-container { padding-top: 8vh !important; background-color: transparent !important; max-width: 100% !important; }
+    div[data-testid="column"]:nth-of-type(2) {
         background-color: #ffffff;
         border-radius: 1rem;
         padding: 2rem;
         border: 1px solid #e2e8f0;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }}
+    }
     </style>
     """, unsafe_allow_html=True)
 
