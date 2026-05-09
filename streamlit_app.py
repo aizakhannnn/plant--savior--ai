@@ -10,6 +10,21 @@ import base64
 from io import BytesIO
 import time
 
+# --- CRITICAL FIX FOR STREAMLIT CLOUD ---
+# Streamlit Cloud caches the broken OpenCV GUI version that Ultralytics installs.
+# This script forcefully uninstalls the broken one and installs the headless one
+# at runtime, completely bypassing the need for a packages.txt file or cache clearing.
+import subprocess
+import sys
+try:
+    import cv2
+    # Test if it actually works
+    cv2.Mat
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-python-headless"])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "opencv-python-headless"])
+    import cv2
+
 from ultralytics import YOLO
 
 # Cache the YOLO classifier so it loads only once
