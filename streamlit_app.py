@@ -10,14 +10,14 @@ import base64
 from io import BytesIO
 import time
 
-from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
+from ultralytics import YOLO
 
-# Cache the ImageNet classifier so it loads only once
+# Cache the YOLO classifier so it loads only once
 @st.cache_resource(show_spinner=False)
-def load_imagenet_checker():
-    return MobileNetV2(weights='imagenet', include_top=True)
+def load_yolo_classifier():
+    return YOLO('yolov8n-cls.pt')
 
-# Plant/leaf related ImageNet class names and keywords
+# Plant/leaf related ImageNet class keywords
 PLANT_KEYWORDS = [
     'cabbage', 'broccoli', 'cauliflower', 'zucchini', 'squash',
     'cucumber', 'artichoke', 'pepper', 'bell_pepper', 'cardoon',
@@ -33,22 +33,22 @@ PLANT_KEYWORDS = [
 ]
 
 def is_leaf_image(img_path):
-    """Use MobileNetV2 (ImageNet) to classify the image.
+    """Use YOLO classifier (ImageNet 1000 classes) to verify image is a plant/leaf.
     Returns True only if any of the top 10 predictions match plant/leaf keywords.
-    This blocks humans, animals, vehicles, cartoons, electronics, etc."""
+    Blocks humans, animals, vehicles, cartoons, electronics, etc."""
     try:
-        checker = load_imagenet_checker()
-        img = load_img(img_path, target_size=(224, 224))
-        x = img_to_array(img)
-        x = np.expand_dims(x, axis=0)
-        x = preprocess_input(x.copy())
-        preds = checker.predict(x, verbose=0)
-        decoded = decode_predictions(preds, top=10)[0]
+        model = load_yolo_classifier()
+        results = model(img_path, verbose=False)
+        probs = results[0].probs
+        names = results[0].names
 
-        for _, label, conf in decoded:
-            label_lower = label.lower()
+        # Get top 10 prediction indices
+        top_indices = probs.data.topk(10).indices.tolist()
+
+        for idx in top_indices:
+            label = names[idx].lower()
             for keyword in PLANT_KEYWORDS:
-                if keyword in label_lower:
+                if keyword in label:
                     return True
         return False
     except Exception:
