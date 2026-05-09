@@ -18,7 +18,7 @@ import subprocess
 import sys
 try:
     import cv2
-    cv2.Mat
+    _ = cv2.Mat
 except ImportError:
     # Use force-reinstall to overwrite the broken cv2 binaries without triggering pip uninstall permission errors
     subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps"], check=False)
