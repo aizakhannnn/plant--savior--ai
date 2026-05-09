@@ -18,11 +18,10 @@ import subprocess
 import sys
 try:
     import cv2
-    # Test if it actually works
     cv2.Mat
 except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-python-headless"])
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "opencv-python-headless"])
+    # Use force-reinstall to overwrite the broken cv2 binaries without triggering pip uninstall permission errors
+    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps"], check=False)
     import cv2
 
 from ultralytics import YOLO
