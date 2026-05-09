@@ -4,5 +4,5 @@ numpy
 Pillow
 google-auth-oauthlib
 google-auth
-ultralytics
 opencv-python-headless
+ultralytics
