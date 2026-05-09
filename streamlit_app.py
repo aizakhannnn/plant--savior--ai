@@ -1,4 +1,4 @@
-﻿# streamlit_app.py
+# streamlit_app.py
 import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
@@ -9,6 +9,21 @@ import os
 import base64
 from io import BytesIO
 import time
+
+def is_leaf_image(img_path):
+    try:
+        img = Image.open(img_path).convert('HSV')
+        img_array = np.array(img)
+        H = img_array[:,:,0]
+        S = img_array[:,:,1]
+        V = img_array[:,:,2]
+        # Check for green/yellow/brown plant colors
+        leaf_mask = ((H > 10) & (H < 150)) & (S > 30) & (V > 30)
+        ratio = np.mean(leaf_mask)
+        return ratio > 0.05
+    except Exception:
+        return False
+
 # Set page configuration
 st.set_page_config(
     page_title="Plant Savior AI - Advanced Plant Disease Detection",
@@ -51,10 +66,10 @@ st.markdown("""
         width: 100%;
         height: 100%;
         background-image: 
-            radial-gradient(2px 2px at 20px 30px, rgba(0, 245, 255, 0.3), transparent),
-            radial-gradient(2px 2px at 40px 70px, rgba(252, 0, 255, 0.2), transparent),
-            radial-gradient(1px 1px at 90px 40px, rgba(0, 201, 255, 0.4), transparent),
-            radial-gradient(1px 1px at 130px 80px, rgba(255, 45, 149, 0.3), transparent);
+            radial-gradient(2px 2px at 20px 30px, rgba(57, 255, 20, 0.3), transparent),
+            radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 0, 0.2), transparent),
+            radial-gradient(1px 1px at 90px 40px, rgba(57, 255, 20, 0.4), transparent),
+            radial-gradient(1px 1px at 130px 80px, rgba(57, 255, 20, 0.3), transparent);
         background-repeat: repeat;
         background-size: 150px 150px;
         animation: particleFloat 20s linear infinite;
@@ -69,29 +84,29 @@ st.markdown("""
     }
     /* Header Styles - Enhanced Cyberpunk */
     .main-header {
-        background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
         padding: 4rem 2rem;
         border-radius: 0;
         color: white;
         text-align: center;
         margin-bottom: 3rem;
         box-shadow: 
-            0 0 50px rgba(30, 96, 196, 0.8),
-            0 0 100px rgba(0, 201, 255, 0.4),
+            0 0 50px rgba(34, 139, 34, 0.8),
+            0 0 100px rgba(57, 255, 20, 0.4),
             inset 0 0 50px rgba(255, 255, 255, 0.1);
         position: relative;
         overflow: hidden;
-        border-bottom: 4px solid #00f5ff;
+        border-bottom: 4px solid #39ff14;
         animation: headerPulse 4s infinite;
     }
     @keyframes headerPulse {
         0%, 100% { 
-            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5),
-                       0 0 60px rgba(252, 0, 255, 0.3);
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.5),
+                       0 0 60px rgba(0, 255, 0, 0.3);
         }
         50% { 
-            box-shadow: 0 0 50px rgba(0, 245, 255, 0.9),
-                       0 0 100px rgba(252, 0, 255, 0.6);
+            box-shadow: 0 0 50px rgba(57, 255, 20, 0.9),
+                       0 0 100px rgba(0, 255, 0, 0.6);
         }
     }
     .main-header::before {
@@ -113,9 +128,9 @@ st.markdown("""
         font-weight: 900;
         margin-bottom: 1rem;
         text-shadow: 
-            0 0 10px rgba(0, 245, 255, 0.8),
-            0 0 20px rgba(252, 0, 255, 0.6),
-            0 0 30px rgba(0, 201, 255, 0.4);
+            0 0 10px rgba(57, 255, 20, 0.8),
+            0 0 20px rgba(0, 255, 0, 0.6),
+            0 0 30px rgba(57, 255, 20, 0.4);
         color: white;
         animation: logoGlow 3s infinite alternate;
         position: relative;
@@ -123,11 +138,11 @@ st.markdown("""
     }
     @keyframes logoGlow {
         from { 
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00dbde, 0 0 20px #00dbde;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #39ff14, 0 0 20px #39ff14;
             transform: scale(1);
         }
         to { 
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fc00ff, 0 0 40px #fc00ff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00ff00, 0 0 40px #00ff00;
             transform: scale(1.05);
         }
     }
@@ -138,7 +153,7 @@ st.markdown("""
         max-width: 1000px;
         margin: 0 auto;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-        color: #e0f7ff;
+        color: #e0ffe0;
         position: relative;
         z-index: 2;
         animation: taglinePulse 4s infinite;
@@ -162,7 +177,7 @@ st.markdown("""
         padding: 2.5rem;
         text-align: center;
         min-width: 200px;
-        border: 1px solid rgba(0, 245, 255, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.3);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         transition: all 0.4s ease;
         position: relative;
@@ -175,7 +190,7 @@ st.markdown("""
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
         transition: left 0.8s ease;
     }
     .stat-card:hover::before {
@@ -183,19 +198,19 @@ st.markdown("""
     }
     .stat-card:hover {
         transform: translateY(-10px) scale(1.05);
-        box-shadow: 0 15px 40px rgba(0, 197, 255, 0.4);
-        border: 1px solid rgba(0, 245, 255, 0.6);
+        box-shadow: 0 15px 40px rgba(57, 255, 20, 0.4);
+        border: 1px solid rgba(57, 255, 20, 0.6);
     }
     .stat-value {
         font-size: 3.5rem;
         font-weight: 900;
-        color: #00f5ff;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        color: #39ff14;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         margin-bottom: 0.5rem;
         font-family: 'Orbitron', sans-serif;
     }
     .stat-label {
-        color: #c0d8ff;
+        color: #d8ffc0;
         font-size: 1.2rem;
         font-weight: 600;
         text-transform: uppercase;
@@ -224,14 +239,14 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.6), transparent);
+        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.6), transparent);
     }
     .glass-container:hover {
         transform: translateY(-8px);
         box-shadow: 
-            0 15px 50px rgba(0, 197, 255, 0.3),
-            0 5px 20px rgba(252, 0, 255, 0.2);
-        border: 1px solid rgba(0, 197, 255, 0.4);
+            0 15px 50px rgba(57, 255, 20, 0.3),
+            0 5px 20px rgba(0, 255, 0, 0.2);
+        border: 1px solid rgba(57, 255, 20, 0.4);
     }
     /* How It Works Section - Enhanced */
     .how-it-works {
@@ -240,21 +255,21 @@ st.markdown("""
         border-radius: 25px;
         padding: 4rem;
         margin-bottom: 3rem;
-        border: 1px solid rgba(0, 197, 255, 0.25);
+        border: 1px solid rgba(57, 255, 20, 0.25);
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
         position: relative;
     }
     .section-title {
-        color: #00f5ff;
+        color: #39ff14;
         text-align: center;
         font-size: 3.2rem;
         margin-bottom: 3rem;
         font-weight: 900;
         text-shadow: 
-            0 0 15px rgba(0, 245, 255, 0.8),
-            0 0 30px rgba(0, 245, 255, 0.4);
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4);
         position: relative;
         display: inline-block;
         left: 50%;
@@ -263,12 +278,12 @@ st.markdown("""
     }
     @keyframes titleGlow {
         from { 
-            text-shadow: 0 0 10px rgba(0, 245, 255, 0.6),
-                        0 0 20px rgba(0, 245, 255, 0.4);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.6),
+                        0 0 20px rgba(57, 255, 20, 0.4);
         }
         to { 
-            text-shadow: 0 0 20px rgba(0, 245, 255, 1),
-                        0 0 40px rgba(0, 245, 255, 0.6);
+            text-shadow: 0 0 20px rgba(57, 255, 20, 1),
+                        0 0 40px rgba(57, 255, 20, 0.6);
         }
     }
     .section-title::after {
@@ -279,7 +294,7 @@ st.markdown("""
         transform: translateX(-50%);
         width: 150px;
         height: 4px;
-        background: linear-gradient(90deg, transparent, #00f5ff, #fc00ff, #00f5ff, transparent);
+        background: linear-gradient(90deg, transparent, #39ff14, #00ff00, #39ff14, transparent);
         border-radius: 2px;
         animation: underlineFlow 3s infinite;
     }
@@ -305,7 +320,7 @@ st.markdown("""
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
         transition: all 0.5s ease;
-        border: 1px solid rgba(0, 197, 255, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.3);
         backdrop-filter: blur(10px);
         position: relative;
         overflow: hidden;
@@ -317,7 +332,7 @@ st.markdown("""
         left: 0;
         width: 100%;
         height: 5px;
-        background: linear-gradient(90deg, #00c9ff, #fc00ff, #00c9ff);
+        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
         background-size: 200% 100%;
         animation: borderFlow 3s linear infinite;
     }
@@ -328,14 +343,14 @@ st.markdown("""
     .step-card:hover {
         transform: translateY(-15px) scale(1.05);
         box-shadow: 
-            0 20px 60px rgba(0, 197, 255, 0.5),
-            0 10px 30px rgba(252, 0, 255, 0.3);
-        border: 1px solid rgba(0, 245, 255, 0.7);
+            0 20px 60px rgba(57, 255, 20, 0.5),
+            0 10px 30px rgba(0, 255, 0, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.7);
     }
     .step-number {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
         color: white;
         border-radius: 50%;
         display: flex;
@@ -345,8 +360,8 @@ st.markdown("""
         font-weight: 900;
         font-size: 2rem;
         box-shadow: 
-            0 0 20px rgba(0, 197, 255, 0.6),
-            0 0 40px rgba(252, 0, 255, 0.3);
+            0 0 20px rgba(57, 255, 20, 0.6),
+            0 0 40px rgba(0, 255, 0, 0.3);
         border: 3px solid rgba(255, 255, 255, 0.2);
         animation: numberPulse 2s infinite;
     }
@@ -357,8 +372,8 @@ st.markdown("""
     .step-icon {
         font-size: 4rem;
         margin-bottom: 2rem;
-        color: #00f5ff;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        color: #39ff14;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         animation: iconFloat 4s ease-in-out infinite;
     }
     @keyframes iconFloat {
@@ -366,16 +381,16 @@ st.markdown("""
         50% { transform: translateY(-10px); }
     }
     .step-title {
-        color: #00f5ff;
+        color: #39ff14;
         font-size: 1.8rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
-        text-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
         text-transform: uppercase;
         letter-spacing: 1px;
     }
     .step-description {
-        color: #c0d8ff;
+        color: #d8ffc0;
         font-size: 1.1rem;
         line-height: 1.6;
         font-weight: 400;
@@ -387,18 +402,18 @@ st.markdown("""
         border-radius: 25px;
         padding: 4rem;
         margin-bottom: 3rem;
-        border: 1px solid rgba(0, 197, 255, 0.25);
+        border: 1px solid rgba(57, 255, 20, 0.25);
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .upload-title {
-        color: #00f5ff;
+        color: #39ff14;
         text-align: center;
         font-size: 2.8rem;
         margin-bottom: 3rem;
         font-weight: 800;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         text-transform: uppercase;
         letter-spacing: 2px;
     }
@@ -415,7 +430,7 @@ st.markdown("""
         position: relative;
         overflow: hidden;
         box-shadow: 
-            0 0 30px rgba(0, 197, 255, 0.3),
+            0 0 30px rgba(57, 255, 20, 0.3),
             inset 0 0 30px rgba(0, 0, 0, 0.2);
     }
     .drop-zone::before {
@@ -425,7 +440,7 @@ st.markdown("""
         left: -5px;
         right: -5px;
         bottom: -5px;
-        background: linear-gradient(45deg, #00c9ff, #1e60c4, #fc00ff, #00c9ff, #1e60c4);
+        background: linear-gradient(45deg, #39ff14, #228b22, #00ff00, #39ff14, #228b22);
         background-size: 600% 600%;
         animation: borderAnimation 4s ease infinite;
         z-index: -1;
@@ -449,31 +464,31 @@ st.markdown("""
     .drop-zone:hover {
         transform: scale(1.02);
         box-shadow: 
-            0 0 50px rgba(0, 197, 255, 0.5),
-            inset 0 0 50px rgba(0, 197, 255, 0.1);
+            0 0 50px rgba(57, 255, 20, 0.5),
+            inset 0 0 50px rgba(57, 255, 20, 0.1);
     }
     .upload-icon {
         font-size: 6rem;
-        color: #00f5ff;
+        color: #39ff14;
         margin-bottom: 2rem;
         text-shadow: 
-            0 0 20px rgba(0, 245, 255, 0.8),
-            0 0 40px rgba(0, 245, 255, 0.4);
+            0 0 20px rgba(57, 255, 20, 0.8),
+            0 0 40px rgba(57, 255, 20, 0.4);
         animation: iconPulse 3s ease-in-out infinite;
     }
     @keyframes iconPulse {
         0%, 100% { 
             transform: scale(1) translateY(0px);
-            text-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
         }
         50% { 
             transform: scale(1.1) translateY(-5px);
-            text-shadow: 0 0 30px rgba(0, 245, 255, 1);
+            text-shadow: 0 0 30px rgba(57, 255, 20, 1);
         }
     }
     .drop-text {
         font-size: 1.8rem;
-        color: #e0f7ff;
+        color: #e0ffe0;
         margin-bottom: 1.5rem;
         font-weight: 600;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
@@ -481,13 +496,13 @@ st.markdown("""
         letter-spacing: 1px;
     }
     .file-types {
-        color: #a0d0ff;
+        color: #c0ffc0;
         font-size: 1.2rem;
         margin-bottom: 2.5rem;
         font-weight: 500;
     }
     .browse-button {
-        background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
         color: white;
         border: none;
         padding: 1.5rem 3rem;
@@ -497,8 +512,8 @@ st.markdown("""
         font-weight: 700;
         transition: all 0.4s ease;
         box-shadow: 
-            0 0 25px rgba(0, 197, 255, 0.6),
-            0 0 50px rgba(252, 0, 255, 0.3);
+            0 0 25px rgba(57, 255, 20, 0.6),
+            0 0 50px rgba(0, 255, 0, 0.3);
         text-transform: uppercase;
         letter-spacing: 2px;
         border: 2px solid rgba(255, 255, 255, 0.2);
@@ -521,8 +536,8 @@ st.markdown("""
     .browse-button:hover {
         transform: translateY(-3px) scale(1.05);
         box-shadow: 
-            0 15px 35px rgba(0, 197, 255, 0.8),
-            0 5px 15px rgba(252, 0, 255, 0.6);
+            0 15px 35px rgba(57, 255, 20, 0.8),
+            0 5px 15px rgba(0, 255, 0, 0.6);
     }
     /* Analysis Section - Enhanced */
     .analysis-section {
@@ -541,22 +556,22 @@ st.markdown("""
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(0, 197, 255, 0.25);
+        border: 1px solid rgba(57, 255, 20, 0.25);
         transition: all 0.4s ease;
     }
     .image-preview-container:hover, .results-container:hover {
         transform: translateY(-5px);
         box-shadow: 
-            0 15px 50px rgba(0, 197, 255, 0.3),
+            0 15px 50px rgba(57, 255, 20, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
     .section-subtitle {
-        color: #00f5ff;
+        color: #39ff14;
         font-size: 2.2rem;
         margin-bottom: 2.5rem;
         font-weight: 700;
         text-align: center;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         text-transform: uppercase;
         letter-spacing: 1px;
     }
@@ -566,16 +581,16 @@ st.markdown("""
         object-fit: contain;
         border-radius: 20px;
         box-shadow: 
-            0 0 30px rgba(0, 197, 255, 0.4),
-            0 0 60px rgba(252, 0, 255, 0.2);
-        border: 3px solid rgba(0, 245, 255, 0.4);
+            0 0 30px rgba(57, 255, 20, 0.4),
+            0 0 60px rgba(0, 255, 0, 0.2);
+        border: 3px solid rgba(57, 255, 20, 0.4);
         transition: all 0.4s ease;
     }
     .preview-image:hover {
         transform: scale(1.02);
         box-shadow: 
-            0 0 40px rgba(0, 197, 255, 0.6),
-            0 0 80px rgba(252, 0, 255, 0.3);
+            0 0 40px rgba(57, 255, 20, 0.6),
+            0 0 80px rgba(0, 255, 0, 0.3);
     }
     /* Loading Animation - Enhanced */
     .loading-container {
@@ -585,15 +600,15 @@ st.markdown("""
     .spinner {
         width: 100px;
         height: 100px;
-        border: 6px solid rgba(0, 197, 255, 0.3);
-        border-top: 6px solid #00f5ff;
-        border-right: 6px solid #fc00ff;
+        border: 6px solid rgba(57, 255, 20, 0.3);
+        border-top: 6px solid #39ff14;
+        border-right: 6px solid #00ff00;
         border-radius: 50%;
         animation: multiSpin 1.5s linear infinite;
         margin: 0 auto 2.5rem;
         box-shadow: 
-            0 0 30px rgba(0, 245, 255, 0.6),
-            inset 0 0 30px rgba(0, 245, 255, 0.2);
+            0 0 30px rgba(57, 255, 20, 0.6),
+            inset 0 0 30px rgba(57, 255, 20, 0.2);
         position: relative;
     }
     .spinner::before {
@@ -604,7 +619,7 @@ st.markdown("""
         right: 10px;
         bottom: 10px;
         border: 3px solid transparent;
-        border-top: 3px solid rgba(252, 0, 255, 0.6);
+        border-top: 3px solid rgba(0, 255, 0, 0.6);
         border-radius: 50%;
         animation: multiSpin 1s linear infinite reverse;
     }
@@ -614,9 +629,9 @@ st.markdown("""
     }
     .loading-text {
         font-size: 1.8rem;
-        color: #00f5ff;
+        color: #39ff14;
         font-weight: 700;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         margin-bottom: 1rem;
         animation: textPulse 2s infinite;
     }
@@ -625,7 +640,7 @@ st.markdown("""
         50% { opacity: 1; }
     }
     .loading-subtext {
-        color: #a0d0ff;
+        color: #c0ffc0;
         margin-top: 1rem;
         font-size: 1.2rem;
         font-weight: 500;
@@ -638,7 +653,7 @@ st.markdown("""
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(0, 197, 255, 0.4);
+        border: 1px solid rgba(57, 255, 20, 0.4);
         backdrop-filter: blur(10px);
         animation: cardSlideIn 0.8s ease-out;
     }
@@ -657,7 +672,7 @@ st.markdown("""
         padding: 2rem;
         border-radius: 15px;
         background: rgba(0, 20, 40, 0.6);
-        border: 1px solid rgba(0, 197, 255, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.3);
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
@@ -669,7 +684,7 @@ st.markdown("""
         left: 0;
         width: 100%;
         height: 2px;
-        background: linear-gradient(90deg, #00c9ff, #fc00ff);
+        background: linear-gradient(90deg, #39ff14, #00ff00);
         animation: resultGlow 3s infinite;
     }
     @keyframes resultGlow {
@@ -678,17 +693,17 @@ st.markdown("""
     }
     .result-item:hover {
         transform: translateX(10px);
-        box-shadow: 0 5px 20px rgba(0, 197, 255, 0.3);
+        box-shadow: 0 5px 20px rgba(57, 255, 20, 0.3);
     }
     .result-title {
-        color: #00f5ff;
+        color: #39ff14;
         font-size: 1.6rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
         gap: 1rem;
-        text-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
         text-transform: uppercase;
         letter-spacing: 1px;
     }
@@ -696,11 +711,11 @@ st.markdown("""
         font-size: 2.2rem;
         font-weight: 900;
         color: #ffffff;
-        background: linear-gradient(45deg, #00dbde, #fc00ff, #00c9ff);
+        background: linear-gradient(45deg, #39ff14, #00ff00, #39ff14);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        text-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         text-align: center;
         margin: 1.5rem 0;
         animation: diseaseGlow 2s infinite alternate;
@@ -726,7 +741,7 @@ st.markdown("""
         justify-content: space-between;
         margin-bottom: 1rem;
         font-weight: 600;
-        color: #e0f7ff;
+        color: #e0ffe0;
         font-size: 1.1rem;
     }
     .progress-bar-bg {
@@ -737,8 +752,8 @@ st.markdown("""
         overflow: hidden;
         box-shadow: 
             inset 0 0 15px rgba(0, 0, 0, 0.6),
-            0 0 10px rgba(0, 197, 255, 0.3);
-        border: 2px solid rgba(0, 197, 255, 0.4);
+            0 0 10px rgba(57, 255, 20, 0.3);
+        border: 2px solid rgba(57, 255, 20, 0.4);
         position: relative;
     }
     .progress-bar-bg::before {
@@ -749,11 +764,11 @@ st.markdown("""
         right: 0;
         bottom: 0;
         background: linear-gradient(45deg, 
-            rgba(0, 197, 255, 0.1) 25%, 
+            rgba(57, 255, 20, 0.1) 25%, 
             transparent, 
             transparent 50%, 
-            rgba(0, 197, 255, 0.1) 50%, 
-            rgba(0, 197, 255, 0.1) 75%, 
+            rgba(57, 255, 20, 0.1) 50%, 
+            rgba(57, 255, 20, 0.1) 75%, 
             transparent);
         background-size: 20px 20px;
         animation: progressPattern 2s linear infinite;
@@ -764,12 +779,12 @@ st.markdown("""
     }
     .progress-bar-fill {
         height: 100%;
-        background: linear-gradient(90deg, #00c9ff, #1e60c4, #fc00ff, #00f5ff);
+        background: linear-gradient(90deg, #39ff14, #228b22, #00ff00, #39ff14);
         background-size: 200% 100%;
         border-radius: 15px;
         transition: width 2s ease-in-out;
         box-shadow: 
-            0 0 20px rgba(0, 245, 255, 0.8),
+            0 0 20px rgba(57, 255, 20, 0.8),
             inset 0 2px 10px rgba(255, 255, 255, 0.3);
         position: relative;
         animation: progressFlow 3s linear infinite;
@@ -797,22 +812,22 @@ st.markdown("""
     }
     .confidence-text {
         font-weight: 900;
-        color: #00f5ff;
-        text-shadow: 0 0 10px rgba(0, 245, 255, 0.8);
+        color: #39ff14;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
         font-size: 1.4rem;
         font-family: 'Orbitron', sans-serif;
     }
     /* Treatment Box - Enhanced */
     .treatment-box {
         background: rgba(0, 40, 80, 0.7);
-        border-left: 6px solid #00f5ff;
+        border-left: 6px solid #39ff14;
         border-radius: 15px;
         padding: 2.5rem;
         margin-top: 1.5rem;
         box-shadow: 
-            0 0 20px rgba(0, 197, 255, 0.4),
+            0 0 20px rgba(57, 255, 20, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(0, 197, 255, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.3);
         position: relative;
         overflow: hidden;
     }
@@ -823,7 +838,7 @@ st.markdown("""
         left: 0;
         width: 6px;
         height: 100%;
-        background: linear-gradient(180deg, #00c9ff, #fc00ff, #00f5ff);
+        background: linear-gradient(180deg, #39ff14, #00ff00, #39ff14);
         animation: treatmentGlow 3s infinite;
     }
     @keyframes treatmentGlow {
@@ -832,7 +847,7 @@ st.markdown("""
     }
     .treatment-text {
         line-height: 1.8;
-        color: #e0f7ff;
+        color: #e0ffe0;
         font-size: 1.2rem;
         font-weight: 500;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
@@ -855,11 +870,11 @@ st.markdown("""
         backdrop-filter: blur(10px);
     }
     .analyze-button {
-        background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
         color: white;
         box-shadow: 
-            0 0 30px rgba(0, 197, 255, 0.6),
-            0 0 60px rgba(252, 0, 255, 0.3);
+            0 0 30px rgba(57, 255, 20, 0.6),
+            0 0 60px rgba(0, 255, 0, 0.3);
         border: 2px solid rgba(255, 255, 255, 0.2);
     }
     .analyze-button::before {
@@ -881,22 +896,22 @@ st.markdown("""
     .analyze-button:hover {
         transform: translateY(-8px) scale(1.02);
         box-shadow: 
-            0 15px 40px rgba(0, 197, 255, 0.8),
-            0 5px 20px rgba(252, 0, 255, 0.6);
+            0 15px 40px rgba(57, 255, 20, 0.8),
+            0 5px 20px rgba(0, 255, 0, 0.6);
     }
     .reset-button {
-        background: linear-gradient(135deg, #ff2d95 0%, #b30062 50%, #ff6b35 100%);
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
         color: white;
         box-shadow: 
-            0 0 25px rgba(255, 45, 149, 0.5),
-            0 0 50px rgba(179, 0, 98, 0.3);
-        border: 2px solid rgba(255, 45, 149, 0.3);
+            0 0 25px rgba(57, 255, 20, 0.5),
+            0 0 50px rgba(34, 139, 34, 0.3);
+        border: 2px solid rgba(57, 255, 20, 0.3);
     }
     .reset-button:hover {
         transform: translateY(-5px) scale(1.02);
         box-shadow: 
-            0 12px 30px rgba(255, 45, 149, 0.7),
-            0 5px 15px rgba(179, 0, 98, 0.5);
+            0 12px 30px rgba(57, 255, 20, 0.7),
+            0 5px 15px rgba(34, 139, 34, 0.5);
     }
     .analyze-button:disabled {
         background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
@@ -909,21 +924,21 @@ st.markdown("""
     /* Error Message - Enhanced */
     .error-box {
         background: rgba(100, 0, 40, 0.5);
-        border-left: 6px solid #ff2d95;
+        border-left: 6px solid #39ff14;
         border-radius: 15px;
         padding: 2rem;
         margin: 2rem 0;
-        color: #ff7eb9;
+        color: #00ff00;
         box-shadow: 
-            0 0 20px rgba(255, 45, 149, 0.4),
+            0 0 20px rgba(57, 255, 20, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 45, 149, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.3);
         backdrop-filter: blur(10px);
         animation: errorPulse 2s infinite;
     }
     @keyframes errorPulse {
-        0%, 100% { border-left-color: #ff2d95; }
-        50% { border-left-color: #ff6b35; }
+        0%, 100% { border-left-color: #39ff14; }
+        50% { border-left-color: #00ff00; }
     }
     /* About Section - Enhanced */
     .about-section {
@@ -932,7 +947,7 @@ st.markdown("""
         border-radius: 25px;
         padding: 4rem;
         margin-bottom: 3rem;
-        border: 1px solid rgba(0, 197, 255, 0.25);
+        border: 1px solid rgba(57, 255, 20, 0.25);
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -945,7 +960,7 @@ st.markdown("""
     .about-text {
         font-size: 1.3rem;
         line-height: 1.9;
-        color: #c0d8ff;
+        color: #d8ffc0;
         margin-bottom: 3rem;
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
         font-weight: 400;
@@ -962,8 +977,8 @@ st.markdown("""
         background: rgba(0, 30, 60, 0.6);
         padding: 1.5rem 2rem;
         border-radius: 15px;
-        border: 1px solid rgba(0, 197, 255, 0.3);
-        color: #00f5ff;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        color: #39ff14;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -973,21 +988,21 @@ st.markdown("""
     }
     .tech-item:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 197, 255, 0.4);
-        border-color: #00f5ff;
+        box-shadow: 0 10px 25px rgba(57, 255, 20, 0.4);
+        border-color: #39ff14;
     }
     /* Footer - Enhanced */
     .footer {
-        background: linear-gradient(135deg, #00c9ff 0%, #1e60c4 50%, #fc00ff 100%);
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
         color: white;
         text-align: center;
         padding: 3rem;
         border-radius: 0;
         margin-top: 3rem;
         box-shadow: 
-            0 0 40px rgba(30, 96, 196, 0.8),
-            0 0 80px rgba(252, 0, 255, 0.4);
-        border-top: 4px solid #00f5ff;
+            0 0 40px rgba(34, 139, 34, 0.8),
+            0 0 80px rgba(0, 255, 0, 0.4);
+        border-top: 4px solid #39ff14;
         position: relative;
         overflow: hidden;
     }
@@ -1027,16 +1042,16 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background: rgba(10, 15, 40, 0.9);
         backdrop-filter: blur(15px);
-        border-right: 2px solid rgba(0, 197, 255, 0.4);
+        border-right: 2px solid rgba(57, 255, 20, 0.4);
     }
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
-        color: #00f5ff !important;
-        text-shadow: 0 0 10px rgba(0, 245, 255, 0.6) !important;
+        color: #39ff14 !important;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6) !important;
     }
     [data-testid="stSidebar"] p {
-        color: #c0d8ff !important;
+        color: #d8ffc0 !important;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.1) !important;
     }
     [data-testid="stSidebar"] .stMarkdown {
@@ -1044,7 +1059,7 @@ st.markdown("""
         border-radius: 10px;
         padding: 1rem;
         margin: 1rem 0;
-        border: 1px solid rgba(0, 197, 255, 0.2);
+        border: 1px solid rgba(57, 255, 20, 0.2);
     }
     /* Success Message */
     .success-box {
@@ -1140,13 +1155,13 @@ st.markdown("""
         border-radius: 6px;
     }
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #00c9ff, #1e60c4, #fc00ff);
+        background: linear-gradient(180deg, #39ff14, #228b22, #00ff00);
         border-radius: 6px;
-        box-shadow: 0 0 10px rgba(0, 197, 255, 0.5);
+        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #fc00ff, #1e60c4, #00c9ff);
-        box-shadow: 0 0 15px rgba(252, 0, 255, 0.7);
+        background: linear-gradient(180deg, #00ff00, #228b22, #39ff14);
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
     }
     /* Additional Animations */
     @keyframes fadeInUp {
@@ -1167,11 +1182,11 @@ st.markdown("""
         position: fixed;
         top: 20px;
         right: 20px;
-        background: rgba(0, 197, 255, 0.9);
+        background: rgba(57, 255, 20, 0.9);
         color: white;
         padding: 1rem 2rem;
         border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 197, 255, 0.6);
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         z-index: 1000;
@@ -1194,20 +1209,20 @@ st.markdown("""
         border-radius: 25px;
         padding: 4rem;
         margin-bottom: 3rem;
-        border: 1px solid rgba(0, 197, 255, 0.25);
+        border: 1px solid rgba(57, 255, 20, 0.25);
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .team-title {
-        color: #00f5ff;
+        color: #39ff14;
         text-align: center;
         font-size: 3.2rem;
         margin-bottom: 3rem;
         font-weight: 900;
         text-shadow: 
-            0 0 15px rgba(0, 245, 255, 0.8),
-            0 0 30px rgba(0, 245, 255, 0.4);
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4);
         position: relative;
         display: inline-block;
         left: 50%;
@@ -1231,7 +1246,7 @@ st.markdown("""
         box-shadow: 
             0 10px 40px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(0, 197, 255, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.3);
         backdrop-filter: blur(10px);
         transition: all 0.5s ease;
         position: relative;
@@ -1244,26 +1259,26 @@ st.markdown("""
         left: 0;
         width: 100%;
         height: 5px;
-        background: linear-gradient(90deg, #00c9ff, #fc00ff, #00c9ff);
+        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
         background-size: 200% 100%;
         animation: borderFlow 3s linear infinite;
     }
     .team-card:hover {
         transform: translateY(-10px) scale(1.05);
         box-shadow: 
-            0 15px 50px rgba(0, 197, 255, 0.5),
-            0 5px 20px rgba(252, 0, 255, 0.3);
-        border: 1px solid rgba(0, 245, 255, 0.7);
+            0 15px 50px rgba(57, 255, 20, 0.5),
+            0 5px 20px rgba(0, 255, 0, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.7);
     }
     .team-name {
-        color: #00f5ff;
+        color: #39ff14;
         font-size: 1.8rem;
         font-weight: 700;
         margin: 1.5rem 0;
-        text-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
     }
     .team-role {
-        color: #fc00ff;
+        color: #00ff00;
         font-weight: 600;
         font-size: 1.3rem;
         margin-bottom: 1rem;
@@ -1271,7 +1286,7 @@ st.markdown("""
         letter-spacing: 1px;
     }
     .team-desc {
-        color: #c0d8ff;
+        color: #d8ffc0;
         font-size: 1.1rem;
         line-height: 1.6;
     }
@@ -1280,7 +1295,7 @@ st.markdown("""
         text-align: center;
         font-size: 2.5rem;
         margin: 2rem 0;
-        color: #ff2d95;
+        color: #39ff14;
         animation: heartBeat 1.5s ease-in-out infinite;
     }
     @keyframes heartBeat {
@@ -1291,69 +1306,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state for login
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
 
-def login_page():
-    # Login Page Header
-    st.markdown("""
-    <div class="main-header" style="padding: 2rem; margin-bottom: 2rem; animation: none;">
-        <h1 class="logo-text" style="font-size: 3.5rem;">🔐 ACCESS CONTROL</h1>
-        <p class="tagline">SECURE GATEWAY TO PLANT SAVIOR AI SYSTEM</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Login Form Container
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown('<div class="glass-container fade-in-up" style="padding: 3rem; border: 1px solid rgba(0, 245, 255, 0.3);">', unsafe_allow_html=True)
-        st.markdown('<h2 class="section-title" style="font-size: 2rem; margin-bottom: 2rem;">IDENTITY VERIFICATION</h2>', unsafe_allow_html=True)
-        
-        # Login Inputs
-        username = st.text_input("👤 OPERATOR ID", placeholder="Enter Username")
-        password = st.text_input("🔑 ACCESS CODE", type="password", placeholder="Enter Password")
-        
-        # Login Button
-        if st.button("🚀 INITIATE SYSTEM", use_container_width=True):
-            if username == "aiza" and password == "pakistan2313":
-                st.session_state.logged_in = True
-                st.session_state.login_time = time.time()
-                st.session_state.last_activity_time = time.time()
-                st.success("✅ ACCESS GRANTED. INITIALIZING DASHBOARD...")
-                time.sleep(1)
-                st.rerun()
-            else:
-                st.error("❌ ACCESS DENIED. INVALID CREDENTIALS.")
-        
-        # Demo Credentials Hint
-        st.markdown("""
-        <div style="margin-top: 2rem; text-align: center; color: #a0d0ff; font-size: 0.9rem; background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px;">
-            <p style="margin:0;">🔒 SECURE TERMINAL</p>
-        </div>
-        """, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# Check login status
-if not st.session_state.logged_in:
-    login_page()
-    st.stop()
-
-# Auto-logout logic
-current_time = time.time()
-
-# Check 20 minutes session limit (20 * 60 = 1200 seconds)
-if 'login_time' in st.session_state and (current_time - st.session_state.login_time > 1200):
-    st.session_state.logged_in = False
-    st.rerun()
-
-# Check 10 minutes inactivity limit (10 * 60 = 600 seconds)
-if 'last_activity_time' in st.session_state and (current_time - st.session_state.last_activity_time > 600):
-    st.session_state.logged_in = False
-    st.rerun()
-
-# Update last activity time
-st.session_state.last_activity_time = current_time
 
 # Main header with enhanced futuristic design
 st.markdown("""
@@ -1383,10 +1336,6 @@ st.markdown("""
 
 # Enhanced Sidebar
 with st.sidebar:
-    if st.button("🔒 LOGOUT SYSTEM", use_container_width=True):
-        st.session_state.logged_in = False
-        st.rerun()
-    st.markdown("---")
     st.markdown("### 🚀 AI SYSTEM STATUS")
     st.success("🟢 NEURAL NETWORK: ACTIVE")
     st.success("🟢 IMAGE PROCESSOR: READY")
@@ -1552,11 +1501,11 @@ if uploaded_file is not None:
         width, height = image.size
         file_size = len(uploaded_file.getvalue()) / 1024  # KB
         st.markdown(f"""
-        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(0, 197, 255, 0.3);">
-            <p style="color: #00f5ff; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
-            <p style="color: #c0d8ff; margin: 5px 0;">📐 Dimensions: {width} × {height} pixels</p>
-            <p style="color: #c0d8ff; margin: 5px 0;">💾 Size: {file_size:.1f} KB</p>
-            <p style="color: #c0d8ff; margin: 5px 0;">📁 Format: {uploaded_file.type}</p>
+        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(57, 255, 20, 0.3);">
+            <p style="color: #39ff14; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
+            <p style="color: #d8ffc0; margin: 5px 0;">📐 Dimensions: {width} × {height} pixels</p>
+            <p style="color: #d8ffc0; margin: 5px 0;">💾 Size: {file_size:.1f} KB</p>
+            <p style="color: #d8ffc0; margin: 5px 0;">📁 Format: {uploaded_file.type}</p>
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔄 **UPLOAD NEW IMAGE**", key="reset", help="Upload a different leaf image", use_container_width=True):
@@ -1603,6 +1552,10 @@ if uploaded_file is not None:
                     # Save uploaded file temporarily
                     with open("temp_image.jpg", "wb") as f:
                         f.write(uploaded_file.getbuffer())
+                    
+                    if not is_leaf_image("temp_image.jpg"):
+                        raise ValueError("The uploaded image does not appear to be a plant leaf. Please upload a valid leaf image.\\nIf the image is a leaf, try improving lighting or framing.")
+                        
                     # Preprocess image
                     img = load_img("temp_image.jpg", target_size=(224, 224))
                     img_array = img_to_array(img)
@@ -1631,7 +1584,7 @@ if uploaded_file is not None:
                     if "healthy" in predicted_disease.lower():
                         st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff88, #00cc66); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
                     else:
-                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #ff6b35, #ff2d95); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff00, #39ff14); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Confidence score with enhanced progress bar
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
@@ -1656,10 +1609,10 @@ if uploaded_file is not None:
                         conf_color = "#ffaa00"
                     elif confidence_score > 0.5:
                         conf_msg = "🟠 **MODERATE CONFIDENCE** - Consider expert consultation"
-                        conf_color = "#ff6b35"
+                        conf_color = "#00ff00"
                     else:
                         conf_msg = "🔴 **LOW CONFIDENCE** - Recommend professional diagnosis"
-                        conf_color = "#ff2d95"
+                        conf_color = "#39ff14"
                     st.markdown(f'<p style="color: {conf_color}; font-weight: 600; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Top 3 predictions
@@ -1676,11 +1629,11 @@ if uploaded_file is not None:
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">📈 ANALYSIS SUMMARY</h4>', unsafe_allow_html=True)
                     st.markdown(f"""
-                    <div style="background: rgba(0, 40, 80, 0.5); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(0, 197, 255, 0.3);">
-                        <p style="color: #c0d8ff; margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
-                        <p style="color: #c0d8ff; margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
-                        <p style="color: #c0d8ff; margin: 0.5rem 0;">⚡ Processing Time: <3 seconds</p>
-                        <p style="color: #c0d8ff; margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
+                    <div style="background: rgba(0, 40, 80, 0.5); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">⚡ Processing Time: <3 seconds</p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
                     </div>
                     """, unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -1699,10 +1652,10 @@ if uploaded_file is not None:
                     pass
             else:
                 st.markdown("""
-                <div style="text-align: center; padding: 2rem; background: rgba(0, 30, 60, 0.4); border-radius: 15px; border: 2px dashed rgba(0, 197, 255, 0.3);">
+                <div style="text-align: center; padding: 2rem; background: rgba(0, 30, 60, 0.4); border-radius: 15px; border: 2px dashed rgba(57, 255, 20, 0.3);">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
-                    <h4 style="color: #00f5ff; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
-                    <p style="color: #c0d8ff;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
+                    <h4 style="color: #39ff14; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
+                    <p style="color: #d8ffc0;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
                 </div>
                 """, unsafe_allow_html=True)
         else:
@@ -1715,13 +1668,13 @@ if uploaded_file is not None:
 else:
     # Enhanced upload prompt
     st.markdown("""
-    <div style="text-align: center; padding: 3rem; background: rgba(0, 30, 60, 0.3); border-radius: 20px; border: 3px dashed rgba(0, 197, 255, 0.4); margin: 2rem 0;">
+    <div style="text-align: center; padding: 3rem; background: rgba(0, 30, 60, 0.3); border-radius: 20px; border: 3px dashed rgba(57, 255, 20, 0.4); margin: 2rem 0;">
         <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: bounce 2s infinite;">📸</div>
-        <h3 style="color: #00f5ff; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR AI ANALYSIS</h3>
-        <p style="color: #c0d8ff; font-size: 1.2rem; margin-bottom: 1.5rem;">Select a clear image of the plant leaf you want to analyze</p>
-        <div style="background: rgba(0, 50, 100, 0.5); padding: 1rem; border-radius: 10px; border: 1px solid rgba(0, 197, 255, 0.3);">
-            <p style="color: #a0d0ff; margin: 0;">Supported formats: JPG, JPEG, PNG</p>
-            <p style="color: #a0d0ff; margin: 0;">Maximum file size: 200MB</p>
+        <h3 style="color: #39ff14; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR AI ANALYSIS</h3>
+        <p style="color: #d8ffc0; font-size: 1.2rem; margin-bottom: 1.5rem;">Select a clear image of the plant leaf you want to analyze</p>
+        <div style="background: rgba(0, 50, 100, 0.5); padding: 1rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
+            <p style="color: #c0ffc0; margin: 0;">Supported formats: JPG, JPEG, PNG</p>
+            <p style="color: #c0ffc0; margin: 0;">Maximum file size: 200MB</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -1775,7 +1728,7 @@ st.markdown("""
     </div>
 </div>
 <div class="love-icon">❤️</div>
-<p style="text-align: center; color: #00f5ff; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
+<p style="text-align: center; color: #39ff14; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1793,4 +1746,4 @@ st.markdown("""
         <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
     </div>
 </div>
-""", unsafe_allow_html=True)
+""sdasd", unsafe_allow_html=True)
