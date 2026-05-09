@@ -22,6 +22,13 @@ def is_leaf_image(img_path):
             return False
             
         img = cv2.resize(img, (224, 224))
+        
+        # Check unique colors - flat vectors/cliparts have very few unique colors
+        pixels = img.reshape(-1, 3)
+        unique_colors = len(np.unique(pixels, axis=0))
+        if unique_colors < 1000:
+            return False
+
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
         # Ranges for green, yellow, brown
@@ -1561,7 +1568,22 @@ if uploaded_file is not None:
         st.markdown('<h3 class="section-subtitle">🧬 AI ANALYSIS CENTER</h3>', unsafe_allow_html=True)
         if st.session_state.model is not None and st.session_state.treatments:
             if st.button("🚀 **ANALYZE WITH AI**", key="analyze", help="Start advanced AI analysis", use_container_width=True):
-                # Enhanced loading animation
+                # Save uploaded file temporarily
+                with open("temp_image.jpg", "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+                
+                if not is_leaf_image("temp_image.jpg"):
+                    st.markdown('<div class="error-box" style="border-left-color: #ffaa00; text-align: center;">', unsafe_allow_html=True)
+                    st.markdown('<h3 style="color: #ffaa00;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
+                    st.markdown('<p>This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>', unsafe_allow_html=True)
+                    st.markdown('<p><strong>Please upload a clear leaf picture and try again.</strong></p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    try:
+                        os.remove("temp_image.jpg")
+                    except:
+                        pass
+                    st.stop()
+                    
                 # Enhanced loading animation
                 loading_placeholder = st.empty()
                 with loading_placeholder:
@@ -1593,13 +1615,6 @@ if uploaded_file is not None:
                 # Clear the loading animation
                 loading_placeholder.empty()
                 try:
-                    # Save uploaded file temporarily
-                    with open("temp_image.jpg", "wb") as f:
-                        f.write(uploaded_file.getbuffer())
-                    
-                    if not is_leaf_image("temp_image.jpg"):
-                        raise NotALeafError()
-                        
                     # Preprocess image
                     img = load_img("temp_image.jpg", target_size=(224, 224))
                     img_array = img_to_array(img)
@@ -1684,12 +1699,7 @@ if uploaded_file is not None:
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Success notification
                     st.success("✅ **ANALYSIS COMPLETE!** Your plant has been successfully diagnosed by our AI system.")
-                except NotALeafError:
-                    st.markdown('<div class="error-box" style="border-left-color: #ffaa00; text-align: center;">', unsafe_allow_html=True)
-                    st.markdown('<h3 style="color: #ffaa00;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
-                    st.markdown('<p>This image does not appear to be a plant leaf.</p>', unsafe_allow_html=True)
-                    st.markdown('<p><strong>Please upload a leaf pic and try again.</strong></p>', unsafe_allow_html=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
+
                 except Exception as e:
                     st.markdown('<div class="error-box">', unsafe_allow_html=True)
                     st.markdown(f'<p>❌ **ANALYSIS ERROR**: {str(e)}</p>', unsafe_allow_html=True)
