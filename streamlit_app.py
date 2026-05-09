@@ -1443,7 +1443,7 @@ st.markdown("""
         <div class="step-number">2</div>
         <div class="step-icon">🧠</div>
         <h3 class="step-title">AI PROCESSING</h3>
-        <p class="step-description">Advanced convolutional neural network analyzes the image using deep learning algorithms trained on 50,000+ plant images.</p>
+        <p class="step-description">Advanced convolutional neural network analyzes the image using deep learning algorithms trained on 87K rgb images of healthy and diseased crop leaves which is categorized into 38 different classes.</p>
     </div>
     <div class="step-card">
         <div class="step-number">3</div>
@@ -1736,7 +1736,7 @@ st.markdown('<h2 class="section-title">🚀 ABOUT PLANT SAVIOR AI</h2>', unsafe_
 st.markdown("""
 <div class="about-content">
     <p class="about-text">
-        <strong>Plant Savior AI</strong> represents the cutting edge of agricultural technology, combining advanced machine learning with practical farming solutions. Our system utilizes a sophisticated Convolutional Neural Network (CNN) architecture trained on over 50,000 high-quality plant images to deliver professional-grade plant disease diagnosis.
+        <strong>Plant Savior AI</strong> represents the cutting edge of agricultural technology, combining advanced machine learning with practical farming solutions. Our system utilizes a sophisticated Convolutional Neural Network (CNN) architecture trained on 87K rgb images of healthy and diseased crop leaves which is categorized into 38 different classes to deliver professional-grade plant disease diagnosis.
     </p>
     <p class="about-text">
         Built with <strong>TensorFlow 2.x</strong> and deployed using <strong>Streamlit</strong>, this application showcases the power of AI in solving real-world agricultural challenges. Whether you're a farmer, gardener, or agricultural researcher, Plant Savior AI provides instant, accurate plant health assessment at your fingertips.
