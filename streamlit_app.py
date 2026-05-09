@@ -10,17 +10,61 @@ import base64
 from io import BytesIO
 import time
 
+class NotALeafError(Exception):
+    pass
+
+import cv2
+
 def is_leaf_image(img_path):
     try:
-        img = Image.open(img_path).convert('HSV')
-        img_array = np.array(img)
-        H = img_array[:,:,0]
-        S = img_array[:,:,1]
-        V = img_array[:,:,2]
-        # Check for green/yellow/brown plant colors
-        leaf_mask = ((H > 10) & (H < 150)) & (S > 30) & (V > 30)
-        ratio = np.mean(leaf_mask)
-        return ratio > 0.05
+        img = cv2.imread(img_path)
+        if img is None:
+            return False
+            
+        img = cv2.resize(img, (224, 224))
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        
+        # Ranges for green, yellow, brown
+        lower_green1 = np.array([25, 40, 40])
+        upper_green1 = np.array([100, 255, 255])
+        lower_yellow_brown = np.array([10, 40, 40])
+        upper_yellow_brown = np.array([24, 255, 255])
+        
+        mask1 = cv2.inRange(hsv, lower_green1, upper_green1)
+        mask2 = cv2.inRange(hsv, lower_yellow_brown, upper_yellow_brown)
+        plant_mask = cv2.bitwise_or(mask1, mask2)
+        
+        plant_pixels = cv2.countNonZero(plant_mask)
+        if plant_pixels == 0:
+            return False
+            
+        plant_ratio = plant_pixels / (224 * 224)
+        if plant_ratio < 0.05:
+            return False
+            
+        # Texture/Edge check inside the plant mask
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray, 50, 150)
+        
+        leaf_edges = cv2.bitwise_and(edges, edges, mask=plant_mask)
+        edge_ratio = cv2.countNonZero(leaf_edges) / plant_pixels
+        
+        # Leaves have texture (veins, edges, spots).
+        if edge_ratio < 0.015:  
+            return False
+            
+        # Contour analysis
+        contours, _ = cv2.findContours(plant_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if not contours:
+            return False
+            
+        largest_contour = max(contours, key=cv2.contourArea)
+        area = cv2.contourArea(largest_contour)
+
+        if area < (224 * 224 * 0.03):
+            return False
+
+        return True
     except Exception:
         return False
 
@@ -1554,7 +1598,7 @@ if uploaded_file is not None:
                         f.write(uploaded_file.getbuffer())
                     
                     if not is_leaf_image("temp_image.jpg"):
-                        raise ValueError("The uploaded image does not appear to be a plant leaf. Please upload a valid leaf image.\\nIf the image is a leaf, try improving lighting or framing.")
+                        raise NotALeafError()
                         
                     # Preprocess image
                     img = load_img("temp_image.jpg", target_size=(224, 224))
@@ -1640,6 +1684,12 @@ if uploaded_file is not None:
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Success notification
                     st.success("✅ **ANALYSIS COMPLETE!** Your plant has been successfully diagnosed by our AI system.")
+                except NotALeafError:
+                    st.markdown('<div class="error-box" style="border-left-color: #ffaa00; text-align: center;">', unsafe_allow_html=True)
+                    st.markdown('<h3 style="color: #ffaa00;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
+                    st.markdown('<p>This image does not appear to be a plant leaf.</p>', unsafe_allow_html=True)
+                    st.markdown('<p><strong>Please upload a leaf pic and try again.</strong></p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
                 except Exception as e:
                     st.markdown('<div class="error-box">', unsafe_allow_html=True)
                     st.markdown(f'<p>❌ **ANALYSIS ERROR**: {str(e)}</p>', unsafe_allow_html=True)
