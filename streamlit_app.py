@@ -10,84 +10,47 @@ import base64
 from io import BytesIO
 import time
 
-class NotALeafError(Exception):
-    pass
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
 
-import cv2
+# Cache the ImageNet classifier so it loads only once
+@st.cache_resource(show_spinner=False)
+def load_imagenet_checker():
+    return MobileNetV2(weights='imagenet', include_top=True)
+
+# Plant/leaf related ImageNet class names and keywords
+PLANT_KEYWORDS = [
+    'cabbage', 'broccoli', 'cauliflower', 'zucchini', 'squash',
+    'cucumber', 'artichoke', 'pepper', 'bell_pepper', 'cardoon',
+    'rapeseed', 'corn', 'mushroom', 'agaric', 'bolete', 'earthstar',
+    'stinkhorn', 'hen-of-the-woods', 'coral_fungus', 'gyromitra',
+    'strawberry', 'orange', 'lemon', 'banana', 'fig', 'pineapple',
+    'jackfruit', 'custard_apple', 'pomegranate', 'grape', 'granny_smith',
+    'daisy', 'sunflower', 'rose', 'tulip', 'orchid', 'lily',
+    'yellow_lady', 'lotus', 'poppy', 'hibiscus', 'flowerpot',
+    'acorn', 'hip', 'hay', 'leaf', 'plant', 'flower', 'tree',
+    'garden', 'botanical', 'vegetation', 'foliage', 'seed', 'petal',
+    'fern', 'moss', 'vine', 'herb', 'aloe', 'cactus', 'succulent',
+]
 
 def is_leaf_image(img_path):
+    """Use MobileNetV2 (ImageNet) to classify the image.
+    Returns True only if any of the top 10 predictions match plant/leaf keywords.
+    This blocks humans, animals, vehicles, cartoons, electronics, etc."""
     try:
-        img = cv2.imread(img_path)
-        if img is None:
-            return False
-            
-        img = cv2.resize(img, (224, 224))
-        
-        # 1. Reject perfectly flat vector images (Aliens, cartoons, UI)
-        pixels = img.reshape(-1, 3)
-        unique_colors = len(np.unique(pixels, axis=0))
-        if unique_colors < 3000:  # Real photos have 10k+ colors
-            return False
+        checker = load_imagenet_checker()
+        img = load_img(img_path, target_size=(224, 224))
+        x = img_to_array(img)
+        x = np.expand_dims(x, axis=0)
+        x = preprocess_input(x.copy())
+        preds = checker.predict(x, verbose=0)
+        decoded = decode_predictions(preds, top=10)[0]
 
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        
-        # Ranges for plant colors (green, yellow, brown)
-        lower_green = np.array([25, 40, 40])
-        upper_green = np.array([100, 255, 255])
-        lower_brown = np.array([10, 40, 40])
-        upper_brown = np.array([24, 255, 255])
-        
-        mask1 = cv2.inRange(hsv, lower_green, upper_green)
-        mask2 = cv2.inRange(hsv, lower_brown, upper_brown)
-        plant_mask = cv2.bitwise_or(mask1, mask2)
-        
-        total_pixels = 224 * 224
-        plant_pixels = cv2.countNonZero(plant_mask)
-        
-        # 2. Must be at least 15% plant colors. Rejects humans/planes in sky/city.
-        if (plant_pixels / total_pixels) < 0.15:
-            return False
-            
-        # 3. Check color variance (Standard Deviation)
-        # Rejects solid green artificial objects (green cars, clothes, toys)
-        mean, stddev = cv2.meanStdDev(hsv, mask=plant_mask)
-        if stddev[0][0] < 2.0 or stddev[1][0] < 5.0:
-            return False
-
-        # 4. Texture/Edge check inside the plant mask
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-        edges = cv2.Canny(blurred, 40, 120)
-        
-        leaf_edges = cv2.bitwise_and(edges, edges, mask=plant_mask)
-        edge_ratio = cv2.countNonZero(leaf_edges) / plant_pixels
-        
-        # Leaves have internal texture (veins). Flat out-of-focus background grass has few edges.
-        if edge_ratio < 0.01:  
-            return False
-            
-        # 5. Central subject check
-        # Blocks photos where a person is centered and grass is just background.
-        center_mask = np.zeros((224, 224), dtype=np.uint8)
-        cv2.circle(center_mask, (112, 112), 60, 255, -1)
-        center_plant = cv2.bitwise_and(plant_mask, center_mask)
-        # Center circle area is ~11300 pixels. Must be at least 20% plant matter in the center.
-        if cv2.countNonZero(center_plant) < 2260:
-            return False
-
-        # 6. Contour analysis
-        contours, _ = cv2.findContours(plant_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        if not contours:
-            return False
-            
-        largest_contour = max(contours, key=cv2.contourArea)
-        area = cv2.contourArea(largest_contour)
-
-        # Largest continuous piece must be > 5% of image
-        if area < (total_pixels * 0.05):
-            return False
-
-        return True
+        for _, label, conf in decoded:
+            label_lower = label.lower()
+            for keyword in PLANT_KEYWORDS:
+                if keyword in label_lower:
+                    return True
+        return False
     except Exception:
         return False
 

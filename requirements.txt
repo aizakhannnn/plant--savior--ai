@@ -4,4 +4,3 @@ numpy
 Pillow
 google-auth-oauthlib
 google-auth
-opencv-python-headless
