@@ -1746,4 +1746,4 @@ st.markdown("""
         <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
     </div>
 </div>
-""sdasd", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
