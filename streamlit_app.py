@@ -23,44 +23,59 @@ def is_leaf_image(img_path):
             
         img = cv2.resize(img, (224, 224))
         
-        # Check unique colors - flat vectors/cliparts have very few unique colors
+        # 1. Reject perfectly flat vector images (Aliens, cartoons, UI)
         pixels = img.reshape(-1, 3)
         unique_colors = len(np.unique(pixels, axis=0))
-        if unique_colors < 1000:
+        if unique_colors < 3000:  # Real photos have 10k+ colors
             return False
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
-        # Ranges for green, yellow, brown
-        lower_green1 = np.array([25, 40, 40])
-        upper_green1 = np.array([100, 255, 255])
-        lower_yellow_brown = np.array([10, 40, 40])
-        upper_yellow_brown = np.array([24, 255, 255])
+        # Ranges for plant colors (green, yellow, brown)
+        lower_green = np.array([25, 40, 40])
+        upper_green = np.array([100, 255, 255])
+        lower_brown = np.array([10, 40, 40])
+        upper_brown = np.array([24, 255, 255])
         
-        mask1 = cv2.inRange(hsv, lower_green1, upper_green1)
-        mask2 = cv2.inRange(hsv, lower_yellow_brown, upper_yellow_brown)
+        mask1 = cv2.inRange(hsv, lower_green, upper_green)
+        mask2 = cv2.inRange(hsv, lower_brown, upper_brown)
         plant_mask = cv2.bitwise_or(mask1, mask2)
         
+        total_pixels = 224 * 224
         plant_pixels = cv2.countNonZero(plant_mask)
-        if plant_pixels == 0:
+        
+        # 2. Must be at least 15% plant colors. Rejects humans/planes in sky/city.
+        if (plant_pixels / total_pixels) < 0.15:
             return False
             
-        plant_ratio = plant_pixels / (224 * 224)
-        if plant_ratio < 0.05:
+        # 3. Check color variance (Standard Deviation)
+        # Rejects solid green artificial objects (green cars, clothes, toys)
+        mean, stddev = cv2.meanStdDev(hsv, mask=plant_mask)
+        if stddev[0][0] < 2.0 or stddev[1][0] < 5.0:
             return False
-            
-        # Texture/Edge check inside the plant mask
+
+        # 4. Texture/Edge check inside the plant mask
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 50, 150)
+        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blurred, 40, 120)
         
         leaf_edges = cv2.bitwise_and(edges, edges, mask=plant_mask)
         edge_ratio = cv2.countNonZero(leaf_edges) / plant_pixels
         
-        # Leaves have texture (veins, edges, spots).
-        if edge_ratio < 0.015:  
+        # Leaves have internal texture (veins). Flat out-of-focus background grass has few edges.
+        if edge_ratio < 0.01:  
             return False
             
-        # Contour analysis
+        # 5. Central subject check
+        # Blocks photos where a person is centered and grass is just background.
+        center_mask = np.zeros((224, 224), dtype=np.uint8)
+        cv2.circle(center_mask, (112, 112), 60, 255, -1)
+        center_plant = cv2.bitwise_and(plant_mask, center_mask)
+        # Center circle area is ~11300 pixels. Must be at least 20% plant matter in the center.
+        if cv2.countNonZero(center_plant) < 2260:
+            return False
+
+        # 6. Contour analysis
         contours, _ = cv2.findContours(plant_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if not contours:
             return False
@@ -68,7 +83,8 @@ def is_leaf_image(img_path):
         largest_contour = max(contours, key=cv2.contourArea)
         area = cv2.contourArea(largest_contour)
 
-        if area < (224 * 224 * 0.03):
+        # Largest continuous piece must be > 5% of image
+        if area < (total_pixels * 0.05):
             return False
 
         return True
