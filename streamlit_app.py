@@ -1757,10 +1757,6 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# === NEW: Team Section ===
-st.markdown('<div class="team-section glass-container fade-in-up">', unsafe_allow_html=True)
 st.markdown('<h2 class="team-title">👥 MEET THE TEAM</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="team-container">
