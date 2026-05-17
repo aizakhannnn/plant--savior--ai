@@ -75,33 +75,40 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed"
 )
+
 # Enhanced Futuristic Cyberpunk CSS Design
 st.markdown("""
 <style>
-    /* Global Styles */
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
+    /* Global Styles & Import Premium Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    
     * {
-        font-family: 'Exo 2', sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        box-sizing: border-box;
     }
-    h1, h2, h3, h4, h5, h6, .logo-text, .cyberpunk-text {
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: 1px;
+    
+    h1, h2, h3, h4, h5, h6, .logo-text, .section-title, .step-title, .result-title, .disease-name {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.02em;
     }
-    /* Main background and layout */
+    
+    /* Hide Streamlit default branding & menus to create an ultra-clean, custom portal */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    .viewerBadge_container__1QS1h {display: none !important;}
+    
+    /* Smooth, Premium Obsidian Background */
     .stApp {
-        background: linear-gradient(135deg, #0a0a23, #1a1a3a, #2d2d5f, #0f0c29);
-        background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
-        color: #e0e0ff;
+        background: radial-gradient(circle at 50% 0%, #0d1e1c 0%, #060b0d 60%, #030506 100%);
+        background-attachment: fixed;
+        color: #e2e8f0;
         overflow-x: hidden;
         min-height: 100vh;
     }
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    /* Floating Particles Background */
+    
+    /* Decorative Abstract Neural Grid Overlay */
     .stApp::before {
         content: "";
         position: fixed;
@@ -110,1247 +117,659 @@ st.markdown("""
         width: 100%;
         height: 100%;
         background-image: 
-            radial-gradient(2px 2px at 20px 30px, rgba(57, 255, 20, 0.3), transparent),
-            radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 0, 0.2), transparent),
-            radial-gradient(1px 1px at 90px 40px, rgba(57, 255, 20, 0.4), transparent),
-            radial-gradient(1px 1px at 130px 80px, rgba(57, 255, 20, 0.3), transparent);
+            radial-gradient(1.5px 1.5px at 40px 60px, rgba(0, 255, 136, 0.15), transparent),
+            radial-gradient(1.5px 1.5px at 120px 180px, rgba(0, 255, 136, 0.1), transparent),
+            radial-gradient(1.5px 1.5px at 200px 300px, rgba(0, 255, 136, 0.08), transparent);
         background-repeat: repeat;
-        background-size: 150px 150px;
-        animation: particleFloat 20s linear infinite;
+        background-size: 320px 320px;
         pointer-events: none;
-        z-index: -1;
+        z-index: 0;
     }
-    @keyframes particleFloat {
-        0% { transform: translateY(0px) translateX(0px); }
-        33% { transform: translateY(-100px) translateX(50px); }
-        66% { transform: translateY(-200px) translateX(-50px); }
-        100% { transform: translateY(-300px) translateX(0px); }
-    }
-    /* Header Styles - Enhanced Cyberpunk */
+    
+    /* Exquisite Hero Header Card */
     .main-header {
-        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
-        padding: 4rem 2rem;
-        border-radius: 0;
-        color: white;
+        background: linear-gradient(145deg, rgba(16, 28, 25, 0.65) 0%, rgba(10, 16, 18, 0.8) 100%);
+        padding: 3.5rem 2rem;
+        border-radius: 24px;
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 2.5rem;
+        border: 1px solid rgba(0, 255, 136, 0.15);
         box-shadow: 
-            0 0 50px rgba(34, 139, 34, 0.8),
-            0 0 100px rgba(57, 255, 20, 0.4),
-            inset 0 0 50px rgba(255, 255, 255, 0.1);
+            0 20px 50px rgba(0, 0, 0, 0.5),
+            inset 0 1px 1px rgba(255, 255, 255, 0.05);
         position: relative;
         overflow: hidden;
-        border-bottom: 4px solid #39ff14;
-        animation: headerPulse 4s infinite;
+        z-index: 1;
     }
-    @keyframes headerPulse {
-        0%, 100% { 
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.5),
-                       0 0 60px rgba(0, 255, 0, 0.3);
-        }
-        50% { 
-            box-shadow: 0 0 50px rgba(57, 255, 20, 0.9),
-                       0 0 100px rgba(0, 255, 0, 0.6);
-        }
-    }
+    
     .main-header::before {
         content: "";
         position: absolute;
-        top: -100%;
-        left: -100%;
-        width: 300%;
-        height: 300%;
-        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent);
-        animation: headerRotate 8s linear infinite;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.6), transparent);
     }
-    @keyframes headerRotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+    
     .logo-text {
-        font-size: 5.5rem;
-        font-weight: 900;
-        margin-bottom: 1rem;
-        text-shadow: 
-            0 0 10px rgba(57, 255, 20, 0.8),
-            0 0 20px rgba(0, 255, 0, 0.6),
-            0 0 30px rgba(57, 255, 20, 0.4);
-        color: white;
-        animation: logoGlow 3s infinite alternate;
-        position: relative;
-        z-index: 2;
+        font-size: 3.8rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: #ffffff;
+        background: linear-gradient(135deg, #ffffff 30%, #00ff88 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
     }
-    @keyframes logoGlow {
-        from { 
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #39ff14, 0 0 20px #39ff14;
-            transform: scale(1);
-        }
-        to { 
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00ff00, 0 0 40px #00ff00;
-            transform: scale(1.05);
-        }
-    }
+    
     .tagline {
-        font-size: 1.8rem;
-        opacity: 0.95;
-        font-weight: 400;
-        max-width: 1000px;
+        font-size: 1.1rem;
+        opacity: 0.85;
+        font-weight: 500;
+        max-width: 750px;
         margin: 0 auto;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-        color: #e0ffe0;
-        position: relative;
-        z-index: 2;
-        animation: taglinePulse 4s infinite;
+        color: #a7f3d0;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-family: 'Space Grotesk', sans-serif;
     }
-    @keyframes taglinePulse {
-        0%, 100% { opacity: 0.9; }
-        50% { opacity: 1; }
-    }
-    /* Statistics Section */
+    
+    /* High-End Stats Cards */
     .stats-section {
         display: flex;
         justify-content: center;
-        gap: 3rem;
-        margin: 3rem 0;
+        gap: 1.5rem;
+        margin: 2.5rem 0;
         flex-wrap: wrap;
     }
+    
     .stat-card {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border-radius: 20px;
-        padding: 2.5rem;
+        background: rgba(13, 22, 21, 0.45);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 1.8rem 2.2rem;
         text-align: center;
-        min-width: 200px;
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        transition: all 0.4s ease;
+        min-width: 180px;
+        flex: 1;
+        border: 1px solid rgba(0, 255, 136, 0.08);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
-        overflow: hidden;
     }
-    .stat-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
-        transition: left 0.8s ease;
-    }
-    .stat-card:hover::before {
-        left: 100%;
-    }
+    
     .stat-card:hover {
-        transform: translateY(-10px) scale(1.05);
-        box-shadow: 0 15px 40px rgba(57, 255, 20, 0.4);
-        border: 1px solid rgba(57, 255, 20, 0.6);
+        transform: translateY(-6px);
+        border-color: rgba(0, 255, 136, 0.35);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.4),
+            0 0 20px rgba(0, 255, 136, 0.15);
     }
+    
     .stat-value {
-        font-size: 3.5rem;
-        font-weight: 900;
-        color: #39ff14;
-        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
-        margin-bottom: 0.5rem;
-        font-family: 'Orbitron', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #00ff88;
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: -0.03em;
+        text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        line-height: 1;
+        margin-bottom: 0.4rem;
     }
+    
     .stat-label {
-        color: #d8ffc0;
-        font-size: 1.2rem;
-        font-weight: 600;
+        color: #94a3b8;
+        font-size: 0.85rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.1em;
     }
-    /* Glassmorphism Container Enhanced */
+    
+    /* Ultimate Glassmorphic Layout Container */
     .glass-container {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(13, 22, 21, 0.45);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-radius: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        border: 1px solid rgba(0, 255, 136, 0.08);
         box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        padding: 3rem;
-        margin-bottom: 3rem;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
+            0 25px 50px -12px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .glass-container::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.6), transparent);
-    }
+    
     .glass-container:hover {
-        transform: translateY(-8px);
+        border-color: rgba(0, 255, 136, 0.2);
         box-shadow: 
-            0 15px 50px rgba(57, 255, 20, 0.3),
-            0 5px 20px rgba(0, 255, 0, 0.2);
-        border: 1px solid rgba(57, 255, 20, 0.4);
+            0 30px 60px rgba(0, 0, 0, 0.6),
+            0 0 30px rgba(0, 255, 136, 0.05);
     }
-    /* How It Works Section - Enhanced */
-    .how-it-works {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border-radius: 25px;
-        padding: 4rem;
-        margin-bottom: 3rem;
-        border: 1px solid rgba(57, 255, 20, 0.25);
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        position: relative;
+    
+    /* Streamlit Native Collapsible Expander Overrides */
+    .streamlit-expanderHeader {
+        background-color: rgba(13, 22, 21, 0.45) !important;
+        border: 1px solid rgba(0, 255, 136, 0.08) !important;
+        border-radius: 12px !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        transition: all 0.3s ease;
     }
+    .streamlit-expanderHeader:hover {
+        border-color: rgba(0, 255, 136, 0.3) !important;
+        background-color: rgba(13, 22, 21, 0.6) !important;
+    }
+    .streamlit-expanderContent {
+        background-color: rgba(8, 14, 15, 0.5) !important;
+        border: 1px solid rgba(0, 255, 136, 0.05) !important;
+        border-top: none !important;
+        border-bottom-left-radius: 12px !important;
+        border-bottom-right-radius: 12px !important;
+        padding: 1.5rem !important;
+    }
+    
+    /* Beautiful Section Title Styling */
     .section-title {
-        color: #39ff14;
+        color: #ffffff;
         text-align: center;
-        font-size: 3.2rem;
-        margin-bottom: 3rem;
-        font-weight: 900;
-        text-shadow: 
-            0 0 15px rgba(57, 255, 20, 0.8),
-            0 0 30px rgba(57, 255, 20, 0.4);
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
         position: relative;
-        display: inline-block;
-        left: 50%;
-        transform: translateX(-50%);
-        animation: titleGlow 3s infinite alternate;
     }
-    @keyframes titleGlow {
-        from { 
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.6),
-                        0 0 20px rgba(57, 255, 20, 0.4);
-        }
-        to { 
-            text-shadow: 0 0 20px rgba(57, 255, 20, 1),
-                        0 0 40px rgba(57, 255, 20, 0.6);
-        }
-    }
+    
     .section-title::after {
         content: "";
         position: absolute;
-        bottom: -15px;
+        bottom: -10px;
         left: 50%;
         transform: translateX(-50%);
-        width: 150px;
-        height: 4px;
-        background: linear-gradient(90deg, transparent, #39ff14, #00ff00, #39ff14, transparent);
+        width: 60px;
+        height: 3px;
+        background: #00ff88;
         border-radius: 2px;
-        animation: underlineFlow 3s infinite;
     }
-    @keyframes underlineFlow {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
+    
+    /* Steps / Cards for instructions */
     .steps-container {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         flex-wrap: wrap;
-        gap: 2.5rem;
+        gap: 1.5rem;
     }
+    
     .step-card {
-        background: rgba(0, 30, 60, 0.8);
-        border-radius: 20px;
-        padding: 3rem 2.5rem;
+        background: rgba(8, 14, 15, 0.6);
+        border-radius: 16px;
+        padding: 2.2rem 1.8rem;
         text-align: center;
         flex: 1;
-        min-width: 280px;
-        max-width: 350px;
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        transition: all 0.5s ease;
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        backdrop-filter: blur(10px);
+        min-width: 200px;
+        border: 1px solid rgba(0, 255, 136, 0.05);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
-        overflow: hidden;
     }
-    .step-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
-        background-size: 200% 100%;
-        animation: borderFlow 3s linear infinite;
-    }
-    @keyframes borderFlow {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
-    }
+    
     .step-card:hover {
-        transform: translateY(-15px) scale(1.05);
-        box-shadow: 
-            0 20px 60px rgba(57, 255, 20, 0.5),
-            0 10px 30px rgba(0, 255, 0, 0.3);
-        border: 1px solid rgba(57, 255, 20, 0.7);
+        transform: translateY(-8px);
+        border-color: rgba(0, 255, 136, 0.25);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
+    
     .step-number {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
-        color: white;
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #00ff88 0%, #10b981 100%);
+        color: #060b0d;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 2rem;
-        font-weight: 900;
-        font-size: 2rem;
-        box-shadow: 
-            0 0 20px rgba(57, 255, 20, 0.6),
-            0 0 40px rgba(0, 255, 0, 0.3);
-        border: 3px solid rgba(255, 255, 255, 0.2);
-        animation: numberPulse 2s infinite;
+        margin: 0 auto 1.5rem;
+        font-weight: 700;
+        font-size: 1.25rem;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
     }
-    @keyframes numberPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-    }
+    
     .step-icon {
-        font-size: 4rem;
-        margin-bottom: 2rem;
-        color: #39ff14;
-        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
-        animation: iconFloat 4s ease-in-out infinite;
+        font-size: 2.5rem;
+        margin-bottom: 1.2rem;
+        display: block;
     }
-    @keyframes iconFloat {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
+    
     .step-title {
-        color: #39ff14;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .step-description {
-        color: #d8ffc0;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        font-weight: 400;
-    }
-    /* Upload Section - Enhanced */
-    .upload-section {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border-radius: 25px;
-        padding: 4rem;
-        margin-bottom: 3rem;
-        border: 1px solid rgba(57, 255, 20, 0.25);
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-    .upload-title {
-        color: #39ff14;
-        text-align: center;
-        font-size: 2.8rem;
-        margin-bottom: 3rem;
-        font-weight: 800;
-        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-    /* Drop Zone - Ultra Futuristic */
-    .drop-zone {
-        border: 4px dashed transparent;
-        border-radius: 25px;
-        padding: 4rem;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.5s ease;
-        background: rgba(0, 30, 60, 0.4);
-        margin-bottom: 3rem;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 
-            0 0 30px rgba(57, 255, 20, 0.3),
-            inset 0 0 30px rgba(0, 0, 0, 0.2);
-    }
-    .drop-zone::before {
-        content: "";
-        position: absolute;
-        top: -5px;
-        left: -5px;
-        right: -5px;
-        bottom: -5px;
-        background: linear-gradient(45deg, #39ff14, #228b22, #00ff00, #39ff14, #228b22);
-        background-size: 600% 600%;
-        animation: borderAnimation 4s ease infinite;
-        z-index: -1;
-        border-radius: 30px;
-    }
-    @keyframes borderAnimation {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-    .drop-zone::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 30, 60, 0.9);
-        border-radius: 25px;
-        z-index: -1;
-    }
-    .drop-zone:hover {
-        transform: scale(1.02);
-        box-shadow: 
-            0 0 50px rgba(57, 255, 20, 0.5),
-            inset 0 0 50px rgba(57, 255, 20, 0.1);
-    }
-    .upload-icon {
-        font-size: 6rem;
-        color: #39ff14;
-        margin-bottom: 2rem;
-        text-shadow: 
-            0 0 20px rgba(57, 255, 20, 0.8),
-            0 0 40px rgba(57, 255, 20, 0.4);
-        animation: iconPulse 3s ease-in-out infinite;
-    }
-    @keyframes iconPulse {
-        0%, 100% { 
-            transform: scale(1) translateY(0px);
-            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
-        }
-        50% { 
-            transform: scale(1.1) translateY(-5px);
-            text-shadow: 0 0 30px rgba(57, 255, 20, 1);
-        }
-    }
-    .drop-text {
-        font-size: 1.8rem;
-        color: #e0ffe0;
-        margin-bottom: 1.5rem;
+        color: #ffffff;
+        font-size: 1.25rem;
         font-weight: 600;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        margin-bottom: 0.8rem;
     }
-    .file-types {
-        color: #c0ffc0;
-        font-size: 1.2rem;
+    
+    .step-description {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    /* Upload / Control Panel Redesign */
+    .upload-section {
+        background: rgba(13, 22, 21, 0.45);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2.5rem;
         margin-bottom: 2.5rem;
-        font-weight: 500;
+        border: 1px solid rgba(0, 255, 136, 0.08);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
     }
-    .browse-button {
-        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
-        color: white;
-        border: none;
-        padding: 1.5rem 3rem;
-        border-radius: 50px;
-        cursor: pointer;
-        font-size: 1.4rem;
+    
+    .upload-title {
+        color: #ffffff;
+        text-align: center;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
         font-weight: 700;
-        transition: all 0.4s ease;
-        box-shadow: 
-            0 0 25px rgba(57, 255, 20, 0.6),
-            0 0 50px rgba(0, 255, 0, 0.3);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-        overflow: hidden;
+        letter-spacing: -0.02em;
     }
-    .browse-button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
+    
+    /* Streamlit Upload Container Overrides */
+    div[data-testid="stFileUploader"] {
+        border: 1px dashed rgba(0, 255, 136, 0.3) !important;
+        background: rgba(8, 14, 15, 0.45) !important;
+        border-radius: 16px !important;
+        padding: 1.5rem !important;
+        transition: all 0.3s ease;
+    }
+    div[data-testid="stFileUploader"]:hover {
+        border-color: #00ff88 !important;
+        background: rgba(8, 14, 15, 0.7) !important;
+    }
+    
+    /* Streamlit Native Buttons Customization */
+    .stButton > button {
+        background: linear-gradient(135deg, #00ff88 0%, #10b981 100%) !important;
+        color: #060b0d !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        padding: 0.75rem 2rem !important;
+        border-radius: 12px !important;
+        border: none !important;
+        box-shadow: 0 8px 25px rgba(0, 255, 136, 0.25) !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
         width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.6s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
-    .browse-button:hover::before {
-        left: 100%;
-    }
-    .browse-button:hover {
-        transform: translateY(-3px) scale(1.05);
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
         box-shadow: 
-            0 15px 35px rgba(57, 255, 20, 0.8),
-            0 5px 15px rgba(0, 255, 0, 0.6);
+            0 12px 30px rgba(0, 255, 136, 0.4),
+            0 0 15px rgba(0, 255, 136, 0.2) !important;
+        color: #060b0d !important;
     }
-    /* Analysis Section - Enhanced */
+    
+    .stButton > button:active {
+        transform: translateY(1px) !important;
+    }
+    
+    /* Custom Image and Analysis Layout */
     .analysis-section {
         display: flex;
-        gap: 3rem;
-        flex-wrap: wrap;
-        margin-bottom: 3rem;
+        flex-direction: column;
+        gap: 2rem;
     }
+    
     .image-preview-container, .results-container {
-        flex: 1;
-        min-width: 350px;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(8, 14, 15, 0.55);
         backdrop-filter: blur(15px);
-        border-radius: 25px;
-        padding: 3rem;
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(57, 255, 20, 0.25);
-        transition: all 0.4s ease;
-    }
-    .image-preview-container:hover, .results-container:hover {
-        transform: translateY(-5px);
-        box-shadow: 
-            0 15px 50px rgba(57, 255, 20, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
-    .section-subtitle {
-        color: #39ff14;
-        font-size: 2.2rem;
-        margin-bottom: 2.5rem;
-        font-weight: 700;
-        text-align: center;
-        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .preview-image {
-        width: 100%;
-        max-height: 450px;
-        object-fit: contain;
         border-radius: 20px;
-        box-shadow: 
-            0 0 30px rgba(57, 255, 20, 0.4),
-            0 0 60px rgba(0, 255, 0, 0.2);
-        border: 3px solid rgba(57, 255, 20, 0.4);
-        transition: all 0.4s ease;
+        padding: 2rem;
+        border: 1px solid rgba(0, 255, 136, 0.08);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
-    .preview-image:hover {
-        transform: scale(1.02);
-        box-shadow: 
-            0 0 40px rgba(57, 255, 20, 0.6),
-            0 0 80px rgba(0, 255, 0, 0.3);
+    
+    .section-subtitle {
+        color: #ffffff;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+        letter-spacing: -0.01em;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
-    /* Loading Animation - Enhanced */
+    
+    /* Modern centered leaf frame preview */
+    .preview-image {
+        border-radius: 12px;
+        border: 1px solid rgba(0, 255, 136, 0.15);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Loading Spinner */
     .loading-container {
         text-align: center;
-        padding: 4rem;
+        padding: 3rem;
     }
+    
     .spinner {
-        width: 100px;
-        height: 100px;
-        border: 6px solid rgba(57, 255, 20, 0.3);
-        border-top: 6px solid #39ff14;
-        border-right: 6px solid #00ff00;
+        width: 64px;
+        height: 64px;
+        border: 4px solid rgba(0, 255, 136, 0.1);
+        border-top: 4px solid #00ff88;
         border-radius: 50%;
-        animation: multiSpin 1.5s linear infinite;
-        margin: 0 auto 2.5rem;
-        box-shadow: 
-            0 0 30px rgba(57, 255, 20, 0.6),
-            inset 0 0 30px rgba(57, 255, 20, 0.2);
-        position: relative;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1.5rem;
     }
-    .spinner::before {
-        content: "";
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        border: 3px solid transparent;
-        border-top: 3px solid rgba(0, 255, 0, 0.6);
-        border-radius: 50%;
-        animation: multiSpin 1s linear infinite reverse;
-    }
-    @keyframes multiSpin {
+    
+    @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+    
     .loading-text {
-        font-size: 1.8rem;
-        color: #39ff14;
-        font-weight: 700;
-        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
-        margin-bottom: 1rem;
-        animation: textPulse 2s infinite;
-    }
-    @keyframes textPulse {
-        0%, 100% { opacity: 0.8; }
-        50% { opacity: 1; }
-    }
-    .loading-subtext {
-        color: #c0ffc0;
-        margin-top: 1rem;
         font-size: 1.2rem;
-        font-weight: 500;
+        color: #00ff88;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        animation: pulse 1.8s ease-in-out infinite;
     }
-    /* Results Card - Ultra Enhanced */
-    .results-card {
-        background: rgba(0, 30, 60, 0.8);
-        border-radius: 20px;
-        padding: 3rem;
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(57, 255, 20, 0.4);
-        backdrop-filter: blur(10px);
-        animation: cardSlideIn 0.8s ease-out;
-    }
-    @keyframes cardSlideIn {
-        0% { 
-            opacity: 0; 
-            transform: translateY(30px);
-        }
-        100% { 
-            opacity: 1; 
-            transform: translateY(0);
-        }
-    }
-    .result-item {
-        margin-bottom: 2.5rem;
-        padding: 2rem;
-        border-radius: 15px;
-        background: rgba(0, 20, 40, 0.6);
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    .result-item::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, #39ff14, #00ff00);
-        animation: resultGlow 3s infinite;
-    }
-    @keyframes resultGlow {
-        0%, 100% { opacity: 0.5; }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; }
         50% { opacity: 1; }
     }
-    .result-item:hover {
-        transform: translateX(10px);
-        box-shadow: 0 5px 20px rgba(57, 255, 20, 0.3);
+    
+    .loading-subtext {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
     }
+    
+    /* Results Presentation */
+    .results-card {
+        background: rgba(6, 10, 11, 0.7);
+        border-radius: 16px;
+        padding: 2rem;
+        border: 1px solid rgba(0, 255, 136, 0.15);
+    }
+    
+    .result-item {
+        margin-bottom: 1.8rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: rgba(13, 22, 21, 0.4);
+        border: 1px solid rgba(0, 255, 136, 0.05);
+    }
+    
     .result-title {
-        color: #39ff14;
-        font-size: 1.6rem;
+        color: #94a3b8;
+        font-size: 0.9rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.8rem;
     }
+    
     .disease-name {
         font-size: 2.2rem;
-        font-weight: 900;
+        font-weight: 800;
         color: #ffffff;
-        background: linear-gradient(45deg, #39ff14, #00ff00, #39ff14);
+        background: linear-gradient(135deg, #ffffff 40%, #00ff88 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
         text-align: center;
-        margin: 1.5rem 0;
-        animation: diseaseGlow 2s infinite alternate;
-        text-transform: uppercase;
-        letter-spacing: 2px;
+        margin: 0.5rem 0;
+        letter-spacing: -0.04em;
     }
-    @keyframes diseaseGlow {
-        0% { 
-            filter: brightness(1);
-            transform: scale(1);
-        }
-        100% { 
-            filter: brightness(1.2);
-            transform: scale(1.05);
-        }
-    }
-    /* Progress Bar - Ultra Futuristic */
+    
+    /* Clean custom styled progress bar */
     .progress-container {
-        margin: 2rem 0;
+        margin: 1rem 0;
     }
+    
     .progress-label {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 1rem;
-        font-weight: 600;
-        color: #e0ffe0;
-        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+        color: #cbd5e1;
+        font-size: 0.95rem;
     }
+    
     .progress-bar-bg {
         width: 100%;
-        height: 20px;
-        background-color: rgba(0, 30, 60, 0.8);
-        border-radius: 15px;
+        height: 10px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
         overflow: hidden;
-        box-shadow: 
-            inset 0 0 15px rgba(0, 0, 0, 0.6),
-            0 0 10px rgba(57, 255, 20, 0.3);
-        border: 2px solid rgba(57, 255, 20, 0.4);
-        position: relative;
     }
-    .progress-bar-bg::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, 
-            rgba(57, 255, 20, 0.1) 25%, 
-            transparent, 
-            transparent 50%, 
-            rgba(57, 255, 20, 0.1) 50%, 
-            rgba(57, 255, 20, 0.1) 75%, 
-            transparent);
-        background-size: 20px 20px;
-        animation: progressPattern 2s linear infinite;
-    }
-    @keyframes progressPattern {
-        0% { background-position: 0 0; }
-        100% { background-position: 20px 0; }
-    }
+    
     .progress-bar-fill {
         height: 100%;
-        background: linear-gradient(90deg, #39ff14, #228b22, #00ff00, #39ff14);
-        background-size: 200% 100%;
-        border-radius: 15px;
-        transition: width 2s ease-in-out;
-        box-shadow: 
-            0 0 20px rgba(57, 255, 20, 0.8),
-            inset 0 2px 10px rgba(255, 255, 255, 0.3);
-        position: relative;
-        animation: progressFlow 3s linear infinite;
+        background: linear-gradient(90deg, #10b981, #00ff88);
+        border-radius: 10px;
     }
-    @keyframes progressFlow {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 200% 50%; }
-    }
-    .progress-bar-fill::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.4), 
-            transparent);
-        animation: progressShine 2s infinite;
-    }
-    @keyframes progressShine {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-    }
+    
     .confidence-text {
-        font-weight: 900;
-        color: #39ff14;
-        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
-        font-size: 1.4rem;
-        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: #00ff88;
+        font-family: 'Space Grotesk', sans-serif;
     }
-    /* Treatment Box - Enhanced */
+    
+    /* Treatment details */
     .treatment-box {
-        background: rgba(0, 40, 80, 0.7);
-        border-left: 6px solid #39ff14;
-        border-radius: 15px;
-        padding: 2.5rem;
-        margin-top: 1.5rem;
-        box-shadow: 
-            0 0 20px rgba(57, 255, 20, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        position: relative;
-        overflow: hidden;
+        background: rgba(16, 185, 129, 0.05);
+        border-left: 4px solid #00ff88;
+        border-radius: 8px;
+        padding: 1.25rem 1.5rem;
+        margin-top: 0.5rem;
     }
-    .treatment-box::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6px;
-        height: 100%;
-        background: linear-gradient(180deg, #39ff14, #00ff00, #39ff14);
-        animation: treatmentGlow 3s infinite;
-    }
-    @keyframes treatmentGlow {
-        0%, 100% { opacity: 0.7; }
-        50% { opacity: 1; }
-    }
+    
     .treatment-text {
-        line-height: 1.8;
-        color: #e0ffe0;
-        font-size: 1.2rem;
-        font-weight: 500;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        line-height: 1.6;
+        color: #cbd5e1;
+        font-size: 1rem;
+        margin: 0;
     }
-    /* Buttons - Ultra Enhanced */
-    .analyze-button, .reset-button {
-        border: none;
-        padding: 2rem;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 1.4rem;
-        font-weight: 800;
-        transition: all 0.4s ease;
-        width: 100%;
-        margin-top: 2rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-    }
-    .analyze-button {
-        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
-        color: white;
-        box-shadow: 
-            0 0 30px rgba(57, 255, 20, 0.6),
-            0 0 60px rgba(0, 255, 0, 0.3);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-    .analyze-button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.3), 
-            transparent);
-        transition: left 0.8s ease;
-    }
-    .analyze-button:hover::before {
-        left: 100%;
-    }
-    .analyze-button:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 
-            0 15px 40px rgba(57, 255, 20, 0.8),
-            0 5px 20px rgba(0, 255, 0, 0.6);
-    }
-    .reset-button {
-        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
-        color: white;
-        box-shadow: 
-            0 0 25px rgba(57, 255, 20, 0.5),
-            0 0 50px rgba(34, 139, 34, 0.3);
-        border: 2px solid rgba(57, 255, 20, 0.3);
-    }
-    .reset-button:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 
-            0 12px 30px rgba(57, 255, 20, 0.7),
-            0 5px 15px rgba(34, 139, 34, 0.5);
-    }
-    .analyze-button:disabled {
-        background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-        border: 1px solid #444466;
-        opacity: 0.5;
-    }
-    /* Error Message - Enhanced */
+    
+    /* Clean alert box override */
     .error-box {
-        background: rgba(100, 0, 40, 0.5);
-        border-left: 6px solid #39ff14;
-        border-radius: 15px;
-        padding: 2rem;
-        margin: 2rem 0;
-        color: #00ff00;
-        box-shadow: 
-            0 0 20px rgba(57, 255, 20, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        backdrop-filter: blur(10px);
-        animation: errorPulse 2s infinite;
+        background: rgba(239, 68, 68, 0.05);
+        border-left: 4px solid #ef4444;
+        border-radius: 8px;
+        padding: 1.25rem 1.5rem;
+        margin: 1rem 0;
+        color: #fca5a5;
     }
-    @keyframes errorPulse {
-        0%, 100% { border-left-color: #39ff14; }
-        50% { border-left-color: #00ff00; }
-    }
-    /* About Section - Enhanced */
+    
+    /* About section & tech badges */
     .about-section {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border-radius: 25px;
-        padding: 4rem;
-        margin-bottom: 3rem;
-        border: 1px solid rgba(57, 255, 20, 0.25);
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        background: rgba(13, 22, 21, 0.45);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        border: 1px solid rgba(0, 255, 136, 0.08);
     }
+    
     .about-content {
-        max-width: 1200px;
+        max-width: 800px;
         margin: 0 auto;
         text-align: center;
     }
+    
     .about-text {
-        font-size: 1.3rem;
-        line-height: 1.9;
-        color: #d8ffc0;
-        margin-bottom: 3rem;
-        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-        font-weight: 400;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #94a3b8;
+        margin-bottom: 1.8rem;
     }
-    /* Tech Stack Section */
+    
     .tech-stack {
         display: flex;
         justify-content: center;
-        gap: 2rem;
+        gap: 0.75rem;
         flex-wrap: wrap;
-        margin: 3rem 0;
+        margin: 1.5rem 0;
     }
+    
     .tech-item {
-        background: rgba(0, 30, 60, 0.6);
-        padding: 1.5rem 2rem;
-        border-radius: 15px;
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        color: #39ff14;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #cbd5e1;
+        font-weight: 500;
+        font-size: 0.85rem;
         transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-        font-size: 1.1rem;
     }
+    
     .tech-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(57, 255, 20, 0.4);
-        border-color: #39ff14;
+        border-color: #00ff88;
+        color: #00ff88;
+        transform: translateY(-2px);
     }
-    /* Footer - Enhanced */
-    .footer {
-        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
-        color: white;
+    
+    /* Meet The Team Section */
+    .team-section {
+        background: rgba(13, 22, 21, 0.45);
+        border-radius: 24px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        border: 1px solid rgba(0, 255, 136, 0.08);
+    }
+    
+    .team-title {
+        color: #ffffff;
         text-align: center;
-        padding: 3rem;
-        border-radius: 0;
-        margin-top: 3rem;
-        box-shadow: 
-            0 0 40px rgba(34, 139, 34, 0.8),
-            0 0 80px rgba(0, 255, 0, 0.4);
-        border-top: 4px solid #39ff14;
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
         position: relative;
-        overflow: hidden;
     }
-    .footer::before {
+    
+    .team-title::after {
         content: "";
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-        animation: footerRotate 20s linear infinite;
-    }
-    @keyframes footerRotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    .footer-text {
-        font-size: 1.3rem;
-        opacity: 0.95;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-        margin: 1rem 0;
-        font-weight: 600;
-        position: relative;
-        z-index: 2;
-    }
-    .creator-info {
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 2px solid rgba(255, 255, 255, 0.2);
-        font-size: 1.1rem;
-        opacity: 0.9;
-        position: relative;
-        z-index: 2;
-    }
-    /* Sidebar Styles - Enhanced */
-    [data-testid="stSidebar"] {
-        background: rgba(10, 15, 40, 0.9);
-        backdrop-filter: blur(15px);
-        border-right: 2px solid rgba(57, 255, 20, 0.4);
-    }
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {
-        color: #39ff14 !important;
-        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6) !important;
-    }
-    [data-testid="stSidebar"] p {
-        color: #d8ffc0 !important;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.1) !important;
-    }
-    [data-testid="stSidebar"] .stMarkdown {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-        padding: 1rem;
-        margin: 1rem 0;
-        border: 1px solid rgba(57, 255, 20, 0.2);
-    }
-    /* Success Message */
-    .success-box {
-        background: rgba(0, 100, 50, 0.5);
-        border-left: 6px solid #00ff88;
-        border-radius: 15px;
-        padding: 2rem;
-        margin: 2rem 0;
-        color: #88ffaa;
-        box-shadow: 
-            0 0 20px rgba(0, 255, 136, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(0, 255, 136, 0.3);
-        backdrop-filter: blur(10px);
-    }
-    /* Responsive Design - Enhanced */
-    @media (max-width: 1200px) {
-        .logo-text {
-            font-size: 4.5rem;
-        }
-        .section-title {
-            font-size: 2.8rem;
-        }
-    }
-    @media (max-width: 768px) {
-        .main-header {
-            padding: 3rem 1.5rem;
-        }
-        .logo-text {
-            font-size: 3.5rem;
-        }
-        .tagline {
-            font-size: 1.4rem;
-        }
-        .steps-container {
-            flex-direction: column;
-        }
-        .analysis-section {
-            flex-direction: column;
-        }
-        .drop-zone {
-            padding: 3rem 2rem;
-        }
-        .stats-section {
-            flex-direction: column;
-            align-items: center;
-        }
-        .stat-card {
-            min-width: 200px;
-            max-width: 300px;
-        }
-        .section-title {
-            font-size: 2.2rem;
-        }
-        .tech-stack {
-            justify-content: center;
-        }
-    }
-    @media (max-width: 480px) {
-        .main-header {
-            padding: 2rem 1rem;
-        }
-        .logo-text {
-            font-size: 2.8rem;
-        }
-        .tagline {
-            font-size: 1.2rem;
-        }
-        .glass-container, .upload-section, .about-section {
-            padding: 2rem;
-        }
-        .step-card {
-            min-width: 100%;
-            padding: 2rem 1.5rem;
-        }
-        .upload-icon {
-            font-size: 4rem;
-        }
-        .drop-zone {
-            padding: 2rem 1rem;
-        }
-        .analyze-button, .reset-button {
-            padding: 1.5rem;
-            font-size: 1.2rem;
-        }
-    }
-    /* Custom scrollbar - Enhanced */
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-    ::-webkit-scrollbar-track {
-        background: rgba(10, 15, 40, 0.8);
-        border-radius: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #39ff14, #228b22, #00ff00);
-        border-radius: 6px;
-        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #00ff00, #228b22, #39ff14);
-        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-    }
-    /* Additional Animations */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    .fade-in-up {
-        animation: fadeInUp 0.8s ease-out;
-    }
-    /* Notification Styles */
-    .notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: rgba(57, 255, 20, 0.9);
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        z-index: 1000;
-        animation: slideInRight 0.5s ease-out;
-    }
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    /* Team Section - New */
-    .team-section {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border-radius: 25px;
-        padding: 4rem;
-        margin-bottom: 3rem;
-        border: 1px solid rgba(57, 255, 20, 0.25);
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-    .team-title {
-        color: #39ff14;
-        text-align: center;
-        font-size: 3.2rem;
-        margin-bottom: 3rem;
-        font-weight: 900;
-        text-shadow: 
-            0 0 15px rgba(57, 255, 20, 0.8),
-            0 0 30px rgba(57, 255, 20, 0.4);
-        position: relative;
-        display: inline-block;
+        bottom: -10px;
         left: 50%;
         transform: translateX(-50%);
-        animation: titleGlow 3s infinite alternate;
+        width: 60px;
+        height: 3px;
+        background: #00ff88;
+        border-radius: 2px;
     }
+    
     .team-container {
         display: flex;
         justify-content: center;
-        gap: 2.5rem;
+        gap: 1.5rem;
         flex-wrap: wrap;
     }
+    
     .team-card {
-        background: rgba(0, 30, 60, 0.8);
-        border-radius: 20px;
-        padding: 2.5rem;
+        background: rgba(8, 14, 15, 0.6);
+        border-radius: 16px;
+        padding: 2rem;
         text-align: center;
         flex: 1;
-        min-width: 280px;
-        max-width: 320px;
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(57, 255, 20, 0.3);
-        backdrop-filter: blur(10px);
-        transition: all 0.5s ease;
-        position: relative;
-        overflow: hidden;
+        min-width: 240px;
+        max-width: 280px;
+        border: 1px solid rgba(0, 255, 136, 0.05);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .team-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
-        background-size: 200% 100%;
-        animation: borderFlow 3s linear infinite;
-    }
+    
     .team-card:hover {
-        transform: translateY(-10px) scale(1.05);
-        box-shadow: 
-            0 15px 50px rgba(57, 255, 20, 0.5),
-            0 5px 20px rgba(0, 255, 0, 0.3);
-        border: 1px solid rgba(57, 255, 20, 0.7);
+        transform: translateY(-6px);
+        border-color: rgba(0, 255, 136, 0.25);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
+    
     .team-name {
-        color: #39ff14;
-        font-size: 1.8rem;
+        color: #ffffff;
+        font-size: 1.35rem;
         font-weight: 700;
-        margin: 1.5rem 0;
-        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+        margin-bottom: 0.4rem;
     }
+    
     .team-role {
-        color: #00ff00;
+        color: #00ff88;
         font-weight: 600;
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
+        font-size: 0.85rem;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
     }
+    
     .team-desc {
-        color: #d8ffc0;
-        font-size: 1.1rem;
-        line-height: 1.6;
+        color: #94a3b8;
+        font-size: 0.9rem;
+        line-height: 1.5;
     }
+    
     .love-icon {
         display: block;
         text-align: center;
-        font-size: 2.5rem;
-        margin: 2rem 0;
-        color: #39ff14;
-        animation: heartBeat 1.5s ease-in-out infinite;
+        font-size: 1.8rem;
+        margin: 1.5rem 0 0.5rem;
+        color: #00ff88;
+        animation: heartbeat 1.6s ease-in-out infinite;
     }
-    @keyframes heartBeat {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-        100% { transform: scale(1); }
+    
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    
+    /* Footer Style */
+    .footer {
+        background: linear-gradient(180deg, rgba(8, 14, 15, 0) 0%, rgba(8, 14, 15, 0.8) 100%);
+        color: #94a3b8;
+        text-align: center;
+        padding: 3rem 1.5rem;
+        margin-top: 3rem;
+        border-top: 1px solid rgba(0, 255, 136, 0.08);
+    }
+    
+    .footer-text {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin: 0.5rem 0;
+    }
+    
+    .creator-info {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #030506;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 255, 136, 0.2);
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 255, 136, 0.4);
+    }
+    
+    /* Adaptive spacing and responsive typography */
+    @media (max-width: 768px) {
+        .logo-text { font-size: 2.8rem; }
+        .tagline { font-size: 0.95rem; }
+        .section-title { font-size: 1.8rem; }
+        .glass-container, .upload-section, .about-section, .team-section { padding: 1.75rem; }
+        .stats-section { flex-direction: column; }
     }
 </style>
 """, unsafe_allow_html=True)
-
-
 
 # Main header with enhanced futuristic design
 st.markdown("""
@@ -1538,11 +957,11 @@ if uploaded_file is not None:
         width, height = image.size
         file_size = len(uploaded_file.getvalue()) / 1024  # KB
         st.markdown(f"""
-        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(57, 255, 20, 0.3); text-align: center;">
-            <p style="color: #39ff14; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
-            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">📐 Dimensions: {width} × {height} px</p>
-            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">💾 Size: {file_size:.1f} KB</p>
-            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">📁 Format: {uploaded_file.type}</p>
+        <div style="background: rgba(13, 22, 21, 0.6); padding: 1rem; border-radius: 12px; margin-top: 1rem; border: 1px solid rgba(0, 255, 136, 0.2); text-align: center;">
+            <p style="color: #00ff88; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
+            <p style="color: #cbd5e1; margin: 5px 0; display: inline-block; padding: 0 15px;">📐 Dimensions: {width} × {height} px</p>
+            <p style="color: #cbd5e1; margin: 5px 0; display: inline-block; padding: 0 15px;">💾 Size: {file_size:.1f} KB</p>
+            <p style="color: #cbd5e1; margin: 5px 0; display: inline-block; padding: 0 15px;">📁 Format: {uploaded_file.type}</p>
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔄 **UPLOAD NEW IMAGE**", key="reset", help="Upload a different leaf image", use_container_width=True):
@@ -1559,10 +978,10 @@ if uploaded_file is not None:
                     f.write(uploaded_file.getbuffer())
                 
                 if not is_leaf_image("temp_image.jpg"):
-                    st.markdown('<div class="error-box" style="border-left-color: #ffaa00; text-align: center;">', unsafe_allow_html=True)
-                    st.markdown('<h3 style="color: #ffaa00;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
-                    st.markdown('<p>This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>', unsafe_allow_html=True)
-                    st.markdown('<p><strong>Please upload a clear leaf picture and try again.</strong></p>', unsafe_allow_html=True)
+                    st.markdown('<div class="error-box" style="border-left-color: #ef4444; text-align: center;">', unsafe_allow_html=True)
+                    st.markdown('<h3 style="color: #f87171;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
+                    st.markdown('<p style="color: #fca5a5;">This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>', unsafe_allow_html=True)
+                    st.markdown('<p style="color: #fca5a5;"><strong>Please upload a clear leaf picture and try again.</strong></p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     try:
                         os.remove("temp_image.jpg")
@@ -1627,9 +1046,9 @@ if uploaded_file is not None:
                     st.markdown(f'<p class="disease-name">{display_disease}</p>', unsafe_allow_html=True)
                     # Health status indicator
                     if "healthy" in predicted_disease.lower():
-                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff88, #00cc66); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff88, #00cc66); color: #060b0d; padding: 0.6rem 2.2rem; border-radius: 30px; font-weight: 700; font-size: 1.1rem; display: inline-block;">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
                     else:
-                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff00, #39ff14); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #ef4444, #f97316); color: white; padding: 0.6rem 2.2rem; border-radius: 30px; font-weight: 700; font-size: 1.1rem; display: inline-block; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     # Confidence score with enhanced progress bar
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
@@ -1647,20 +1066,19 @@ if uploaded_file is not None:
                     """, unsafe_allow_html=True)
                     # Confidence interpretation
                     if confidence_score > 0.9:
-                        conf_msg = "🟢 **VERY HIGH CONFIDENCE** - Diagnosis is highly reliable"
+                        conf_msg = "🟢 VERY HIGH CONFIDENCE - Diagnosis is highly reliable"
                         conf_color = "#00ff88"
                     elif confidence_score > 0.7:
-                        conf_msg = "🟡 **HIGH CONFIDENCE** - Diagnosis is reliable"
+                        conf_msg = "🟡 HIGH CONFIDENCE - Diagnosis is reliable"
                         conf_color = "#ffaa00"
                     elif confidence_score > 0.5:
-                        conf_msg = "🟠 **MODERATE CONFIDENCE** - Consider expert consultation"
-                        conf_color = "#00ff00"
+                        conf_msg = "🟠 MODERATE CONFIDENCE - Consider expert consultation"
+                        conf_color = "#34d399"
                     else:
-                        conf_msg = "🔴 **LOW CONFIDENCE** - Recommend professional diagnosis"
-                        conf_color = "#39ff14"
-                    st.markdown(f'<p style="color: {conf_color}; font-weight: 600; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
+                        conf_msg = "🔴 LOW CONFIDENCE - Recommend professional diagnosis"
+                        conf_color = "#ef4444"
+                    st.markdown(f'<p style="color: {conf_color}; font-weight: 700; text-align: center; margin-top: 1rem; font-family: \'Space Grotesk\', sans-serif;">{conf_msg}</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    # Top 3 predictions
 
                     # Treatment recommendation with enhanced styling
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
@@ -1674,11 +1092,11 @@ if uploaded_file is not None:
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">📈 ANALYSIS SUMMARY</h4>', unsafe_allow_html=True)
                     st.markdown(f"""
-                    <div style="background: rgba(0, 40, 80, 0.5); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
-                        <p style="color: #d8ffc0; margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
-                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
-                        <p style="color: #d8ffc0; margin: 0.5rem 0;">⚡ Processing Time: <3 seconds</p>
-                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
+                    <div style="background: rgba(13, 22, 21, 0.6); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 255, 136, 0.15);">
+                        <p style="color: #cbd5e1; margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
+                        <p style="color: #94a3b8; margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
+                        <p style="color: #94a3b8; margin: 0.5rem 0;">⚡ Processing Time: &lt;3 seconds</p>
+                        <p style="color: #94a3b8; margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
                     </div>
                     """, unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -1698,10 +1116,10 @@ if uploaded_file is not None:
                     pass
             else:
                 st.markdown("""
-                <div style="text-align: center; padding: 2rem; background: rgba(0, 30, 60, 0.4); border-radius: 15px; border: 2px dashed rgba(57, 255, 20, 0.3);">
+                <div style="text-align: center; padding: 2rem; background: rgba(13, 22, 21, 0.45); border-radius: 16px; border: 2px dashed rgba(0, 255, 136, 0.2);">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
-                    <h4 style="color: #39ff14; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
-                    <p style="color: #d8ffc0;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
+                    <h4 style="color: #00ff88; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
+                    <p style="color: #cbd5e1;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
                 </div>
                 """, unsafe_allow_html=True)
         else:
@@ -1714,13 +1132,13 @@ if uploaded_file is not None:
 else:
     # Enhanced upload prompt
     st.markdown("""
-    <div style="text-align: center; padding: 3rem; background: rgba(0, 30, 60, 0.3); border-radius: 20px; border: 3px dashed rgba(57, 255, 20, 0.4); margin: 2rem 0;">
-        <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: bounce 2s infinite;">📸</div>
-        <h3 style="color: #39ff14; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR AI ANALYSIS</h3>
-        <p style="color: #d8ffc0; font-size: 1.2rem; margin-bottom: 1.5rem;">Select a clear image of the plant leaf you want to analyze</p>
-        <div style="background: rgba(0, 50, 100, 0.5); padding: 1rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
-            <p style="color: #c0ffc0; margin: 0;">Supported formats: JPG, JPEG, PNG</p>
-            <p style="color: #c0ffc0; margin: 0;">Maximum file size: 200MB</p>
+    <div style="text-align: center; padding: 3rem; background: rgba(13, 22, 21, 0.4); border-radius: 20px; border: 2px dashed rgba(0, 255, 136, 0.25); margin: 2rem 0;">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: heartbeat 2s infinite;">📸</div>
+        <h3 style="color: #00ff88; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR AI ANALYSIS</h3>
+        <p style="color: #94a3b8; font-size: 1.2rem; margin-bottom: 1.5rem;">Select a clear image of the plant leaf you want to analyze</p>
+        <div style="background: rgba(8, 14, 15, 0.6); padding: 1rem; border-radius: 10px; border: 1px solid rgba(0, 255, 136, 0.15); display: inline-block;">
+            <p style="color: #cbd5e1; margin: 0;">Supported formats: JPG, JPEG, PNG</p>
+            <p style="color: #cbd5e1; margin: 0;">Maximum file size: 200MB</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -1774,7 +1192,7 @@ st.markdown("""
     </div>
 </div>
 <div class="love-icon">❤️</div>
-<p style="text-align: center; color: #39ff14; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
+<p style="text-align: center; color: #00ff88; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1788,7 +1206,7 @@ st.markdown("""
         <div class="footer-text">⚡ <strong>PROCESSING SPEED:</strong> Sub-3-second analysis</div>
         <div class="footer-text">🌍 <strong>IMPACT:</strong> Helping farmers worldwide save crops and reduce pesticide use</div>
     </div>
-    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid rgba(255, 255, 255, 0.2);">
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.05);">
         <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
     </div>
 </div>
