@@ -127,14 +127,36 @@ st.markdown(clean_html("""
         color: #0f172a !important;
     }
     
-    /* Center the container to 1200px max-width like standard modern web apps */
+    /* Centering and layout adjustments */
     .block-container {
         max-width: 1200px !important;
-        padding-top: 1.5rem !important;
+        padding-top: 0.5rem !important;
         padding-bottom: 2rem !important;
         padding-left: 2rem !important;
         padding-right: 2rem !important;
         margin: 0 auto !important;
+    }
+    
+    /* Fix top white space gap completely by hiding Streamlit default headers and paddings */
+    [data-testid="stHeader"], 
+    header[data-testid="stHeader"] {
+        display: none !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    div[data-testid="stAppViewBlockContainer"] {
+        padding-top: 0.5rem !important;
+        margin-top: 0 !important;
+    }
+    
+    div[data-testid="stMain"] {
+        padding-top: 0 !important;
+    }
+    
+    div[data-testid="stMainBlockContainer"] {
+        padding-top: 0.5rem !important;
     }
     
     /* Hide Streamlit default branding */
@@ -157,7 +179,8 @@ st.markdown(clean_html("""
     
     .nav-bar-container-marker, .active-page-marker-dashboard,
     .active-page-marker-my_plants, .active-page-marker-care_guide,
-    .active-page-marker-support, .custom-footer-marker {
+    .active-page-marker-support, .custom-footer-marker,
+    .help-card-marker {
         display: none !important;
         height: 0 !important;
         width: 0 !important;
@@ -389,44 +412,26 @@ st.markdown(clean_html("""
         margin-bottom: 2.25rem;
     }
     
-    .hero-buttons {
-        display: flex;
-        gap: 1rem;
+    /* Custom premium styling for hero button sub-columns */
+    div[data-testid="stHorizontalBlock"]:has(button[key="hero_get_started"]) button {
+        height: auto !important;
+        padding: 0.75rem 2rem !important;
+        font-size: 1rem !important;
+        border-radius: 8px !important;
     }
     
-    /* Styled with light pasture green colors as requested by the user */
-    .btn-primary {
-        background-color: #e6f4ea;
+    button[key="hero_get_started"] {
+        background-color: #e6f4ea !important;
         color: #0f5132 !important;
-        border: 1px solid #d1e7dd;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.2s;
-        text-align: center;
+        border: 1px solid #d1e7dd !important;
+        font-weight: 700 !important;
     }
     
-    .btn-primary:hover {
-        background-color: #d1e7dd;
-        transform: translateY(-1px);
-    }
-    
-    .btn-secondary {
-        background-color: #ffffff;
-        color: #475569 !important;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 700;
-        text-decoration: none;
-        border: 1px solid #cbd5e1;
-        transition: all 0.2s;
-        text-align: center;
-    }
-    
-    .btn-secondary:hover {
-        background-color: #f8fafc;
-        transform: translateY(-1px);
+    button[key="hero_guide"] {
+        background-color: #e6f4ea !important;
+        color: #0f5132 !important;
+        border: 1px solid #d1e7dd !important;
+        font-weight: 700 !important;
     }
     
     /* Native File Uploader Overrides (Clean custom dashed card matching mockup) */
@@ -473,10 +478,12 @@ st.markdown(clean_html("""
         margin-bottom: 0.5rem;
     }
     
-    /* Native File Uploader overrides to blend perfectly */
-    div[data-testid="stFileUploader"] {
+    /* Override native Streamlit drag and drop zone to skin dark backgrounds into premium light themes */
+    div[data-testid="stFileUploader"],
+    div[data-testid="stFileUploader"] section {
         border: none !important;
         background: transparent !important;
+        background-color: transparent !important;
         padding: 0 !important;
         margin: 0 !important;
     }
@@ -484,11 +491,19 @@ st.markdown(clean_html("""
     section[data-testid="stFileUploadDropzone"] {
         border: none !important;
         background: transparent !important;
+        background-color: transparent !important;
         padding: 0 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
+    }
+    
+    /* Force internal drag-and-drop labels to render beautifully with light colors instead of dark blocks */
+    section[data-testid="stFileUploadDropzone"] > div {
+        background-color: transparent !important;
+        background: transparent !important;
+        color: #475569 !important;
     }
     
     /* Style the Streamlit browse files button as a simple underlined link matching mockup */
@@ -568,6 +583,63 @@ st.markdown(clean_html("""
         color: #0f5132 !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 6px rgba(15, 81, 50, 0.08) !important;
+    }
+    
+    /* Prominent rich forest green style for the Analyze button to stand out beautifully as requested */
+    button[key="run_ai_scan"] {
+        background-color: #063c27 !important;
+        color: #ffffff !important;
+        border: none !important;
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        padding: 0.8rem 2.5rem !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(6, 60, 39, 0.15) !important;
+    }
+    
+    button[key="run_ai_scan"]:hover {
+        background-color: #042719 !important;
+        color: #ffffff !important;
+        box-shadow: 0 6px 16px rgba(6, 60, 39, 0.25) !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    /* Style the green card wrapper for Need Expert Help */
+    div[data-testid="stVerticalBlock"]:has(.help-card-marker) {
+        background-color: #063c27 !important;
+        border-radius: 16px !important;
+        padding: 1.5rem !important;
+        color: #ffffff !important;
+        margin-bottom: 1rem !important;
+        box-shadow: 0 4px 10px rgba(6, 60, 39, 0.1) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+    
+    .help-card-content {
+        color: #ffffff !important;
+    }
+    
+    /* Style the white Book Session button inside the green help card */
+    div[data-testid="stVerticalBlock"]:has(.help-card-marker) button {
+        background-color: #ffffff !important;
+        color: #063c27 !important;
+        padding: 0.55rem 1.5rem !important;
+        border-radius: 20px !important;
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        border: none !important;
+        box-shadow: none !important;
+        transition: all 0.2s !important;
+        margin-top: 0.5rem !important;
+        width: auto !important;
+        display: inline-block !important;
+    }
+    
+    div[data-testid="stVerticalBlock"]:has(.help-card-marker) button:hover {
+        background-color: #f8fafc !important;
+        color: #063c27 !important;
+        transform: translateY(-1px) !important;
     }
     
     /* Critical Form Input Fields Light Theme overrides to solve the dark-mode box bug */
@@ -657,20 +729,6 @@ st.markdown(clean_html("""
         display: inline-flex;
         align-items: center;
         gap: 0.25rem;
-    }
-    
-    .plant-name {
-        font-size: 1.8rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin: 0 0 0.25rem 0;
-    }
-    
-    .plant-sub {
-        font-size: 1rem;
-        font-style: italic;
-        color: #64748b;
-        margin-bottom: 1.5rem;
     }
     
     .diag-box-critical {
@@ -821,26 +879,6 @@ st.markdown(clean_html("""
         border-radius: 3px;
     }
     
-    .help-card {
-        background-color: #063c27;
-        border-radius: 16px;
-        padding: 1.5rem;
-        color: #ffffff;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 10px rgba(6, 60, 39, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .help-card::after {
-        content: '🌸';
-        position: absolute;
-        bottom: -1rem;
-        right: -1rem;
-        font-size: 4rem;
-        opacity: 0.1;
-    }
-    
     .help-title {
         font-size: 1.1rem;
         font-weight: 700;
@@ -853,24 +891,6 @@ st.markdown(clean_html("""
         color: #a7f3d0;
         line-height: 1.5;
         margin-bottom: 1.25rem;
-    }
-    
-    .help-btn {
-        background-color: #ffffff;
-        color: #063c27 !important;
-        padding: 0.5rem 1.25rem;
-        border-radius: 20px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-        transition: all 0.2s;
-    }
-    
-    .help-btn:hover {
-        background-color: #f8fafc;
-        transform: translateY(-1px);
     }
     
     /* Why Trust Our Diagnosis Section */
@@ -1251,11 +1271,14 @@ if st.session_state.current_page == "dashboard":
             <span class="powered-badge">POWERED BY ADVANCED AI</span>
             <h1 class="hero-title">Heal Your Plants<br>with AI</h1>
             <p class="hero-desc">Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our botanical intelligence guide your garden to health.</p>
-            <div class="hero-buttons">
-                <a href="#stFileUploader" class="btn-primary">Get Started</a>
-                <a href="#" class="btn-secondary">View Demo</a>
-            </div>
             """), unsafe_allow_html=True)
+            
+            # Interactive premium Hero Buttons using horizontal columns
+            hero_btn_cols = st.columns([1, 1, 1.2])
+            with hero_btn_cols[0]:
+                st.button("Get Started", key="hero_get_started")
+            with hero_btn_cols[1]:
+                st.button("Guide", key="hero_guide", on_click=set_page, args=("care_guide",))
 
         with hero_col2:
             st.markdown(clean_html("""
@@ -1339,11 +1362,9 @@ if st.session_state.current_page == "dashboard":
                 st.markdown(clean_html(st.session_state.active_details_html), unsafe_allow_html=True)
                 
             with card_col2:
+                # Removed "Monstera Deliciosa Swiss Cheese Plant" header lines as requested by the user
                 st.markdown(clean_html(f"""
-                <div class="diag-content-container">
-                    <h3 class="plant-name">{st.session_state.active_plant}</h3>
-                    <p class="plant-sub">{st.session_state.active_sub}</p>
-                    
+                <div class="diag-content-container" style="padding-top: 1.5rem;">
                     <div class="{st.session_state.active_diag_class}">
                         <div class="diag-box-title {st.session_state.active_diag_title_class}">{st.session_state.active_diag_title}</div>
                         <div class="diag-box-name">{st.session_state.active_disease}</div>
@@ -1479,13 +1500,18 @@ if st.session_state.current_page == "dashboard":
                 <div class="side-value">{st.session_state.active_sunlight}</div>
             </div>
         </div>
-        
-        <div class="help-card">
-            <h3 class="help-title">Need expert help?</h3>
-            <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
-            <a href="#" class="help-btn">Book Session</a>
-        </div>
         """), unsafe_allow_html=True)
+        
+        # Render "Need expert help?" green card with interactive Book Session button that redirects to Support page
+        with st.container():
+            st.markdown('<div class="help-card-marker"></div>', unsafe_allow_html=True)
+            st.markdown(clean_html("""
+            <div class="help-card-content">
+                <h3 class="help-title">Need expert help?</h3>
+                <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
+            </div>
+            """), unsafe_allow_html=True)
+            st.button("Book Session", key="side_book_session", on_click=set_page, args=("support",), help="Speak with our botanist team")
 
     # Elegant Features Grid - "Why Trust Our Diagnosis?" - Matches the Image Exactly
     st.markdown(clean_html("""
@@ -1551,6 +1577,7 @@ if st.session_state.current_page == "dashboard":
 
 elif st.session_state.current_page == "my_plants":
     # ----------------- PAGE: MY PLANTS GRID -----------------
+    # Updated Roma Tomato card image URL to a highly cached stable tomato image on Unsplash to prevent broken links
     st.markdown(clean_html("""
     <div style="text-align: center; margin-bottom: 3rem;">
         <span class="powered-badge">MY GARDEN</span>
@@ -1567,13 +1594,13 @@ elif st.session_state.current_page == "my_plants":
                 <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Leaf Spot</p>
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
                     <span>📅 2 days ago</span>
-                    <span style="color: #10b981; font-weight: 700; cursor: pointer;" onclick="window.location.search='?page=dashboard'">View Diagnosis →</span>
+                    <span style="color: #10b981; font-weight: 700; cursor: pointer;">View Diagnosis →</span>
                 </div>
             </div>
         </div>
         
         <div class="plant-collection-card">
-            <img src="https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
+            <img src="https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
             <div style="padding: 1.5rem;">
                 <span class="healthy-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
                 <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Roma Tomato</h3>
