@@ -127,25 +127,10 @@ st.markdown(clean_html("""
         color: #0f172a !important;
     }
     
-    /* Forcefully remove all empty top spaces and default padding offsets */
-    .stMainBlockContainer, [data-testid="stMainBlockContainer"] {
-        padding-top: 0rem !important;
-        margin-top: 0rem !important;
-    }
-    
-    div[data-testid="stHeader"] {
-        display: none !important;
-        height: 0 !important;
-    }
-    
-    div[data-testid="stAppViewBlockContainer"] {
-        padding-top: 0rem !important;
-    }
-    
     /* Center the container to 1200px max-width like standard modern web apps */
     .block-container {
         max-width: 1200px !important;
-        padding-top: 0rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 2rem !important;
         padding-left: 2rem !important;
         padding-right: 2rem !important;
@@ -163,7 +148,6 @@ st.markdown(clean_html("""
         background-color: #ffffff !important;
         padding: 0.75rem 2rem !important;
         border: 1px solid #e2e8f0 !important;
-        margin-top: 1.5rem !important;
         margin-bottom: 2.5rem !important;
         border-radius: 12px !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
@@ -173,8 +157,7 @@ st.markdown(clean_html("""
     
     .nav-bar-container-marker, .active-page-marker-dashboard,
     .active-page-marker-my_plants, .active-page-marker-care_guide,
-    .active-page-marker-support, .custom-footer-marker,
-    .help-card-marker, .prominent-scan-container {
+    .active-page-marker-support, .custom-footer-marker {
         display: none !important;
         height: 0 !important;
         width: 0 !important;
@@ -359,27 +342,6 @@ st.markdown(clean_html("""
         margin-bottom: 2.5rem !important;
     }
     
-    /* Style native Streamlit buttons inside the Hero Card to be pasture green */
-    div[data-testid="stVerticalBlock"]:has(.hero-card-marker) button {
-        background-color: #e6f4ea !important;
-        color: #0f5132 !important;
-        border: 1px solid #d1e7dd !important;
-        padding: 0.75rem 2rem !important;
-        border-radius: 8px !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        transition: all 0.2s !important;
-        text-align: center !important;
-        width: 100% !important;
-        box-shadow: 0 2px 4px rgba(15, 81, 50, 0.04) !important;
-    }
-    
-    div[data-testid="stVerticalBlock"]:has(.hero-card-marker) button:hover {
-        background-color: #d1e7dd !important;
-        color: #0f5132 !important;
-        transform: translateY(-1px) !important;
-    }
-    
     /* Style Streamlit Vertical Block as the Split Diagnosis Card via parent selector */
     div[data-testid="stVerticalBlock"]:has(.split-card-marker) {
         background-color: #ffffff !important;
@@ -425,6 +387,46 @@ st.markdown(clean_html("""
         color: #475569;
         line-height: 1.6;
         margin-bottom: 2.25rem;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    /* Styled with light pasture green colors as requested by the user */
+    .btn-primary {
+        background-color: #e6f4ea;
+        color: #0f5132 !important;
+        border: 1px solid #d1e7dd;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s;
+        text-align: center;
+    }
+    
+    .btn-primary:hover {
+        background-color: #d1e7dd;
+        transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+        background-color: #ffffff;
+        color: #475569 !important;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid #cbd5e1;
+        transition: all 0.2s;
+        text-align: center;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #f8fafc;
+        transform: translateY(-1px);
     }
     
     /* Native File Uploader Overrides (Clean custom dashed card matching mockup) */
@@ -568,27 +570,6 @@ st.markdown(clean_html("""
         box-shadow: 0 4px 6px rgba(15, 81, 50, 0.08) !important;
     }
     
-    /* Forceful styling overrides to make the ANALYZE WITH AI button highly prominent and eye-catching */
-    div:has(.prominent-scan-container) button {
-        background-color: #063c27 !important;
-        color: #ffffff !important;
-        border: none !important;
-        font-size: 1.05rem !important;
-        font-weight: 800 !important;
-        padding: 0.8rem 2rem !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 12px rgba(6, 60, 39, 0.15) !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    div:has(.prominent-scan-container) button:hover {
-        background-color: #05301f !important;
-        color: #ffffff !important;
-        box-shadow: 0 6px 16px rgba(6, 60, 39, 0.25) !important;
-        transform: translateY(-1px) !important;
-    }
-    
     /* Critical Form Input Fields Light Theme overrides to solve the dark-mode box bug */
     div[data-testid="stTextInput"] input,
     div[data-testid="stTextArea"] textarea {
@@ -676,6 +657,20 @@ st.markdown(clean_html("""
         display: inline-flex;
         align-items: center;
         gap: 0.25rem;
+    }
+    
+    .plant-name {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0 0 0.25rem 0;
+    }
+    
+    .plant-sub {
+        font-size: 1rem;
+        font-style: italic;
+        color: #64748b;
+        margin-bottom: 1.5rem;
     }
     
     .diag-box-critical {
@@ -860,24 +855,22 @@ st.markdown(clean_html("""
         margin-bottom: 1.25rem;
     }
     
-    /* Target and style the Book Session button inside side container */
-    div[data-testid="stVerticalBlock"]:has(.help-card-marker) button {
-        background-color: #ffffff !important;
+    .help-btn {
+        background-color: #ffffff;
         color: #063c27 !important;
-        padding: 0.6rem 1.5rem !important;
-        border-radius: 20px !important;
-        font-weight: 700 !important;
-        font-size: 0.85rem !important;
-        border: none !important;
-        width: auto !important;
-        margin: 0 !important;
-        display: inline-block !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+        padding: 0.5rem 1.25rem;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        transition: all 0.2s;
     }
     
-    div[data-testid="stVerticalBlock"]:has(.help-card-marker) button:hover {
-        background-color: #f8fafc !important;
-        transform: translateY(-1px) !important;
+    .help-btn:hover {
+        background-color: #f8fafc;
+        transform: translateY(-1px);
     }
     
     /* Why Trust Our Diagnosis Section */
@@ -1018,6 +1011,13 @@ st.markdown(clean_html("""
     }
     
     /* My Garden Collection styles */
+    .plants-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
     .plant-collection-card {
         background-color: #ffffff;
         border-radius: 20px;
@@ -1025,7 +1025,6 @@ st.markdown(clean_html("""
         overflow: hidden;
         box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
         transition: all 0.2s ease-in-out;
-        position: relative;
     }
     
     .plant-collection-card:hover {
@@ -1034,47 +1033,10 @@ st.markdown(clean_html("""
         border-color: #cbd5e1;
     }
     
-    .plant-card-badge {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        padding: 0.3rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        z-index: 5;
-    }
-    
-    .plant-card-badge.critical {
-        background-color: #fef2f2;
-        color: #dc2626;
-        border: 1px solid #fee2e2;
-    }
-    
-    .plant-card-badge.healthy {
-        background-color: #f0fdf4;
-        color: #16a34a;
-        border: 1px solid #dcfce7;
-    }
-    
-    /* Native button inside plants page card row styled as a clean horizontal text link */
-    .plant-collection-card button {
-        background: transparent !important;
-        border: none !important;
-        color: #10b981 !important;
-        font-weight: 700 !important;
-        padding: 0 !important;
-        width: auto !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-        display: inline-block !important;
-        text-align: right !important;
-        float: right !important;
-    }
-    
-    .plant-collection-card button:hover {
-        color: #059669 !important;
-        background: transparent !important;
+    .plant-collection-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
     }
     
     /* Custom Responsive spacing */
@@ -1289,16 +1251,11 @@ if st.session_state.current_page == "dashboard":
             <span class="powered-badge">POWERED BY ADVANCED AI</span>
             <h1 class="hero-title">Heal Your Plants<br>with AI</h1>
             <p class="hero-desc">Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our botanical intelligence guide your garden to health.</p>
+            <div class="hero-buttons">
+                <a href="#stFileUploader" class="btn-primary">Get Started</a>
+                <a href="#" class="btn-secondary">View Demo</a>
+            </div>
             """), unsafe_allow_html=True)
-            
-            # Interactive light pasture green buttons in the Hero section
-            btn_cols = st.columns([1, 1])
-            with btn_cols[0]:
-                if st.button("Identify Plant", key="hero_btn_identify", on_click=set_page, args=("dashboard",)):
-                    pass
-            with btn_cols[1]:
-                if st.button("Guide", key="hero_btn_guide", on_click=set_page, args=("care_guide",)):
-                    pass
 
         with hero_col2:
             st.markdown(clean_html("""
@@ -1382,9 +1339,11 @@ if st.session_state.current_page == "dashboard":
                 st.markdown(clean_html(st.session_state.active_details_html), unsafe_allow_html=True)
                 
             with card_col2:
-                # Removed redundant Monstera Deliciosa / Swiss Cheese Plant titles as requested by user
                 st.markdown(clean_html(f"""
                 <div class="diag-content-container">
+                    <h3 class="plant-name">{st.session_state.active_plant}</h3>
+                    <p class="plant-sub">{st.session_state.active_sub}</p>
+                    
                     <div class="{st.session_state.active_diag_class}">
                         <div class="diag-box-title {st.session_state.active_diag_title_class}">{st.session_state.active_diag_title}</div>
                         <div class="diag-box-name">{st.session_state.active_disease}</div>
@@ -1392,10 +1351,9 @@ if st.session_state.current_page == "dashboard":
                     </div>
                 """), unsafe_allow_html=True)
                 
-                # Display prominent trigger button if user has uploaded a file but not analyzed yet
+                # Display trigger button if user has uploaded a file but not analyzed yet
                 if uploaded_file is not None and not st.session_state.has_analyzed:
-                    st.markdown('<div class="prominent-scan-container"></div>', unsafe_allow_html=True)
-                    if st.button("🚀 ANALYZE WITH AI", key="run_ai_scan", help="Execute AI model disease prediction"):
+                    if st.button("🚀 **ANALYZE WITH AI**", key="run_ai_scan", help="Execute AI model disease prediction"):
                         # Save temporarily for leaf validation
                         with open("temp_image.jpg", "wb") as f:
                             f.write(uploaded_file.getvalue())
@@ -1451,11 +1409,25 @@ if st.session_state.current_page == "dashboard":
                             
                             # Determine botanical and genus names
                             display_disease = predicted_disease.replace('_', ' ').title()
+                            plant_genus = "Swiss Cheese Plant"
+                            display_plant = "Monstera Deliciosa"
+                            
+                            if "Tomato" in display_disease:
+                                display_plant = "Solanum Lycopersicum"
+                                plant_genus = "Tomato Plant"
+                            elif "Potato" in display_disease:
+                                display_plant = "Solanum Tuberosum"
+                                plant_genus = "Potato Plant"
+                            elif "Pepper" in display_disease:
+                                display_plant = "Capsicum Annuum"
+                                plant_genus = "Pepper Plant"
                             
                             is_healthy = "healthy" in predicted_disease.lower()
                             
                             # Update active interactive states
                             st.session_state.active_badge = '<span class="image-badge-healthy">🛡️ Healthy</span>' if is_healthy else '<span class="image-badge-critical">⚠️ Critical Health</span>'
+                            st.session_state.active_plant = display_plant
+                            st.session_state.active_sub = plant_genus
                             st.session_state.active_diag_class = "diag-box-healthy" if is_healthy else "diag-box-critical"
                             st.session_state.active_diag_title_class = "healthy" if is_healthy else "critical"
                             st.session_state.active_diag_title = "DIAGNOSIS (HEALTHY)" if is_healthy else "DIAGNOSIS"
@@ -1507,19 +1479,13 @@ if st.session_state.current_page == "dashboard":
                 <div class="side-value">{st.session_state.active_sunlight}</div>
             </div>
         </div>
-        """), unsafe_allow_html=True)
         
-        # Interactive Book Session card - Redirects directly to support page
-        with st.container():
-            st.markdown('<div class="help-card-marker"></div>', unsafe_allow_html=True)
-            st.markdown(clean_html("""
-            <div class="help-card">
-                <h3 class="help-title">Need expert help?</h3>
-                <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
-            """), unsafe_allow_html=True)
-            if st.button("Book Session", key="side_btn_book_session", on_click=set_page, args=("support",)):
-                pass
-            st.markdown("</div>", unsafe_allow_html=True)
+        <div class="help-card">
+            <h3 class="help-title">Need expert help?</h3>
+            <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
+            <a href="#" class="help-btn">Book Session</a>
+        </div>
+        """), unsafe_allow_html=True)
 
     # Elegant Features Grid - "Why Trust Our Diagnosis?" - Matches the Image Exactly
     st.markdown(clean_html("""
@@ -1584,67 +1550,55 @@ if st.session_state.current_page == "dashboard":
     """), unsafe_allow_html=True)
 
 elif st.session_state.current_page == "my_plants":
-    # ----------------- PAGE: MY PLANTS GRID WITH RELIABLE IMAGES -----------------
+    # ----------------- PAGE: MY PLANTS GRID -----------------
     st.markdown(clean_html("""
     <div style="text-align: center; margin-bottom: 3rem;">
         <span class="powered-badge">MY GARDEN</span>
         <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">My Plant Collection</h1>
         <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Track, manage, and monitor the healing progress of your organic companions.</p>
     </div>
-    """), unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown(clean_html("""
-        <div class="plant-collection-card" style="position: relative;">
-            <div class="plant-card-badge critical">⚠️ Critical</div>
-        """), unsafe_allow_html=True)
-        st.image("https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=400&q=80", use_container_width=True)
-        st.markdown(clean_html("""
+    <div class="plants-grid">
+        <div class="plant-collection-card">
+            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
             <div style="padding: 1.5rem;">
+                <span class="critical-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">⚠️ Critical</span>
                 <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Monstera Deliciosa</h3>
-                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem;">Bacterial Leaf Spot</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 1rem;">
-                    <span style="font-size: 0.85rem; color: #64748b;">📅 2 days ago</span>
-        """), unsafe_allow_html=True)
-        if st.button("View Diagnosis →", key="view_diag_monstera", on_click=set_page, args=("dashboard",)):
-            pass
-        st.markdown("</div></div></div>", unsafe_allow_html=True)
+                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Leaf Spot</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+                    <span>📅 2 days ago</span>
+                    <span style="color: #10b981; font-weight: 700; cursor: pointer;" onclick="window.location.search='?page=dashboard'">View Diagnosis →</span>
+                </div>
+            </div>
+        </div>
         
-    with col2:
-        st.markdown(clean_html("""
-        <div class="plant-collection-card" style="position: relative;">
-            <div class="plant-card-badge healthy">🛡️ Healthy</div>
-        """), unsafe_allow_html=True)
-        st.image("https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=400&q=80", use_container_width=True)
-        st.markdown(clean_html("""
+        <div class="plant-collection-card">
+            <img src="https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
             <div style="padding: 1.5rem;">
+                <span class="healthy-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
                 <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Roma Tomato</h3>
-                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem;">Solanum Lycopersicum</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 1rem;">
-                    <span style="font-size: 0.85rem; color: #64748b;">📅 5 days ago</span>
-        """), unsafe_allow_html=True)
-        if st.button("View Diagnosis →", key="view_diag_tomato", on_click=set_page, args=("dashboard",)):
-            pass
-        st.markdown("</div></div></div>", unsafe_allow_html=True)
+                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Solanum Lycopersicum</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+                    <span>📅 5 days ago</span>
+                    <span style="color: #16a34a; font-weight: 700;">Optimal Health</span>
+                </div>
+            </div>
+        </div>
         
-    with col3:
-        st.markdown(clean_html("""
-        <div class="plant-collection-card" style="position: relative;">
-            <div class="plant-card-badge critical">⚠️ Needs Attention</div>
-        """), unsafe_allow_html=True)
-        st.image("https://images.unsplash.com/photo-1598512752271-33f913a5af13?auto=format&fit=crop&w=400&q=80", use_container_width=True)
-        st.markdown(clean_html("""
+        <div class="plant-collection-card">
+            <img src="https://images.unsplash.com/photo-1598512752271-33f913a5af13?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
             <div style="padding: 1.5rem;">
+                <span class="critical-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">⚠️ Needs Attention</span>
                 <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Bell Pepper</h3>
-                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem;">Bacterial Spot</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 1rem;">
-                    <span style="font-size: 0.85rem; color: #64748b;">📅 1 week ago</span>
-        """), unsafe_allow_html=True)
-        if st.button("View Diagnosis →", key="view_diag_pepper", on_click=set_page, args=("dashboard",)):
-            pass
-        st.markdown("</div></div></div>", unsafe_allow_html=True)
+                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Spot</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+                    <span>📅 1 week ago</span>
+                    <span style="color: #10b981; font-weight: 700; cursor: pointer;">View Treatment →</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    """), unsafe_allow_html=True)
 
 elif st.session_state.current_page == "care_guide":
     # ----------------- PAGE: CARE GUIDE MANUALS -----------------
