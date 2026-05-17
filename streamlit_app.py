@@ -121,9 +121,13 @@ st.markdown(clean_html("""
         box-sizing: border-box;
     }
     
-    /* Clean white/slate background */
+    /* Clean white/slate background with premium transparent botanical leaf overlay */
     .stApp, [data-testid="stAppViewContainer"] {
-        background-color: #f8fafc !important;
+        background-image: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&auto=format&fit=crop") !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+        background-position: center !important;
         color: #0f172a !important;
     }
     
@@ -1744,7 +1748,7 @@ elif st.session_state.current_page == "support":
                     "message": message
                 }
                 
-                file_path = "inquiries.json"
+                file_path = "support_queries.json"
                 existing_data = []
                 if os.path.exists(file_path):
                     try:
@@ -1760,7 +1764,7 @@ elif st.session_state.current_page == "support":
                 except Exception:
                     pass
                 
-                st.success("✉️ Inquiry submitted successfully! Saved locally to inquiries.json. A horticulturist will contact you within 24 hours.")
+                st.success("✉️ Inquiry submitted successfully! Saved locally to support_queries.json. A horticulturist will contact you within 24 hours.")
                 
         st.markdown("</div>", unsafe_allow_html=True)
         
