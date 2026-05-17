@@ -20,15 +20,8 @@ try:
     import cv2
     _ = cv2.Mat
 except ImportError:
-    # Install headless opencv to a local target directory to bypass Streamlit Cloud cache and permission issues
-    target_dir = os.path.join(os.getcwd(), "cv2_headless_dir")
-    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--target", target_dir], check=False)
-    if target_dir not in sys.path:
-        sys.path.insert(0, target_dir)
-    import importlib
-    importlib.invalidate_caches()
-    if 'cv2' in sys.modules:
-        del sys.modules['cv2']
+    # Use force-reinstall to overwrite the broken cv2 binaries without triggering pip uninstall permission errors
+    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps"], check=False)
     import cv2
 
 from ultralytics import YOLO
