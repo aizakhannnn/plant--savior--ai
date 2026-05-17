@@ -72,8 +72,8 @@ def is_leaf_image(img_path):
 st.set_page_config(
     page_title="Plant Savior AI - Advanced Plant Disease Detection",
     page_icon="🌱",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 # Enhanced Futuristic Cyberpunk CSS Design
 st.markdown("""
@@ -1378,55 +1378,54 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Enhanced Sidebar
-with st.sidebar:
+# System Information Expander instead of Sidebar
+with st.expander("ℹ️ SYSTEM INFORMATION & GUIDE", expanded=False):
     st.markdown("### 🚀 AI SYSTEM STATUS")
-    st.success("🟢 NEURAL NETWORK: ACTIVE")
-    st.success("🟢 IMAGE PROCESSOR: READY")
-    st.success("🟢 TREATMENT DB: LOADED")
-    st.markdown("### 🌿 ABOUT THIS SYSTEM")
-    st.info("""
-    **PLANT SAVIOR AI** utilizes cutting-edge deep learning technology to provide instant plant disease diagnosis. Our advanced convolutional neural network has been trained on thousands of plant images to deliver professional-grade accuracy.
-    🔬 **POWERED BY**: TensorFlow & Keras
-    🎯 **ACCURACY**: 99.2% on test data
-    ⚡ **SPEED**: Real-time analysis
-    """)
-    st.markdown("### 📋 OPTIMAL RESULTS GUIDE")
-    st.markdown("""
-    **📸 PHOTOGRAPHY TIPS:**
-    • Natural daylight works best
-    • Focus on affected leaf areas
-    • Avoid shadows and reflections
-    • Hold camera steady for clarity
-    • Fill frame with leaf details
-    **🔍 BEST PRACTICES:**
-    • Single leaf per image
-    • Clear disease symptoms visible
-    • High resolution (>500px)
-    • Minimal background clutter
-    """)
-    st.markdown("### 🎯 SUPPORTED DISEASES")
-    st.markdown("""
-    **🍅 TOMATO DISEASES (10 TYPES):**
-    • Early Blight • Late Blight
-    • Leaf Mold • Septoria Leaf Spot
-    • Spider Mites • Target Spot
-    • Yellow Leaf Curl • Mosaic Virus
-    • Bacterial Spot • Healthy
-    **🥔 POTATO DISEASES (3 TYPES):**
-    • Early Blight • Late Blight
-    • Healthy
-    **🌶️ PEPPER DISEASES (2 TYPES):**
-    • Bacterial Spot • Healthy
-    """)
-    st.markdown("### 💡 TECH STACK")
-    st.markdown("""
-    • **TensorFlow 2.x** - Deep Learning
-    • **Streamlit** - Web Interface  
-    • **PIL/OpenCV** - Image Processing
-    • **NumPy** - Numerical Computing
-    • **Custom CNN** - Disease Classification
-    """)
+    status_col1, status_col2, status_col3 = st.columns(3)
+    with status_col1:
+        st.success("🟢 NEURAL NETWORK: ACTIVE")
+    with status_col2:
+        st.success("🟢 IMAGE PROCESSOR: READY")
+    with status_col3:
+        st.success("🟢 TREATMENT DB: LOADED")
+    
+    st.markdown("---")
+    
+    info_col1, info_col2 = st.columns(2)
+    with info_col1:
+        st.markdown("### 🌿 ABOUT THIS SYSTEM")
+        st.info("""
+        **PLANT SAVIOR AI** utilizes cutting-edge deep learning technology to provide instant plant disease diagnosis. Our advanced convolutional neural network has been trained on thousands of plant images to deliver professional-grade accuracy.
+        🔬 **POWERED BY**: TensorFlow & Keras
+        🎯 **ACCURACY**: 99.2% on test data
+        ⚡ **SPEED**: Real-time analysis
+        """)
+        st.markdown("### 💡 TECH STACK")
+        st.markdown("""
+        • **TensorFlow 2.x** - Deep Learning
+        • **Streamlit** - Web Interface  
+        • **PIL/OpenCV** - Image Processing
+        • **NumPy** - Numerical Computing
+        • **Custom CNN** - Disease Classification
+        """)
+        
+    with info_col2:
+        st.markdown("### 📋 OPTIMAL RESULTS GUIDE")
+        st.markdown("""
+        **📸 PHOTOGRAPHY TIPS:**
+        • Natural daylight works best | • Focus on affected leaf areas
+        • Avoid shadows and reflections | • Hold camera steady for clarity
+        
+        **🔍 BEST PRACTICES:**
+        • Single leaf per image | • Clear disease symptoms visible
+        • High resolution (>500px) | • Minimal background clutter
+        """)
+        st.markdown("### 🎯 SUPPORTED DISEASES")
+        st.markdown("""
+        **🍅 TOMATO (10 TYPES):** Early/Late Blight, Leaf Mold, Septoria, Spider Mites, Target Spot, Yellow Leaf Curl, Mosaic Virus, Bacterial Spot, Healthy
+        **🥔 POTATO (3 TYPES):** Early/Late Blight, Healthy
+        **🌶️ PEPPER (2 TYPES):** Bacterial Spot, Healthy
+        """)
 
 # How it works section with enhanced design
 st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
@@ -1462,14 +1461,11 @@ def load_model():
     try:
         with st.spinner("🚀 INITIALIZING AI NEURAL NETWORK..."):
             model = tf.keras.models.load_model('best_plant_model_final.keras')
-            st.sidebar.success("✅ AI MODEL: FULLY LOADED")
             return model
     except FileNotFoundError:
-        st.sidebar.error("❌ MODEL FILE NOT FOUND: best_plant_model_final.keras")
         st.error("🚨 **AI MODEL ERROR**: Model file 'best_plant_model_final.keras' not found in the current directory.")
         return None
     except Exception as e:
-        st.sidebar.error(f"❌ MODEL LOADING ERROR: {str(e)}")
         st.error(f"🚨 **SYSTEM ERROR**: {str(e)}")
         return None
 
@@ -1480,10 +1476,8 @@ def load_treatments():
     try:
         with open('treatment_dict_complete.json', 'r') as f:
             treatments = json.load(f)
-        st.sidebar.success("✅ TREATMENT DATABASE: READY")
         return treatments
     except FileNotFoundError:
-        st.sidebar.error("❌ TREATMENT FILE NOT FOUND: treatment_dict_complete.json")
         # Fallback treatment dictionary
         fallback_treatments = {
             "Tomato_Early_blight": "Apply fungicide containing chlorothalonil or copper. Ensure good air circulation and avoid overhead watering.",
@@ -1505,7 +1499,7 @@ def load_treatments():
         st.warning("⚠️ Using fallback treatment database")
         return fallback_treatments
     except Exception as e:
-        st.sidebar.error(f"❌ TREATMENT LOADING ERROR: {str(e)}")
+        st.error(f"❌ TREATMENT LOADING ERROR: {str(e)}")
         return {}
 
 # Initialize session state with enhanced management
@@ -1532,12 +1526,11 @@ st.markdown('<h2 class="upload-title">🔬 AI-POWERED PLANT ANALYSIS</h2>', unsa
 # Enhanced file uploader
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Upload a clear image of the plant leaf for AI analysis")
 if uploaded_file is not None:
-    # Analysis section with enhanced two-column layout
-    st.markdown('<div class="analysis-section fade-in-up">', unsafe_allow_html=True)
-    # Left column - Enhanced image preview
-    col1, col2 = st.columns([1, 1], gap="large")
-    with col1:
-        st.markdown('<div class="image-preview-container">', unsafe_allow_html=True)
+    # Analysis section merged into a single flow layout
+    st.markdown('<div class="analysis-section fade-in-up" style="flex-direction: column;">', unsafe_allow_html=True)
+    
+    with st.container():
+        st.markdown('<div class="image-preview-container" style="margin-bottom: 2rem;">', unsafe_allow_html=True)
         st.markdown('<h3 class="section-subtitle">📸 UPLOADED IMAGE</h3>', unsafe_allow_html=True)
         image = Image.open(uploaded_file)
         st.image(image, caption="🌿 Ready for AI Analysis", use_column_width=True, clamp=True)
@@ -1545,18 +1538,18 @@ if uploaded_file is not None:
         width, height = image.size
         file_size = len(uploaded_file.getvalue()) / 1024  # KB
         st.markdown(f"""
-        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(57, 255, 20, 0.3);">
+        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(57, 255, 20, 0.3); text-align: center;">
             <p style="color: #39ff14; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
-            <p style="color: #d8ffc0; margin: 5px 0;">📐 Dimensions: {width} × {height} pixels</p>
-            <p style="color: #d8ffc0; margin: 5px 0;">💾 Size: {file_size:.1f} KB</p>
-            <p style="color: #d8ffc0; margin: 5px 0;">📁 Format: {uploaded_file.type}</p>
+            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">📐 Dimensions: {width} × {height} px</p>
+            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">💾 Size: {file_size:.1f} KB</p>
+            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">📁 Format: {uploaded_file.type}</p>
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔄 **UPLOAD NEW IMAGE**", key="reset", help="Upload a different leaf image", use_container_width=True):
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-    # Right column - Enhanced results
-    with col2:
+
+    with st.container():
         st.markdown('<div class="results-container">', unsafe_allow_html=True)
         st.markdown('<h3 class="section-subtitle">🧬 AI ANALYSIS CENTER</h3>', unsafe_allow_html=True)
         if st.session_state.model is not None and st.session_state.treatments:
