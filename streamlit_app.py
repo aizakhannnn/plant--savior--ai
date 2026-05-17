@@ -179,6 +179,7 @@ st.markdown(clean_html("""
         position: relative;
         padding-bottom: 0.25rem;
         white-space: nowrap !important;
+        text-decoration: none !important;
     }
     
     .nav-link.active {
@@ -213,20 +214,22 @@ st.markdown(clean_html("""
         color: #063c27;
     }
     
+    /* Elegant Light Botanical Navbar Action button matching user's lighter color specification */
     .nav-btn {
-        background-color: #063c27;
-        color: #ffffff !important;
+        background-color: #e6f4ea;
+        color: #0f5132 !important;
+        border: 1px solid #d1e7dd;
         padding: 0.5rem 1.25rem;
         border-radius: 20px;
         font-weight: 700;
         font-size: 0.85rem;
         text-decoration: none;
-        transition: background-color 0.2s;
+        transition: all 0.2s;
         white-space: nowrap !important;
     }
     
     .nav-btn:hover {
-        background-color: #0c4e33;
+        background-color: #d1e7dd;
     }
     
     /* Markers to bypass Streamlit card compiling limitations */
@@ -300,31 +303,32 @@ st.markdown(clean_html("""
         gap: 1rem;
     }
     
+    /* Styled with light pasture green colors as requested by the user */
     .btn-primary {
-        background-color: #063c27;
-        color: #ffffff !important;
+        background-color: #e6f4ea;
+        color: #0f5132 !important;
+        border: 1px solid #d1e7dd;
         padding: 0.75rem 2rem;
         border-radius: 8px;
         font-weight: 700;
         text-decoration: none;
-        box-shadow: 0 4px 6px -1px rgba(6, 60, 39, 0.15);
         transition: all 0.2s;
         text-align: center;
     }
     
     .btn-primary:hover {
-        background-color: #0c4e33;
+        background-color: #d1e7dd;
         transform: translateY(-1px);
     }
     
     .btn-secondary {
         background-color: #ffffff;
-        color: #063c27 !important;
+        color: #475569 !important;
         padding: 0.75rem 2rem;
         border-radius: 8px;
         font-weight: 700;
         text-decoration: none;
-        border: 1px solid #063c27;
+        border: 1px solid #cbd5e1;
         transition: all 0.2s;
         text-align: center;
     }
@@ -350,17 +354,19 @@ st.markdown(clean_html("""
         background-color: #fafdfa;
     }
     
+    /* Light Camera Circle requested by the user */
     .camera-circle {
         width: 56px;
         height: 56px;
-        background-color: #063c27;
-        color: #ffffff;
+        background-color: #e6f4ea;
+        color: #0f5132;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1.25rem;
         font-size: 1.3rem;
+        border: 1px solid #d1e7dd;
     }
     
     .upload-title {
@@ -452,22 +458,25 @@ st.markdown(clean_html("""
         border: none !important;
     }
     
-    /* Native Buttons Restyling */
+    /* Custom LIGHT button colors as specified by the user */
     .stButton > button {
-        background-color: #063c27 !important;
-        color: #ffffff !important;
+        background-color: #e6f4ea !important;
+        color: #0f5132 !important;
+        border: 1px solid #d1e7dd !important;
         font-weight: 700 !important;
-        border: none !important;
         border-radius: 8px !important;
         padding: 0.6rem 1.5rem !important;
-        transition: all 0.2s !important;
+        transition: all 0.2s ease-in-out !important;
         width: 100%;
         margin-top: 1rem;
+        box-shadow: 0 2px 4px rgba(15, 81, 50, 0.04) !important;
     }
     
     .stButton > button:hover {
-        background-color: #0c4e33 !important;
+        background-color: #d1e7dd !important;
+        color: #0f5132 !important;
         transform: translateY(-1px) !important;
+        box-shadow: 0 4px 6px rgba(15, 81, 50, 0.08) !important;
     }
     
     .diag-image-container {
@@ -1013,6 +1022,35 @@ st.markdown(clean_html("""
         font-weight: 700;
     }
     
+    /* My Garden Collection styles */
+    .plants-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .plant-collection-card {
+        background-color: #ffffff;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .plant-collection-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+        border-color: #cbd5e1;
+    }
+    
+    .plant-collection-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
     /* Custom Responsive spacing */
     @media (max-width: 992px) {
         .hero-title { font-size: 2rem; }
@@ -1022,25 +1060,35 @@ st.markdown(clean_html("""
 </style>
 """), unsafe_allow_html=True)
 
-# Elegant Navigation Header Matching the Image Exactly
-st.markdown(clean_html("""
+# Parse active page from query parameter
+query_params = st.query_params
+current_page = query_params.get("page", "dashboard")
+
+# Active page styling markers
+active_dashboard = "active" if current_page == "dashboard" else ""
+active_my_plants = "active" if current_page == "my_plants" else ""
+active_care_guide = "active" if current_page == "care_guide" else ""
+active_support = "active" if current_page == "support" else ""
+
+# Elegant Navigation Header with clickable page redirection
+st.markdown(clean_html(f"""
 <div class="nav-bar">
     <div class="nav-logo">🌱 Plant Savior AI</div>
     <div class="nav-links">
-        <span class="nav-link active">Dashboard</span>
-        <span class="nav-link">My Plants</span>
-        <span class="nav-link">Plant Care Guide</span>
-        <span class="nav-link">Support</span>
+        <a href="?page=dashboard" target="_self" class="nav-link {active_dashboard}">Dashboard</a>
+        <a href="?page=my_plants" target="_self" class="nav-link {active_my_plants}">My Plants</a>
+        <a href="?page=care_guide" target="_self" class="nav-link {active_care_guide}">Plant Care Guide</a>
+        <a href="?page=support" target="_self" class="nav-link {active_support}">Support</a>
     </div>
     <div class="nav-right">
-        <a href="#" class="nav-btn">Identify Plant</a>
+        <a href="?page=dashboard" target="_self" class="nav-btn">Identify Plant</a>
         <span class="nav-icon">🔔</span>
         <span class="nav-icon">👤</span>
     </div>
 </div>
 """), unsafe_allow_html=True)
 
-# System Information Expander instead of Sidebar
+# System Information Expander instead of Sidebar (Accessible on all pages)
 with st.expander("ℹ️ SYSTEM INFORMATION & GUIDE", expanded=False):
     st.markdown("### 🚀 AI SYSTEM STATUS")
     status_col1, status_col2, status_col3 = st.columns(3)
@@ -1190,315 +1238,462 @@ if st.session_state.model is None:
 
 st.session_state.treatments = load_treatments()
 
-# Main Interactive Hero & Upload Card Container - Styled directly using CSS :has parent selector
-with st.container():
-    st.markdown('<div class="hero-card-marker"></div>', unsafe_allow_html=True)
-    hero_col1, hero_col2 = st.columns([1.2, 1])
+# ----------------- PAGE ROUTING & RENDERING -----------------
 
-    with hero_col1:
-        st.markdown(clean_html("""
-        <span class="powered-badge">POWERED BY ADVANCED AI</span>
-        <h1 class="hero-title">Heal Your Plants<br>with AI</h1>
-        <p class="hero-desc">Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our botanical intelligence guide your garden to health.</p>
-        <div class="hero-buttons">
-            <a href="#stFileUploader" class="btn-primary">Get Started</a>
-            <a href="#" class="btn-secondary">View Demo</a>
-        </div>
-        """), unsafe_allow_html=True)
-
-    with hero_col2:
-        st.markdown(clean_html("""
-        <div class="upload-dashed-card">
-            <div class="camera-circle">📷</div>
-            <div class="upload-title">Upload Plant Image</div>
-            <p class="upload-subtitle" style="margin-bottom: 0.25rem;">Drag and drop your photo here or</p>
-        """), unsafe_allow_html=True)
-        
-        # Streamlit native file uploader gets embedded seamlessly here
-        uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Select leaf image for AI diagnosis")
-        
-        st.markdown(clean_html("""
-            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem; margin-bottom: 0;">Supports JPG, PNG (Max 10MB)</p>
-        </div>
-        """), unsafe_allow_html=True)
-
-# Process uploaded file and convert to base64 dynamically for mockup display
-if uploaded_file is not None:
-    file_bytes = uploaded_file.getvalue()
-    if 'last_uploaded_file_name' not in st.session_state or st.session_state.last_uploaded_file_name != uploaded_file.name:
-        st.session_state.last_uploaded_file_name = uploaded_file.name
-        
-        # Convert user leaf image to base64 to inject natively inside premium CSS block
-        encoded_img = base64.b64encode(file_bytes).decode()
-        st.session_state.active_image = f"data:image/jpeg;base64,{encoded_img}"
-        
-        # Calculate image metrics
-        pil_img = Image.open(BytesIO(file_bytes))
-        w, h = pil_img.size
-        kb_size = len(file_bytes) / 1024
-        
-        st.session_state.active_details_html = f"""
-        <div class="details-box">
-            <p class="details-title">📊 IMAGE DETAILS</p>
-            <p class="details-item">📐 {w} × {h} px</p>
-            <p class="details-item">💾 {kb_size:.1f} KB</p>
-        </div>
-        """
-        
-        # Mark as waiting for click
-        st.session_state.active_badge = '<span class="image-badge-healthy">🛡️ Ready for Scan</span>'
-        st.session_state.active_diag_class = "diag-box-healthy"
-        st.session_state.active_diag_title_class = "healthy"
-        st.session_state.active_diag_title = "SYSTEM CHECK"
-        st.session_state.active_disease = "AI Diagnostics Pending"
-        st.session_state.active_conf = "Click the green scan button to begin"
-        st.session_state.active_steps = """
-        <div class="plan-step">
-            <div class="step-num-badge">➔</div>
-            <div class="step-text"><strong>Scan Ready</strong>: Click the 'ANALYZE WITH AI' button to run leaf classification logic.</div>
-        </div>
-        """
-        st.session_state.has_analyzed = False
-
-# Recent Diagnosis Block Title
-st.markdown(clean_html("""
-<div style="display: flex; justify-content: space-between; align-items: center; margin: 3rem 0 1rem;">
-    <h2 style="font-size: 1.8rem; font-weight: 800; color: #063c27; margin: 0; letter-spacing: -0.02em;">Recent Diagnosis</h2>
-    <span style="color: #10b981; font-weight: 700; cursor: pointer; font-size: 0.95rem;">See Full History →</span>
-</div>
-"""), unsafe_allow_html=True)
-
-# Main Grid Layout - Split Card and Side widgets
-res_col1, res_col2 = st.columns([2.1, 1])
-
-with res_col1:
-    # Native Streamlit vertical block gets styled directly as the Split Card via parent selector
+if current_page == "dashboard":
+    # Main Interactive Hero & Upload Card Container - Styled directly using CSS :has parent selector
     with st.container():
-        st.markdown('<div class="split-card-marker"></div>', unsafe_allow_html=True)
-        card_col1, card_col2 = st.columns([1, 1.2])
-        
-        with card_col1:
-            st.markdown(clean_html(f"""
-            <div class="diag-image-container">
-                <img src="{st.session_state.active_image}" class="diag-leaf-image" />
-                {st.session_state.active_badge}
+        st.markdown('<div class="hero-card-marker"></div>', unsafe_allow_html=True)
+        hero_col1, hero_col2 = st.columns([1.2, 1])
+
+        with hero_col1:
+            st.markdown(clean_html("""
+            <span class="powered-badge">POWERED BY ADVANCED AI</span>
+            <h1 class="hero-title">Heal Your Plants<br>with AI</h1>
+            <p class="hero-desc">Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our botanical intelligence guide your garden to health.</p>
+            <div class="hero-buttons">
+                <a href="#stFileUploader" class="btn-primary">Get Started</a>
+                <a href="#" class="btn-secondary">View Demo</a>
             </div>
             """), unsafe_allow_html=True)
-            # Display resolution and size box
-            st.markdown(clean_html(st.session_state.active_details_html), unsafe_allow_html=True)
-            
-        with card_col2:
-            st.markdown(clean_html(f"""
-            <div class="diag-content-container">
-                <h3 class="plant-name">{st.session_state.active_plant}</h3>
-                <p class="plant-sub">{st.session_state.active_sub}</p>
-                
-                <div class="{st.session_state.active_diag_class}">
-                    <div class="diag-box-title {st.session_state.active_diag_title_class}">{st.session_state.active_diag_title}</div>
-                    <div class="diag-box-name">{st.session_state.active_disease}</div>
-                    <div class="diag-box-conf">{st.session_state.active_conf}</div>
-                </div>
+
+        with hero_col2:
+            st.markdown(clean_html("""
+            <div class="upload-dashed-card">
+                <div class="camera-circle">📷</div>
+                <div class="upload-title">Upload Plant Image</div>
+                <p class="upload-subtitle" style="margin-bottom: 0.25rem;">Drag and drop your photo here or</p>
             """), unsafe_allow_html=True)
             
-            # Display trigger button if user has uploaded a file but not analyzed yet
-            if uploaded_file is not None and not st.session_state.has_analyzed:
-                if st.button("🚀 **ANALYZE WITH AI**", key="run_ai_scan", help="Execute AI model disease prediction"):
-                    # Save temporarily for leaf validation
-                    with open("temp_image.jpg", "wb") as f:
-                        f.write(uploaded_file.getvalue())
+            # Streamlit native file uploader gets embedded seamlessly here
+            uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Select leaf image for AI diagnosis")
+            
+            st.markdown(clean_html("""
+                <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem; margin-bottom: 0;">Supports JPG, PNG (Max 10MB)</p>
+            </div>
+            """), unsafe_allow_html=True)
+
+    # Process uploaded file and convert to base64 dynamically for mockup display
+    if uploaded_file is not None:
+        file_bytes = uploaded_file.getvalue()
+        if 'last_uploaded_file_name' not in st.session_state or st.session_state.last_uploaded_file_name != uploaded_file.name:
+            st.session_state.last_uploaded_file_name = uploaded_file.name
+            
+            # Convert user leaf image to base64 to inject natively inside premium CSS block
+            encoded_img = base64.b64encode(file_bytes).decode()
+            st.session_state.active_image = f"data:image/jpeg;base64,{encoded_img}"
+            
+            # Calculate image metrics
+            pil_img = Image.open(BytesIO(file_bytes))
+            w, h = pil_img.size
+            kb_size = len(file_bytes) / 1024
+            
+            st.session_state.active_details_html = f"""
+            <div class="details-box">
+                <p class="details-title">📊 IMAGE DETAILS</p>
+                <p class="details-item">📐 {w} × {h} px</p>
+                <p class="details-item">💾 {kb_size:.1f} KB</p>
+            </div>
+            """
+            
+            # Mark as waiting for click
+            st.session_state.active_badge = '<span class="image-badge-healthy">🛡️ Ready for Scan</span>'
+            st.session_state.active_diag_class = "diag-box-healthy"
+            st.session_state.active_diag_title_class = "healthy"
+            st.session_state.active_diag_title = "SYSTEM CHECK"
+            st.session_state.active_disease = "AI Diagnostics Pending"
+            st.session_state.active_conf = "Click the green scan button to begin"
+            st.session_state.active_steps = """
+            <div class="plan-step">
+                <div class="step-num-badge">➔</div>
+                <div class="step-text"><strong>Scan Ready</strong>: Click the 'ANALYZE WITH AI' button to run leaf classification logic.</div>
+            </div>
+            """
+            st.session_state.has_analyzed = False
+
+    # Recent Diagnosis Block Title
+    st.markdown(clean_html("""
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 3rem 0 1rem;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #063c27; margin: 0; letter-spacing: -0.02em;">Recent Diagnosis</h2>
+        <span style="color: #10b981; font-weight: 700; cursor: pointer; font-size: 0.95rem;">See Full History →</span>
+    </div>
+    """), unsafe_allow_html=True)
+
+    # Main Grid Layout - Split Card and Side widgets
+    res_col1, res_col2 = st.columns([2.1, 1])
+
+    with res_col1:
+        # Native Streamlit vertical block gets styled directly as the Split Card via parent selector
+        with st.container():
+            st.markdown('<div class="split-card-marker"></div>', unsafe_allow_html=True)
+            card_col1, card_col2 = st.columns([1, 1.2])
+            
+            with card_col1:
+                st.markdown(clean_html(f"""
+                <div class="diag-image-container">
+                    <img src="{st.session_state.active_image}" class="diag-leaf-image" />
+                    {st.session_state.active_badge}
+                </div>
+                """), unsafe_allow_html=True)
+                # Display resolution and size box
+                st.markdown(clean_html(st.session_state.active_details_html), unsafe_allow_html=True)
+                
+            with card_col2:
+                st.markdown(clean_html(f"""
+                <div class="diag-content-container">
+                    <h3 class="plant-name">{st.session_state.active_plant}</h3>
+                    <p class="plant-sub">{st.session_state.active_sub}</p>
                     
-                    # Check for leaf validation via YOLO
-                    if not is_leaf_image("temp_image.jpg"):
-                        st.session_state.active_badge = '<span class="image-badge-critical">⚠️ Scan Failed</span>'
-                        st.session_state.active_diag_class = "diag-box-critical"
-                        st.session_state.active_diag_title_class = "critical"
-                        st.session_state.active_diag_title = "INVALID IMAGE"
-                        st.session_state.active_disease = "Not a Leaf Picture"
-                        st.session_state.active_conf = "Please upload a natural plant leaf image."
-                        st.session_state.active_steps = """
-                        <div class="plan-step">
-                            <div class="step-num-badge">!</div>
-                            <div class="step-text"><strong>Verification Error</strong>: Our AI system detected non-leaf objects (humans, animals, or items) in this image. Please capture a clear photo focusing purely on the leaf foliage.</div>
-                        </div>
-                        """
-                        st.session_state.has_analyzed = True
+                    <div class="{st.session_state.active_diag_class}">
+                        <div class="diag-box-title {st.session_state.active_diag_title_class}">{st.session_state.active_diag_title}</div>
+                        <div class="diag-box-name">{st.session_state.active_disease}</div>
+                        <div class="diag-box-conf">{st.session_state.active_conf}</div>
+                    </div>
+                """), unsafe_allow_html=True)
+                
+                # Display trigger button if user has uploaded a file but not analyzed yet
+                if uploaded_file is not None and not st.session_state.has_analyzed:
+                    if st.button("🚀 **ANALYZE WITH AI**", key="run_ai_scan", help="Execute AI model disease prediction"):
+                        # Save temporarily for leaf validation
+                        with open("temp_image.jpg", "wb") as f:
+                            f.write(uploaded_file.getvalue())
+                        
+                        # Check for leaf validation via YOLO
+                        if not is_leaf_image("temp_image.jpg"):
+                            st.session_state.active_badge = '<span class="image-badge-critical">⚠️ Scan Failed</span>'
+                            st.session_state.active_diag_class = "diag-box-critical"
+                            st.session_state.active_diag_title_class = "critical"
+                            st.session_state.active_diag_title = "INVALID IMAGE"
+                            st.session_state.active_disease = "Not a Leaf Picture"
+                            st.session_state.active_conf = "Please upload a natural plant leaf image."
+                            st.session_state.active_steps = """
+                            <div class="plan-step">
+                                <div class="step-num-badge">!</div>
+                                <div class="step-text"><strong>Verification Error</strong>: Our AI system detected non-leaf objects (humans, animals, or items) in this image. Please capture a clear photo focusing purely on the leaf foliage.</div>
+                            </div>
+                            """
+                            st.session_state.has_analyzed = True
+                            try:
+                                os.remove("temp_image.jpg")
+                            except:
+                                pass
+                            st.rerun()
+                        
+                        # Show premium loading spinner
+                        loading_placeholder = st.empty()
+                        with loading_placeholder:
+                            st.markdown(clean_html("""
+                            <div class="loading-container">
+                                <div class="spinner"></div>
+                                <div class="loading-text">🧠 AI IS DIAGNOSING PLANT HEALTH...</div>
+                            </div>
+                            """), unsafe_allow_html=True)
+                            time.sleep(1.2)
+                        loading_placeholder.empty()
+                        
+                        try:
+                            # Preprocess image
+                            img = load_img("temp_image.jpg", target_size=(224, 224))
+                            img_array = img_to_array(img)
+                            img_array = img_array.reshape(1, 224, 224, 3) / 255.0
+                            
+                            # Run neural model prediction
+                            predictions = st.session_state.model.predict(img_array, verbose=0)
+                            predicted_class = np.argmax(predictions[0])
+                            confidence_score = float(predictions[0][predicted_class])
+                            
+                            class_names = list(st.session_state.treatments.keys())
+                            predicted_disease = class_names[predicted_class]
+                            treatment = st.session_state.treatments.get(predicted_disease, "Consult with an agricultural expert for specialized treatment.")
+                            st.session_state.analysis_count += 1
+                            
+                            # Determine botanical and genus names
+                            display_disease = predicted_disease.replace('_', ' ').title()
+                            plant_genus = "Swiss Cheese Plant"
+                            display_plant = "Monstera Deliciosa"
+                            
+                            if "Tomato" in display_disease:
+                                display_plant = "Solanum Lycopersicum"
+                                plant_genus = "Tomato Plant"
+                            elif "Potato" in display_disease:
+                                display_plant = "Solanum Tuberosum"
+                                plant_genus = "Potato Plant"
+                            elif "Pepper" in display_disease:
+                                display_plant = "Capsicum Annuum"
+                                plant_genus = "Pepper Plant"
+                            
+                            is_healthy = "healthy" in predicted_disease.lower()
+                            
+                            # Update active interactive states
+                            st.session_state.active_badge = '<span class="image-badge-healthy">🛡️ Healthy</span>' if is_healthy else '<span class="image-badge-critical">⚠️ Critical Health</span>'
+                            st.session_state.active_plant = display_plant
+                            st.session_state.active_sub = plant_genus
+                            st.session_state.active_diag_class = "diag-box-healthy" if is_healthy else "diag-box-critical"
+                            st.session_state.active_diag_title_class = "healthy" if is_healthy else "critical"
+                            st.session_state.active_diag_title = "DIAGNOSIS (HEALTHY)" if is_healthy else "DIAGNOSIS"
+                            st.session_state.active_disease = display_disease
+                            st.session_state.active_conf = f"{confidence_score*100:.1f}% AI Confidence"
+                            st.session_state.active_steps = format_treatment_steps(treatment)
+                            
+                            # Randomize side card moisture indicator for dynamic live feedback
+                            st.session_state.active_moisture = np.random.randint(45, 85)
+                            st.session_state.active_sunlight = "Optimal" if is_healthy else "Suboptimal"
+                            st.session_state.has_analyzed = True
+                            
+                        except Exception as e:
+                            st.error(f"❌ Analysis failed: {str(e)}")
+                        
                         try:
                             os.remove("temp_image.jpg")
                         except:
                             pass
                         st.rerun()
-                    
-                    # Show premium loading spinner
-                    loading_placeholder = st.empty()
-                    with loading_placeholder:
-                        st.markdown(clean_html("""
-                        <div class="loading-container">
-                            <div class="spinner"></div>
-                            <div class="loading-text">🧠 AI IS DIAGNOSING PLANT HEALTH...</div>
-                        </div>
-                        """), unsafe_allow_html=True)
-                        time.sleep(1.2)
-                    loading_placeholder.empty()
-                    
-                    try:
-                        # Preprocess image
-                        img = load_img("temp_image.jpg", target_size=(224, 224))
-                        img_array = img_to_array(img)
-                        img_array = img_array.reshape(1, 224, 224, 3) / 255.0
-                        
-                        # Run neural model prediction
-                        predictions = st.session_state.model.predict(img_array, verbose=0)
-                        predicted_class = np.argmax(predictions[0])
-                        confidence_score = float(predictions[0][predicted_class])
-                        
-                        class_names = list(st.session_state.treatments.keys())
-                        predicted_disease = class_names[predicted_class]
-                        treatment = st.session_state.treatments.get(predicted_disease, "Consult with an agricultural expert for specialized treatment.")
-                        st.session_state.analysis_count += 1
-                        
-                        # Determine botanical and genus names
-                        display_disease = predicted_disease.replace('_', ' ').title()
-                        plant_genus = "Swiss Cheese Plant"
-                        display_plant = "Monstera Deliciosa"
-                        
-                        if "Tomato" in display_disease:
-                            display_plant = "Solanum Lycopersicum"
-                            plant_genus = "Tomato Plant"
-                        elif "Potato" in display_disease:
-                            display_plant = "Solanum Tuberosum"
-                            plant_genus = "Potato Plant"
-                        elif "Pepper" in display_disease:
-                            display_plant = "Capsicum Annuum"
-                            plant_genus = "Pepper Plant"
-                        
-                        is_healthy = "healthy" in predicted_disease.lower()
-                        
-                        # Update active interactive states
-                        st.session_state.active_badge = '<span class="image-badge-healthy">🛡️ Healthy</span>' if is_healthy else '<span class="image-badge-critical">⚠️ Critical Health</span>'
-                        st.session_state.active_plant = display_plant
-                        st.session_state.active_sub = plant_genus
-                        st.session_state.active_diag_class = "diag-box-healthy" if is_healthy else "diag-box-critical"
-                        st.session_state.active_diag_title_class = "healthy" if is_healthy else "critical"
-                        st.session_state.active_diag_title = "DIAGNOSIS (HEALTHY)" if is_healthy else "DIAGNOSIS"
-                        st.session_state.active_disease = display_disease
-                        st.session_state.active_conf = f"{confidence_score*100:.1f}% AI Confidence"
-                        st.session_state.active_steps = format_treatment_steps(treatment)
-                        
-                        # Randomize side card moisture indicator for dynamic live feedback
-                        st.session_state.active_moisture = np.random.randint(45, 85)
-                        st.session_state.active_sunlight = "Optimal" if is_healthy else "Suboptimal"
-                        st.session_state.has_analyzed = True
-                        
-                    except Exception as e:
-                        st.error(f"❌ Analysis failed: {str(e)}")
-                    
-                    try:
-                        os.remove("temp_image.jpg")
-                    except:
-                        pass
-                    st.rerun()
-            
-            # Display structured treatment plan
-            st.markdown(clean_html(f"""
-                <h4 class="plan-title">TREATMENT PLAN</h4>
-                <div class="plan-steps">
-                    {st.session_state.active_steps}
-                </div>
-            </div> <!-- Close diag-content-container -->
-            """), unsafe_allow_html=True)
+                
+                # Display structured treatment plan
+                st.markdown(clean_html(f"""
+                    <h4 class="plan-title">TREATMENT PLAN</h4>
+                    <div class="plan-steps">
+                        {st.session_state.active_steps}
+                    </div>
+                </div> <!-- Close diag-content-container -->
+                """), unsafe_allow_html=True)
 
-with res_col2:
-    # Moisture, Sunlight, and Horticulturist stacked side-widgets
-    st.markdown(clean_html(f"""
-    <div class="side-card">
-        <div class="side-icon-box">💧</div>
-        <div class="side-info">
-            <div class="side-label">Moisture Level</div>
-            <div class="side-value">High ({st.session_state.active_moisture}%)</div>
-            <div class="side-progress-bg">
-                <div class="side-progress-fill" style="width: {st.session_state.active_moisture}%"></div>
+    with res_col2:
+        # Moisture, Sunlight, and Horticulturist stacked side-widgets
+        st.markdown(clean_html(f"""
+        <div class="side-card">
+            <div class="side-icon-box">💧</div>
+            <div class="side-info">
+                <div class="side-label">Moisture Level</div>
+                <div class="side-value">High ({st.session_state.active_moisture}%)</div>
+                <div class="side-progress-bg">
+                    <div class="side-progress-fill" style="width: {st.session_state.active_moisture}%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="side-card">
+            <div class="side-icon-box">☀️</div>
+            <div class="side-info">
+                <div class="side-label">Sunlight Exposure</div>
+                <div class="side-value">{st.session_state.active_sunlight}</div>
+            </div>
+        </div>
+        
+        <div class="help-card">
+            <h3 class="help-title">Need expert help?</h3>
+            <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
+            <a href="#" class="help-btn">Book Session</a>
+        </div>
+        """), unsafe_allow_html=True)
+
+    # Elegant Features Grid - "Why Trust Our Diagnosis?" - Matches the Image Exactly
+    st.markdown(clean_html("""
+    <div class="trust-section">
+        <h2 class="trust-title">Why Trust Our Diagnosis?</h2>
+        <p class="trust-subtitle">We combine machine learning with decades of botanical research to ensure your plants get the care they deserve.</p>
+    </div>
+    """), unsafe_allow_html=True)
+
+    trust_col1, trust_col2, trust_col3 = st.columns(3)
+    with trust_col1:
+        st.markdown(clean_html("""
+        <div class="trust-card">
+            <div class="trust-icon-box green">🛡️</div>
+            <h3 class="trust-card-title">Unmatched Accuracy</h3>
+            <p class="trust-card-desc">Our AI model is trained on 1M+ clinical botanical images with 98.7% identification accuracy.</p>
+        </div>
+        """), unsafe_allow_html=True)
+    with trust_col2:
+        st.markdown(clean_html("""
+        <div class="trust-card">
+            <div class="trust-icon-box green">⚡</div>
+            <h3 class="trust-card-title">Instant Results</h3>
+            <p class="trust-card-desc">Get a full diagnostic report and recovery plan in under 10 seconds. No more guessing games.</p>
+        </div>
+        """), unsafe_allow_html=True)
+    with trust_col3:
+        st.markdown(clean_html("""
+        <div class="trust-card">
+            <div class="trust-icon-box orange">📋</div>
+            <h3 class="trust-card-title">Expert Database</h3>
+            <p class="trust-card-desc">Cross-referenced with world-class botanical databases and professional treatment protocols.</p>
+        </div>
+        """), unsafe_allow_html=True)
+
+    # Meet The Team Section - Clean Light Styling
+    st.markdown(clean_html("""
+    <div class="team-section">
+        <h2 class="team-title">👥 MEET THE TEAM</h2>
+        <div class="team-container">
+            <div class="team-card">
+                <h3 class="team-name">Aiza</h3>
+                <p class="team-role">Team Lead, Full Stack AI Engineer</p>
+                <p class="team-desc">Leading development and integration of AI models. Expert in deep learning, neural networks, and end-to-end system design.</p>
+            </div>
+            <div class="team-card">
+                <h3 class="team-name">Tooba</h3>
+                <p class="team-role">Web Designer</p>
+                <p class="team-desc">Crafting the futuristic UI/UX experience. Responsible for the custom layout, animations, and responsive interface design.</p>
+            </div>
+            <div class="team-card">
+                <h3 class="team-name">Taiba</h3>
+                <p class="team-role">Machine Learning Engineer</p>
+                <p class="team-desc">Specializing in model training, optimization, and validation. Ensures our AI delivers 99.2% accuracy across diverse plant conditions.</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <span class="love-icon">❤️</span>
+            <p style="display: inline-block; color: #063c27; font-size: 1.1rem; font-weight: 700; margin-left: 0.5rem; margin-top: 0;">Made with love by the Plant Savior AI Team</p>
+        </div>
+    </div>
+    """), unsafe_allow_html=True)
+
+elif current_page == "my_plants":
+    # ----------------- PAGE: MY PLANTS GRID -----------------
+    st.markdown(clean_html("""
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="powered-badge">MY GARDEN</span>
+        <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">My Plant Collection</h1>
+        <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Track, manage, and monitor the healing progress of your organic companions.</p>
+    </div>
+    
+    <div class="plants-grid">
+        <div class="plant-collection-card">
+            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
+            <div style="padding: 1.5rem;">
+                <span class="critical-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">⚠️ Critical</span>
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Monstera Deliciosa</h3>
+                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Leaf Spot</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+                    <span>📅 2 days ago</span>
+                    <a href="?page=dashboard" target="_self" style="color: #10b981; font-weight: 700; text-decoration: none;">View Diagnosis →</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="plant-collection-card">
+            <img src="https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
+            <div style="padding: 1.5rem;">
+                <span class="healthy-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Roma Tomato</h3>
+                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Solanum Lycopersicum</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+                    <span>📅 5 days ago</span>
+                    <span style="color: #16a34a; font-weight: 700;">Optimal Health</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="plant-collection-card">
+            <img src="https://images.unsplash.com/photo-1598512752271-33f913a5af13?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
+            <div style="padding: 1.5rem;">
+                <span class="critical-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">⚠️ Needs Attention</span>
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Bell Pepper</h3>
+                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Spot</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+                    <span>📅 1 week ago</span>
+                    <a href="?page=dashboard" target="_self" style="color: #10b981; font-weight: 700; text-decoration: none;">View Treatment →</a>
+                </div>
             </div>
         </div>
     </div>
+    """), unsafe_allow_html=True)
+
+elif current_page == "care_guide":
+    # ----------------- PAGE: CARE GUIDE MANUALS -----------------
+    st.markdown(clean_html("""
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="powered-badge">CARE MANUALS</span>
+        <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Botanical Care Manuals</h1>
+        <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Expert guides for watering, light levels, and pruning techniques.</p>
+    </div>
+    """), unsafe_allow_html=True)
     
-    <div class="side-card">
-        <div class="side-icon-box">☀️</div>
-        <div class="side-info">
-            <div class="side-label">Sunlight Exposure</div>
-            <div class="side-value">{st.session_state.active_sunlight}</div>
-        </div>
+    with st.expander("🍅 TOMATO CARE ENCYCLOPEDIA (Solanum Lycopersicum)", expanded=True):
+        st.markdown("""
+        ### **Optimal Growing Parameters:**
+        • **🌞 Sunlight**: Full Sun (Minimum 6 to 8 hours of direct daylight daily).
+        • **💧 Watering**: Keep soil evenly moist. Always water at the base of the stem to protect the foliage from early blight spores.
+        • **🌱 Spacing**: Plant 18 to 24 inches apart in rows to maximize wind circulation and lower mildew rates.
+        
+        ### **Common Pests & Disease Warning Signs:**
+        • **Early Blight**: Dark, target-like spots appearing on lower foliage first. Apply copper spray preventively.
+        • **Spider Mites**: Fine webbing under leaf veins with yellow stippling. Wash off with horticultural soap.
+        """)
+        
+    with st.expander("🥔 POTATO CARE MANUAL (Solanum Tuberosum)", expanded=False):
+        st.markdown("""
+        ### **Optimal Growing Parameters:**
+        • **🌞 Sunlight**: Part to Full Sun.
+        • **💧 Watering**: Maintain consistent moisture level. Irrigate early in the morning so excess moisture evaporates before nightfall.
+        • **🌱 Hilling**: Periodically pile loose soil around the stems to ensure tubers stay shielded from direct sunlight.
+        
+        ### **Common Pests & Disease Warning Signs:**
+        • **Late Blight**: Rapidly spreading dark wet spots with white mildew below. Destroy infected plants immediately.
+        """)
+        
+    with st.expander("🌶️ BELL PEPPER CARE MANUAL (Capsicum Annuum)", expanded=False):
+        st.markdown("""
+        ### **Optimal Growing Parameters:**
+        • **🌞 Sunlight**: Hot, bright, full sun conditions.
+        • **💧 Watering**: Water deeply but allow soil to dry slightly between sessions to avoid root rot.
+        • **🌱 Temperature**: Peppers require warm climates. Ensure night temperatures remain above 55°F.
+        
+        ### **Common Pests & Disease Warning Signs:**
+        • **Bacterial Spot**: Dark raised bumps on leaves and fruits. Rotate crops annually to clear soil bacteria.
+        """)
+
+elif current_page == "support":
+    # ----------------- PAGE: SUPPORT & FAQ -----------------
+    st.markdown(clean_html("""
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="powered-badge">GET HELP</span>
+        <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Expert Botanical Support</h1>
+        <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Connect with a professional horticulturist or browse FAQs.</p>
     </div>
+    """), unsafe_allow_html=True)
     
-    <div class="help-card">
-        <h3 class="help-title">Need expert help?</h3>
-        <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
-        <a href="#" class="help-btn">Book Session</a>
-    </div>
-    """), unsafe_allow_html=True)
-
-# Elegant Features Grid - "Why Trust Our Diagnosis?" - Matches the Image Exactly
-st.markdown(clean_html("""
-<div class="trust-section">
-    <h2 class="trust-title">Why Trust Our Diagnosis?</h2>
-    <p class="trust-subtitle">We combine machine learning with decades of botanical research to ensure your plants get the care they deserve.</p>
-</div>
-"""), unsafe_allow_html=True)
-
-trust_col1, trust_col2, trust_col3 = st.columns(3)
-with trust_col1:
-    st.markdown(clean_html("""
-    <div class="trust-card">
-        <div class="trust-icon-box green">🛡️</div>
-        <h3 class="trust-card-title">Unmatched Accuracy</h3>
-        <p class="trust-card-desc">Our AI model is trained on 1M+ clinical botanical images with 98.7% identification accuracy.</p>
-    </div>
-    """), unsafe_allow_html=True)
-with trust_col2:
-    st.markdown(clean_html("""
-    <div class="trust-card">
-        <div class="trust-icon-box green">⚡</div>
-        <h3 class="trust-card-title">Instant Results</h3>
-        <p class="trust-card-desc">Get a full diagnostic report and recovery plan in under 10 seconds. No more guessing games.</p>
-    </div>
-    """), unsafe_allow_html=True)
-with trust_col3:
-    st.markdown(clean_html("""
-    <div class="trust-card">
-        <div class="trust-icon-box orange">📋</div>
-        <h3 class="trust-card-title">Expert Database</h3>
-        <p class="trust-card-desc">Cross-referenced with world-class botanical databases and professional treatment protocols.</p>
-    </div>
-    """), unsafe_allow_html=True)
-
-# Meet The Team Section - Clean Light Styling
-st.markdown(clean_html("""
-<div class="team-section">
-    <h2 class="team-title">👥 MEET THE TEAM</h2>
-    <div class="team-container">
-        <div class="team-card">
-            <h3 class="team-name">Aiza</h3>
-            <p class="team-role">Team Lead, Full Stack AI Engineer</p>
-            <p class="team-desc">Leading development and integration of AI models. Expert in deep learning, neural networks, and end-to-end system design.</p>
+    col1, col2 = st.columns([1.2, 1])
+    
+    with col1:
+        st.markdown(clean_html("""
+        <div style="background-color: #ffffff; padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+            <h3 style="font-weight: 800; color: #063c27; margin: 0 0 1.5rem 0;">Submit Inquiry</h3>
+        """), unsafe_allow_html=True)
+        
+        with st.form("support_form"):
+            name = st.text_input("Name")
+            email = st.text_input("Email Address")
+            message = st.text_area("What is happening with your plant?")
+            submit = st.form_submit_button("Send to Specialist")
+            if submit:
+                st.success("✉️ Inquiry submitted successfully! A horticulturist will contact you within 24 hours.")
+                
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+    with col2:
+        st.markdown(clean_html("""
+        <div style="background-color: #ffffff; padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: 100%;">
+            <h3 style="font-weight: 800; color: #063c27; margin: 0 0 1.5rem 0;">Frequently Asked Questions</h3>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div>
+                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; font-size: 0.95rem;">How accurate is the AI model?</h4>
+                    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">Our custom convolutional neural network delivers 99.2% accuracy on laboratory test images across all supported leaf classes.</p>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; font-size: 0.95rem;">What plants can I analyze?</h4>
+                    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">Currently, we support full diagnostic scans for Tomato plants, Potato plants, and Bell Pepper plants.</p>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; font-size: 0.95rem;">Why was my scan rejected?</h4>
+                    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">Our custom YOLO classifier filters out non-leaf photos to maintain data clinical integrity. Ensure you zoom into the plant leaf foliage.</p>
+                </div>
+            </div>
         </div>
-        <div class="team-card">
-            <h3 class="team-name">Tooba</h3>
-            <p class="team-role">Web Designer</p>
-            <p class="team-desc">Crafting the futuristic UI/UX experience. Responsible for the custom layout, animations, and responsive interface design.</p>
-        </div>
-        <div class="team-card">
-            <h3 class="team-name">Taiba</h3>
-            <p class="team-role">Machine Learning Engineer</p>
-            <p class="team-desc">Specializing in model training, optimization, and validation. Ensures our AI delivers 99.2% accuracy across diverse plant conditions.</p>
-        </div>
-    </div>
-    <div style="text-align: center; margin-top: 2rem;">
-        <span class="love-icon">❤️</span>
-        <p style="display: inline-block; color: #063c27; font-size: 1.1rem; font-weight: 700; margin-left: 0.5rem; margin-top: 0;">Made with love by the Plant Savior AI Team</p>
-    </div>
-</div>
-"""), unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
 
-# Custom Elegant Footer matching the Image Exactly
+# Custom Elegant Footer matching the Image Exactly (Always rendered at the bottom)
 st.markdown(clean_html("""
 <div class="custom-footer">
     <div class="footer-top">
