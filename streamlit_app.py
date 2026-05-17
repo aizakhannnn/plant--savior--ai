@@ -193,6 +193,7 @@ st.markdown(clean_html("""
         transition: color 0.2s !important;
         margin: 0 !important;
         display: inline-block !important;
+        white-space: nowrap !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button:hover {
@@ -306,6 +307,7 @@ st.markdown(clean_html("""
         margin: 0 !important;
         text-align: left !important;
         display: inline-block !important;
+        white-space: nowrap !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) button:hover {
@@ -1250,12 +1252,11 @@ if 'model' not in st.session_state:
 # Initialize active interactive states with perfect mockup defaults
 if 'active_image' not in st.session_state:
     # A premium high-resolution green leaf photo as default mockup preview
-    st.session_state.active_image = "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?q=80&w=600&auto=format&fit=crop"
+    st.session_state.active_image = "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?q=80&w=600&auto=format&fit=crop"
     st.session_state.active_badge = '<span class="image-badge-critical">⚠️ Critical Health</span>'
     
-    # Requirement 3: Remove Monstera Deliciosa and Swiss Cheese Plant default placeholders
-    st.session_state.active_plant = ""
-    st.session_state.active_sub = ""
+    st.session_state.active_plant = "Golden Pothos"
+    st.session_state.active_sub = "Epipremnum Aureum"
     
     st.session_state.active_diag_class = "diag-box-critical"
     st.session_state.active_diag_title_class = "critical"
@@ -1640,7 +1641,7 @@ elif st.session_state.current_page == "my_plants":
         </div>
         
         <div class="plant-collection-card">
-            <img src="https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
+            <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
             <div style="padding: 1.5rem;">
                 <span class="healthy-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
                 <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Roma Tomato</h3>
@@ -1735,7 +1736,31 @@ elif st.session_state.current_page == "support":
             message = st.text_area("What is happening with your plant?")
             submit = st.form_submit_button("Send to Specialist")
             if submit:
-                st.success("✉️ Inquiry submitted successfully! A horticulturist will contact you within 24 hours.")
+                # Save inquiry to inquiries.json file locally
+                inquiry_data = {
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "name": name,
+                    "email": email,
+                    "message": message
+                }
+                
+                file_path = "inquiries.json"
+                existing_data = []
+                if os.path.exists(file_path):
+                    try:
+                        with open(file_path, "r") as f:
+                            existing_data = json.load(f)
+                    except Exception:
+                        existing_data = []
+                
+                existing_data.append(inquiry_data)
+                try:
+                    with open(file_path, "w") as f:
+                        json.dump(existing_data, f, indent=4)
+                except Exception:
+                    pass
+                
+                st.success("✉️ Inquiry submitted successfully! Saved locally to inquiries.json. A horticulturist will contact you within 24 hours.")
                 
         st.markdown("</div>", unsafe_allow_html=True)
         
