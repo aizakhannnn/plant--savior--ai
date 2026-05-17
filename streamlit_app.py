@@ -143,93 +143,184 @@ st.markdown(clean_html("""
     footer {visibility: hidden;}
     .viewerBadge_container__1QS1h {display: none !important;}
     
-    /* Elegant Custom Navigation Bar */
-    .nav-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #ffffff;
-        padding: 1rem 2rem;
-        border-bottom: 1px solid #e2e8f0;
-        margin-bottom: 2.5rem;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    /* Style the outer vertical block container as the navbar card */
+    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) {
+        background-color: #ffffff !important;
+        padding: 0.75rem 2rem !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 2.5rem !important;
+        border-radius: 12px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     
-    .nav-logo {
+    .nav-bar-container-marker, .active-page-marker-dashboard,
+    .active-page-marker-my_plants, .active-page-marker-care_guide,
+    .active-page-marker-support, .custom-footer-marker {
+        display: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Target all buttons inside the navigation bar for premium SPA page redirection */
+    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button {
+        background: transparent !important;
+        border: none !important;
+        color: #475569 !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        padding: 0.5rem 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        width: auto !important;
+        transition: color 0.2s !important;
+        margin: 0 !important;
+        display: inline-block !important;
+    }
+    
+    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button:hover {
+        color: #063c27 !important;
+        background: transparent !important;
+    }
+    
+    /* Dynamic Active Underline navigation styles mapped directly via parent CSS state markers */
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-dashboard) div[data-testid="column"]:nth-child(2) button {
+        color: #063c27 !important;
+        border-bottom: 2px solid #10b981 !important;
+    }
+    
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-my_plants) div[data-testid="column"]:nth-child(3) button {
+        color: #063c27 !important;
+        border-bottom: 2px solid #10b981 !important;
+    }
+    
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-care_guide) div[data-testid="column"]:nth-child(4) button {
+        color: #063c27 !important;
+        border-bottom: 2px solid #10b981 !important;
+    }
+    
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-support) div[data-testid="column"]:nth-child(5) button {
+        color: #063c27 !important;
+        border-bottom: 2px solid #10b981 !important;
+    }
+    
+    .nav-logo-text {
         font-weight: 800;
         font-size: 1.25rem;
         color: #063c27;
+        padding: 0.5rem 0;
+        white-space: nowrap !important;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        white-space: nowrap !important;
     }
     
-    .nav-links {
-        display: flex;
-        gap: 2rem;
-    }
-    
-    .nav-link {
-        font-weight: 600;
-        color: #475569;
-        cursor: pointer;
-        font-size: 0.9rem;
-        position: relative;
-        padding-bottom: 0.25rem;
-        white-space: nowrap !important;
-        text-decoration: none !important;
-    }
-    
-    .nav-link.active {
-        color: #063c27;
-    }
-    
-    .nav-link.active::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #10b981;
-        border-radius: 2px;
-    }
-    
-    .nav-right {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-    }
-    
-    .nav-icon {
+    .nav-icon-text {
         font-size: 1.2rem;
         color: #475569;
         cursor: pointer;
-        transition: color 0.2s;
+        padding: 0.5rem 0;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
     }
     
-    .nav-icon:hover {
-        color: #063c27;
-    }
-    
-    /* Elegant Light Botanical Navbar Action button matching user's lighter color specification */
-    .nav-btn {
-        background-color: #e6f4ea;
+    /* Make the Identify Plant button stand out as a pill button inside the navbar */
+    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) div[data-testid="column"]:nth-child(6) button {
+        background-color: #e6f4ea !important;
         color: #0f5132 !important;
-        border: 1px solid #d1e7dd;
-        padding: 0.5rem 1.25rem;
-        border-radius: 20px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        text-decoration: none;
-        transition: all 0.2s;
-        white-space: nowrap !important;
+        border: 1px solid #d1e7dd !important;
+        padding: 0.5rem 1.25rem !important;
+        border-radius: 20px !important;
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        margin: 0 auto !important;
+        display: block !important;
+        width: 100% !important;
     }
     
-    .nav-btn:hover {
-        background-color: #d1e7dd;
+    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) div[data-testid="column"]:nth-child(6) button:hover {
+        background-color: #d1e7dd !important;
+        color: #0f5132 !important;
+    }
+    
+    /* Style the outer vertical block container as the custom interactive footer */
+    div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) {
+        background-color: #ffffff !important;
+        border-top: 1px solid #e2e8f0 !important;
+        padding: 3rem 2rem !important;
+        margin-top: 5rem !important;
+        border-bottom-left-radius: 12px !important;
+        border-bottom-right-radius: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-shadow: 0 -1px 3px rgba(0,0,0,0.01) !important;
+    }
+    
+    /* Style footer brand block */
+    .footer-brand {
+        font-weight: 800;
+        font-size: 1.25rem;
+        color: #063c27;
+        line-height: 1.2;
+    }
+    
+    .footer-brand span {
+        font-weight: 500;
+        font-size: 0.85rem;
+        color: #64748b;
+        display: block;
+        margin-top: 0.25rem;
+    }
+    
+    /* Style all text buttons inside the custom footer container */
+    div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) button {
+        background: transparent !important;
+        border: none !important;
+        color: #475569 !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        padding: 0.5rem 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        width: auto !important;
+        transition: color 0.2s !important;
+        margin: 0 !important;
+        text-align: left !important;
+        display: inline-block !important;
+    }
+    
+    div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) button:hover {
+        color: #063c27 !important;
+        background: transparent !important;
+    }
+    
+    .footer-divider {
+        height: 1px;
+        background-color: #f1f5f9;
+        margin: 1.5rem 0;
+        width: 100%;
+    }
+    
+    .footer-copy {
+        font-size: 0.85rem;
+        color: #64748b;
+        padding: 0.5rem 0;
+    }
+    
+    .footer-icons {
+        text-align: right;
+        font-size: 1.25rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100%;
+        padding: 0.5rem 0;
     }
     
     /* Markers to bypass Streamlit card compiling limitations */
@@ -477,6 +568,37 @@ st.markdown(clean_html("""
         color: #0f5132 !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 6px rgba(15, 81, 50, 0.08) !important;
+    }
+    
+    /* Critical Form Input Fields Light Theme overrides to solve the dark-mode box bug */
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stTextArea"] textarea {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        padding: 0.55rem 1rem !important;
+        transition: border-color 0.2s ease-in-out !important;
+    }
+    
+    div[data-testid="stTextInput"] input:focus,
+    div[data-testid="stTextArea"] textarea:focus {
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 1px #10b981 !important;
+    }
+    
+    form[data-testid="stForm"] {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+    
+    div[data-testid="stTextInput"] label,
+    div[data-testid="stTextArea"] label {
+        color: #475569 !important;
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .diag-image-container {
@@ -888,140 +1010,6 @@ st.markdown(clean_html("""
         line-height: 1.5;
     }
     
-    /* Elegant Custom Footer */
-    .custom-footer {
-        background-color: #ffffff;
-        border-top: 1px solid #e2e8f0;
-        padding: 3rem 2rem;
-        margin-top: 5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
-    }
-    
-    .footer-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-    }
-    
-    .footer-brand {
-        font-weight: 800;
-        font-size: 1.25rem;
-        color: #063c27;
-    }
-    
-    .footer-brand span {
-        font-weight: 500;
-        font-size: 0.85rem;
-        color: #64748b;
-        display: block;
-        margin-top: 0.25rem;
-    }
-    
-    .footer-links {
-        display: flex;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .footer-link {
-        color: #475569;
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition: color 0.2s;
-    }
-    
-    .footer-link:hover {
-        color: #063c27;
-    }
-    
-    .footer-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid #f1f5f9;
-        padding-top: 1.5rem;
-        font-size: 0.85rem;
-        color: #64748b;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    
-    .love-icon {
-        color: #ef4444;
-        animation: heartbeat 1.6s ease-in-out infinite;
-        display: inline-block;
-    }
-    
-    @keyframes heartbeat {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.15); }
-    }
-    
-    /* Loading details */
-    .loading-container {
-        text-align: center;
-        padding: 3rem;
-    }
-    
-    .spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(6, 60, 39, 0.05);
-        border-top: 4px solid #063c27;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1.5rem;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    .loading-text {
-        font-size: 1.1rem;
-        color: #063c27;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-    }
-    
-    /* Image details box */
-    .details-box {
-        background-color: #ffffff;
-        padding: 0.75rem 1rem;
-        border-radius: 12px;
-        margin-top: 1rem;
-        border: 1px solid #e2e8f0;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        align-items: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.01);
-    }
-    
-    .details-title {
-        color: #063c27;
-        margin: 0;
-        font-weight: 800;
-        font-size: 0.85rem;
-        letter-spacing: 0.02em;
-    }
-    
-    .details-item {
-        color: #475569;
-        margin: 0;
-        font-size: 0.85rem;
-        font-weight: 700;
-    }
-    
     /* My Garden Collection styles */
     .plants-grid {
         display: grid;
@@ -1060,33 +1048,45 @@ st.markdown(clean_html("""
 </style>
 """), unsafe_allow_html=True)
 
-# Parse active page from query parameter
-query_params = st.query_params
-current_page = query_params.get("page", "dashboard")
+# ----------------- SESSION STATE PAGINATION INITIALIZATION -----------------
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "dashboard"
 
-# Active page styling markers
-active_dashboard = "active" if current_page == "dashboard" else ""
-active_my_plants = "active" if current_page == "my_plants" else ""
-active_care_guide = "active" if current_page == "care_guide" else ""
-active_support = "active" if current_page == "support" else ""
+# Instant SPA callback state modifier - Bypasses slow full-browser reload refreshes
+def set_page(page_name):
+    st.session_state.current_page = page_name
 
-# Elegant Navigation Header with clickable page redirection
-st.markdown(clean_html(f"""
-<div class="nav-bar">
-    <div class="nav-logo">🌱 Plant Savior AI</div>
-    <div class="nav-links">
-        <a href="?page=dashboard" target="_self" class="nav-link {active_dashboard}">Dashboard</a>
-        <a href="?page=my_plants" target="_self" class="nav-link {active_my_plants}">My Plants</a>
-        <a href="?page=care_guide" target="_self" class="nav-link {active_care_guide}">Plant Care Guide</a>
-        <a href="?page=support" target="_self" class="nav-link {active_support}">Support</a>
-    </div>
-    <div class="nav-right">
-        <a href="?page=dashboard" target="_self" class="nav-btn">Identify Plant</a>
-        <span class="nav-icon">🔔</span>
-        <span class="nav-icon">👤</span>
-    </div>
-</div>
-"""), unsafe_allow_html=True)
+# Add CSS state class marker div based on current page state
+st.markdown(f'<div class="active-page-marker-{st.session_state.current_page}"></div>', unsafe_allow_html=True)
+
+# Elegant Navigation Header with clickable columns & instant callbacks
+with st.container():
+    st.markdown('<div class="nav-bar-container-marker"></div>', unsafe_allow_html=True)
+    nav_cols = st.columns([2.2, 1, 1, 1.3, 1, 1.2, 0.4, 0.4])
+    
+    with nav_cols[0]:
+        st.markdown('<div class="nav-logo-text">🌱 Plant Savior AI</div>', unsafe_allow_html=True)
+        
+    with nav_cols[1]:
+        st.button("Dashboard", key="nav_btn_dash", on_click=set_page, args=("dashboard",), help="Go to Dashboard")
+            
+    with nav_cols[2]:
+        st.button("My Plants", key="nav_btn_my_plants", on_click=set_page, args=("my_plants",), help="Go to My Plants")
+            
+    with nav_cols[3]:
+        st.button("Plant Care Guide", key="nav_btn_care_guide", on_click=set_page, args=("care_guide",), help="Go to Care Guide")
+            
+    with nav_cols[4]:
+        st.button("Support", key="nav_btn_support", on_click=set_page, args=("support",), help="Go to Support")
+            
+    with nav_cols[5]:
+        st.button("Identify Plant", key="nav_btn_identify", on_click=set_page, args=("dashboard",), help="Upload leaf for identification")
+            
+    with nav_cols[6]:
+        st.markdown('<div class="nav-icon-text">🔔</div>', unsafe_allow_html=True)
+        
+    with nav_cols[7]:
+        st.markdown('<div class="nav-icon-text">👤</div>', unsafe_allow_html=True)
 
 # System Information Expander instead of Sidebar (Accessible on all pages)
 with st.expander("ℹ️ SYSTEM INFORMATION & GUIDE", expanded=False):
@@ -1240,7 +1240,7 @@ st.session_state.treatments = load_treatments()
 
 # ----------------- PAGE ROUTING & RENDERING -----------------
 
-if current_page == "dashboard":
+if st.session_state.current_page == "dashboard":
     # Main Interactive Hero & Upload Card Container - Styled directly using CSS :has parent selector
     with st.container():
         st.markdown('<div class="hero-card-marker"></div>', unsafe_allow_html=True)
@@ -1549,7 +1549,7 @@ if current_page == "dashboard":
     </div>
     """), unsafe_allow_html=True)
 
-elif current_page == "my_plants":
+elif st.session_state.current_page == "my_plants":
     # ----------------- PAGE: MY PLANTS GRID -----------------
     st.markdown(clean_html("""
     <div style="text-align: center; margin-bottom: 3rem;">
@@ -1567,7 +1567,7 @@ elif current_page == "my_plants":
                 <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Leaf Spot</p>
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
                     <span>📅 2 days ago</span>
-                    <a href="?page=dashboard" target="_self" style="color: #10b981; font-weight: 700; text-decoration: none;">View Diagnosis →</a>
+                    <span style="color: #10b981; font-weight: 700; cursor: pointer;" onclick="window.location.search='?page=dashboard'">View Diagnosis →</span>
                 </div>
             </div>
         </div>
@@ -1593,14 +1593,14 @@ elif current_page == "my_plants":
                 <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Spot</p>
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
                     <span>📅 1 week ago</span>
-                    <a href="?page=dashboard" target="_self" style="color: #10b981; font-weight: 700; text-decoration: none;">View Treatment →</a>
+                    <span style="color: #10b981; font-weight: 700; cursor: pointer;">View Treatment →</span>
                 </div>
             </div>
         </div>
     </div>
     """), unsafe_allow_html=True)
 
-elif current_page == "care_guide":
+elif st.session_state.current_page == "care_guide":
     # ----------------- PAGE: CARE GUIDE MANUALS -----------------
     st.markdown(clean_html("""
     <div style="text-align: center; margin-bottom: 3rem;">
@@ -1644,7 +1644,7 @@ elif current_page == "care_guide":
         • **Bacterial Spot**: Dark raised bumps on leaves and fruits. Rotate crops annually to clear soil bacteria.
         """)
 
-elif current_page == "support":
+elif st.session_state.current_page == "support":
     # ----------------- PAGE: SUPPORT & FAQ -----------------
     st.markdown(clean_html("""
     <div style="text-align: center; margin-bottom: 3rem;">
@@ -1693,26 +1693,37 @@ elif current_page == "support":
         </div>
         """), unsafe_allow_html=True)
 
-# Custom Elegant Footer matching the Image Exactly (Always rendered at the bottom)
-st.markdown(clean_html("""
-<div class="custom-footer">
-    <div class="footer-top">
+# Custom Elegant Interactive Footer (SPA zero-reload compatible)
+with st.container():
+    st.markdown('<div class="custom-footer-marker"></div>', unsafe_allow_html=True)
+    
+    # Top Row of Footer
+    footer_row1_col1, footer_row1_col2 = st.columns([1.5, 2.5])
+    with footer_row1_col1:
+        st.markdown(clean_html("""
         <div class="footer-brand">
             🌱 Plant Savior AI
             <span>Nurturing growth through intelligence.</span>
         </div>
-        <div class="footer-links">
-            <a href="#" class="footer-link">Privacy Policy</a>
-            <a href="#" class="footer-link">Terms of Service</a>
-            <a href="#" class="footer-link">Community Forum</a>
-            <a href="#" class="footer-link">Contact Us</a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <div>© 2024 Plant Savior AI. All rights reserved.</div>
-        <div style="display: flex; gap: 1rem; font-size: 1.25rem;">
-            <span>🌸</span> <span>🌿</span> <span>🍏</span>
-        </div>
-    </div>
-</div>
-"""), unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
+        
+    with footer_row1_col2:
+        # Align 4 buttons horizontally in sub-columns
+        sub_cols = st.columns([1, 1, 1.2, 1])
+        with sub_cols[0]:
+            st.button("Dashboard", key="footer_nav_dash", on_click=set_page, args=("dashboard",))
+        with sub_cols[1]:
+            st.button("My Plants", key="footer_nav_my_plants", on_click=set_page, args=("my_plants",))
+        with sub_cols[2]:
+            st.button("Plant Care Guide", key="footer_nav_care_guide", on_click=set_page, args=("care_guide",))
+        with sub_cols[3]:
+            st.button("Support", key="footer_nav_support", on_click=set_page, args=("support",))
+            
+    st.markdown('<div class="footer-divider"></div>', unsafe_allow_html=True)
+    
+    # Bottom Row of Footer
+    footer_row2_col1, footer_row2_col2 = st.columns([2, 1])
+    with footer_row2_col1:
+        st.markdown('<div class="footer-copy">© 2024 Plant Savior AI. All rights reserved.</div>', unsafe_allow_html=True)
+    with footer_row2_col2:
+        st.markdown('<div class="footer-icons">🌸 🌿 🍏</div>', unsafe_allow_html=True)
