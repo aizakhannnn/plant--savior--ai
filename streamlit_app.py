@@ -122,14 +122,18 @@ st.markdown(clean_html("""
     }
     
     /* Clean white/slate background with premium transparent botanical leaf overlay */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], .main {
-        background-image: linear-gradient(rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.94)), url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&auto=format&fit=crop") !important;
+    .stApp {
+        background-image: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&auto=format&fit=crop") !important;
         background-size: cover !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
         background-position: center !important;
-        background-color: transparent !important;
         color: #0f172a !important;
+    }
+    
+    [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+        background-color: transparent !important;
+        background: transparent !important;
     }
     
     /* Complete elimination of top empty white space on all pages */
@@ -143,7 +147,6 @@ st.markdown(clean_html("""
     
     div[data-testid="stAppViewContainer"] > section {
         padding-top: 0 !important;
-        background: transparent !important;
     }
     
     /* Center the container to 1200px max-width like standard modern web apps */
@@ -164,9 +167,7 @@ st.markdown(clean_html("""
     
     /* Style the outer vertical block container as the navbar card */
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff !important;
         padding: 0.75rem 2rem !important;
         border: 1px solid #e2e8f0 !important;
         margin-bottom: 2.5rem !important;
@@ -273,9 +274,7 @@ st.markdown(clean_html("""
     
     /* Style the outer vertical block container as the custom interactive footer */
     div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff !important;
         border-top: 1px solid #e2e8f0 !important;
         padding: 3rem 2rem !important;
         margin-top: 5rem !important;
@@ -360,9 +359,7 @@ st.markdown(clean_html("""
     
     /* Style Streamlit Vertical Block as the Hero Card via parent selector */
     div[data-testid="stVerticalBlock"]:has(.hero-card-marker) {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff !important;
         border-radius: 24px !important;
         border: 1px solid #e2e8f0 !important;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02), 0 8px 10px -6px rgba(0, 0, 0, 0.02) !important;
@@ -389,9 +386,7 @@ st.markdown(clean_html("""
     
     /* Style Streamlit Vertical Block as the Split Diagnosis Card via parent selector */
     div[data-testid="stVerticalBlock"]:has(.split-card-marker) {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff !important;
         border-radius: 24px !important;
         border: 1px solid #e2e8f0 !important;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02) !important;
@@ -588,9 +583,7 @@ st.markdown(clean_html("""
     .streamlit-expanderHeader, [data-testid="stExpander"] {
         border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
     }
     
@@ -839,9 +832,7 @@ st.markdown(clean_html("""
     
     /* Side widgets */
     .side-card {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff;
         border-radius: 16px;
         border: 1px solid #e2e8f0;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
@@ -973,9 +964,7 @@ st.markdown(clean_html("""
     }
     
     .trust-card {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff;
         border-radius: 16px;
         border: 1px solid #e2e8f0;
         padding: 2.5rem 1.5rem;
@@ -1027,9 +1016,7 @@ st.markdown(clean_html("""
     
     /* Meet The Team Section in Light Theme */
     .team-section {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff;
         border-radius: 24px;
         padding: 2.5rem;
         margin-bottom: 2.5rem;
@@ -1053,9 +1040,7 @@ st.markdown(clean_html("""
     }
     
     .team-card {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #f8fafc;
         border-radius: 16px;
         padding: 2rem;
         text-align: center;
@@ -1102,9 +1087,7 @@ st.markdown(clean_html("""
     }
     
     .plant-collection-card {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background-color: #ffffff;
         border-radius: 20px;
         border: 1px solid #e2e8f0;
         overflow: hidden;
@@ -1752,7 +1735,7 @@ elif st.session_state.current_page == "support":
     
     with col1:
         st.markdown(clean_html("""
-        <div style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
+        <div style="background-color: #ffffff; padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
             <h3 style="font-weight: 800; color: #063c27; margin: 0 0 1.5rem 0;">Submit Inquiry</h3>
         """), unsafe_allow_html=True)
         
@@ -1770,7 +1753,7 @@ elif st.session_state.current_page == "support":
                     "message": message
                 }
                 
-                file_path = "support_queries.json"
+                file_path = "supportqueries.json"
                 existing_data = []
                 if os.path.exists(file_path):
                     try:
@@ -1786,13 +1769,13 @@ elif st.session_state.current_page == "support":
                 except Exception:
                     pass
                 
-                st.success("✉️ Inquiry submitted successfully! Saved locally to support_queries.json. A horticulturist will contact you within 24 hours.")
+                st.success("✉️ Inquiry submitted successfully! Saved locally to supportqueries.json. A horticulturist will contact you within 24 hours.")
                 
         st.markdown("</div>", unsafe_allow_html=True)
         
     with col2:
         st.markdown(clean_html("""
-        <div style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: 100%;">
+        <div style="background-color: #ffffff; padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: 100%;">
             <h3 style="font-weight: 800; color: #063c27; margin: 0 0 1.5rem 0;">Frequently Asked Questions</h3>
             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <div>
