@@ -22,6 +22,10 @@ try:
 except ImportError:
     # Use force-reinstall to overwrite the broken cv2 binaries without triggering pip uninstall permission errors
     subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps"], check=False)
+    import importlib
+    importlib.invalidate_caches()
+    if 'cv2' in sys.modules:
+        del sys.modules['cv2']
     import cv2
 
 from ultralytics import YOLO
