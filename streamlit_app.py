@@ -425,9 +425,13 @@ st.markdown(clean_html("""
     
     /* Custom override to skin Streamlit's dark/grey uploaded file container into premium light botanical theme */
     div[data-testid="stFileUploaderUploadedFile"],
-    .uploadedFile {
+    .uploadedFile,
+    div[data-testid="stFileUploaderUploadedFiles"],
+    div[data-testid="stFileUploader"] section,
+    div[data-testid="stFileUploader"] div,
+    .uploadedFiles {
         background-color: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #cbd5e1 !important;
         border-radius: 12px !important;
         color: #0f172a !important;
         padding: 0.75rem 1rem !important;
@@ -435,39 +439,72 @@ st.markdown(clean_html("""
     
     div[data-testid="stFileUploaderUploadedFile"] span,
     div[data-testid="stFileUploaderUploadedFile"] p,
-    div[data-testid="stFileUploaderUploadedFile"] div {
+    div[data-testid="stFileUploaderUploadedFile"] div,
+    div[data-testid="stFileUploaderUploadedFiles"] span,
+    div[data-testid="stFileUploaderUploadedFiles"] p {
         color: #475569 !important;
         font-weight: 600 !important;
     }
     
-    /* Expander override (Collapsible card styling) */
-    .streamlit-expanderHeader, [data-testid="stExpander"] {
+    /* Complete light-theme expander styling - Forces pure white backgrounds */
+    [data-testid="stExpander"] {
+        background-color: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
+    }
+    
+    [data-testid="stExpander"] summary {
         background-color: #ffffff !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+        color: #063c27 !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
     }
     
-    [data-testid="stExpander"] details {
-        border: none !important;
+    [data-testid="stExpander"] summary:hover {
+        background-color: #f8fafc !important;
     }
     
-    /* Native Buttons Restyling */
-    .stButton > button {
-        background-color: #063c27 !important;
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+        background-color: #ffffff !important;
+        color: #475569 !important;
+        border-top: 1px solid #f1f5f9 !important;
+        padding: 1.5rem !important;
+    }
+    
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] div,
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] span {
+        color: #475569 !important;
+    }
+    
+    /* Native Streamlit Buttons Restyling - Forces white text on beautiful emerald background under all system dark states */
+    .stButton > button,
+    div[data-testid="stFormSubmitButton"] > button {
+        background-color: #10b981 !important;
         color: #ffffff !important;
         font-weight: 700 !important;
         border: none !important;
-        border-radius: 8px !important;
-        padding: 0.6rem 1.5rem !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1.5rem !important;
         transition: all 0.2s !important;
-        width: 100%;
-        margin-top: 1rem;
+        width: 100% !important;
+        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1) !important;
     }
     
-    .stButton > button:hover {
-        background-color: #0c4e33 !important;
+    .stButton > button:hover,
+    div[data-testid="stFormSubmitButton"] > button:hover {
+        background-color: #059669 !important;
         transform: translateY(-1px) !important;
+        box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2) !important;
+    }
+    
+    /* Strict force parameter to prevent black-text overrides inside buttons */
+    .stButton > button *,
+    div[data-testid="stFormSubmitButton"] > button * {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        text-decoration: none !important;
     }
     
     .diag-image-container {
@@ -914,24 +951,6 @@ st.markdown(clean_html("""
         margin-top: 0.25rem;
     }
     
-    .footer-links {
-        display: flex;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .footer-link {
-        color: #475569;
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition: color 0.2s;
-    }
-    
-    .footer-link:hover {
-        color: #063c27;
-    }
-    
     .footer-bottom {
         display: flex;
         justify-content: space-between;
@@ -942,45 +961,6 @@ st.markdown(clean_html("""
         color: #64748b;
         flex-wrap: wrap;
         gap: 1rem;
-    }
-    
-    .love-icon {
-        color: #ef4444;
-        animation: heartbeat 1.6s ease-in-out infinite;
-        display: inline-block;
-    }
-    
-    @keyframes heartbeat {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.15); }
-    }
-    
-    /* Loading details */
-    .loading-container {
-        text-align: center;
-        padding: 3rem;
-    }
-    
-    .spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(6, 60, 39, 0.05);
-        border-top: 4px solid #063c27;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1.5rem;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    .loading-text {
-        font-size: 1.1rem;
-        color: #063c27;
-        font-weight: 700;
-        letter-spacing: 0.05em;
     }
     
     /* Image details box */
@@ -1142,6 +1122,10 @@ if 'model' not in st.session_state:
     st.session_state.treatments = {}
     st.session_state.analysis_count = 0
 
+# Track leaf scan failure to adjust layout dynamically
+if 'scan_failed' not in st.session_state:
+    st.session_state.scan_failed = False
+
 # Initialize active interactive states with perfect mockup defaults
 if 'active_image' not in st.session_state:
     # A premium high-resolution green leaf photo as default mockup preview
@@ -1245,8 +1229,10 @@ if uploaded_file is not None:
         </div>
         """
         
-        # Mark as waiting for click
+        # Mark as waiting for click, reset failure flags
         st.session_state.active_badge = '<span class="image-badge-healthy">🛡️ Ready for Scan</span>'
+        st.session_state.active_plant = "Diagnostics Ready"
+        st.session_state.active_sub = "Uploaded Leaf Image"
         st.session_state.active_diag_class = "diag-box-healthy"
         st.session_state.active_diag_title_class = "healthy"
         st.session_state.active_diag_title = "SYSTEM CHECK"
@@ -1259,6 +1245,7 @@ if uploaded_file is not None:
         </div>
         """
         st.session_state.has_analyzed = False
+        st.session_state.scan_failed = False
 
 # Recent Diagnosis Block Title
 st.markdown(clean_html("""
@@ -1310,6 +1297,8 @@ with res_col1:
                     # Check for leaf validation via YOLO
                     if not is_leaf_image("temp_image.jpg"):
                         st.session_state.active_badge = '<span class="image-badge-critical">⚠️ Scan Failed</span>'
+                        st.session_state.active_plant = "Scan Failed"
+                        st.session_state.active_sub = "Non-botanical content detected"
                         st.session_state.active_diag_class = "diag-box-critical"
                         st.session_state.active_diag_title_class = "critical"
                         st.session_state.active_diag_title = "INVALID IMAGE"
@@ -1322,6 +1311,7 @@ with res_col1:
                         </div>
                         """
                         st.session_state.has_analyzed = True
+                        st.session_state.scan_failed = True
                         try:
                             os.remove("temp_image.jpg")
                         except:
@@ -1388,6 +1378,7 @@ with res_col1:
                         st.session_state.active_moisture = np.random.randint(45, 85)
                         st.session_state.active_sunlight = "Optimal" if is_healthy else "Suboptimal"
                         st.session_state.has_analyzed = True
+                        st.session_state.scan_failed = False
                         
                     except Exception as e:
                         st.error(f"❌ Analysis failed: {str(e)}")
@@ -1408,33 +1399,53 @@ with res_col1:
             """), unsafe_allow_html=True)
 
 with res_col2:
-    # Moisture, Sunlight, and Horticulturist stacked side-widgets
-    st.markdown(clean_html(f"""
-    <div class="side-card">
-        <div class="side-icon-box">💧</div>
-        <div class="side-info">
-            <div class="side-label">Moisture Level</div>
-            <div class="side-value">High ({st.session_state.active_moisture}%)</div>
-            <div class="side-progress-bg">
-                <div class="side-progress-fill" style="width: {st.session_state.active_moisture}%"></div>
+    # If leaf scan has failed, hide Moisture, Sunlight, and Expert cards.
+    # Instead, render a Leaf Scanning Guidelines Card to fill the space cleanly and logically!
+    if st.session_state.scan_failed:
+        st.markdown(clean_html("""
+        <div class="side-card" style="display: block; padding: 1.5rem; background-color: #ffffff; border: 1px solid #fee2e2; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #dc2626; margin-top: 0; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>📋</span> Image Guidelines
+            </h3>
+            <p style="font-size: 0.85rem; color: #475569; line-height: 1.6; margin-bottom: 1.25rem; margin-top: 0;">
+                Our advanced neural network requires clear botanical photos to accurately scan foliage conditions. Please follow these guidelines:
+            </p>
+            <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: #475569; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; list-style-type: disc;">
+                <li><strong>Foliage Only:</strong> Capture leaf structures without hands, fingers, or background pots.</li>
+                <li><strong>Proper Focus:</strong> Ensure leaf details are sharp and legible, avoiding blur.</li>
+                <li><strong>Optimal Lighting:</strong> Photograph under natural daylight to prevent high-contrast glare.</li>
+                <li><strong>Leaf Center:</strong> Place the affected leaf area directly in the center of the frame.</li>
+            </ul>
+        </div>
+        """), unsafe_allow_html=True)
+    else:
+        # Standard side widgets for successful predictions
+        st.markdown(clean_html(f"""
+        <div class="side-card">
+            <div class="side-icon-box">💧</div>
+            <div class="side-info">
+                <div class="side-label">Moisture Level</div>
+                <div class="side-value">High ({st.session_state.active_moisture}%)</div>
+                <div class="side-progress-bg">
+                    <div class="side-progress-fill" style="width: {st.session_state.active_moisture}%"></div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="side-card">
-        <div class="side-icon-box">☀️</div>
-        <div class="side-info">
-            <div class="side-label">Sunlight Exposure</div>
-            <div class="side-value">{st.session_state.active_sunlight}</div>
+        
+        <div class="side-card">
+            <div class="side-icon-box">☀️</div>
+            <div class="side-info">
+                <div class="side-label">Sunlight Exposure</div>
+                <div class="side-value">{st.session_state.active_sunlight}</div>
+            </div>
         </div>
-    </div>
-    
-    <div class="help-card">
-        <h3 class="help-title">Need expert help?</h3>
-        <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
-        <a href="#" class="help-btn">Book Session</a>
-    </div>
-    """), unsafe_allow_html=True)
+        
+        <div class="help-card">
+            <h3 class="help-title">Need expert help?</h3>
+            <p class="help-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
+            <a href="#" class="help-btn">Book Session</a>
+        </div>
+        """), unsafe_allow_html=True)
 
 # Elegant Features Grid - "Why Trust Our Diagnosis?" - Matches the Image Exactly
 st.markdown(clean_html("""
@@ -1498,26 +1509,21 @@ st.markdown(clean_html("""
 </div>
 """), unsafe_allow_html=True)
 
-# Custom Elegant Footer matching the Image Exactly
+# Custom Elegant Footer matching the Image Exactly - Cleaned to remove links/emojis as requested, filled with custom status pill
 st.markdown(clean_html("""
 <div class="custom-footer">
     <div class="footer-top">
         <div class="footer-brand">
             🌱 Plant Savior AI
-            <span>Nurturing growth through intelligence.</span>
+            <span>Nurturing growth through intelligence & care.</span>
         </div>
-        <div class="footer-links">
-            <a href="#" class="footer-link">Privacy Policy</a>
-            <a href="#" class="footer-link">Terms of Service</a>
-            <a href="#" class="footer-link">Community Forum</a>
-            <a href="#" class="footer-link">Contact Us</a>
+        <div style="display: flex; align-items: center; gap: 0.5rem; background-color: #f0fdf4; padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid #bbf7d0; font-size: 0.8rem; font-weight: 700; color: #16a34a; box-shadow: 0 1px 2px rgba(0,0,0,0.01);">
+            <span style="display: inline-block; width: 8px; height: 8px; background-color: #16a34a; border-radius: 50%; box-shadow: 0 0 8px #16a34a;"></span> AI Core Operational
         </div>
     </div>
     <div class="footer-bottom">
         <div>© 2024 Plant Savior AI. All rights reserved.</div>
-        <div style="display: flex; gap: 1rem; font-size: 1.25rem;">
-            <span>🌸</span> <span>🌿</span> <span>🍏</span>
-        </div>
+        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">System version 2.1.0 (Ready)</div>
     </div>
 </div>
 """), unsafe_allow_html=True)
