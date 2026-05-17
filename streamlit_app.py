@@ -75,606 +75,1284 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-# Enhanced Futuristic Modern UI CSS Design
+# Enhanced Futuristic Cyberpunk CSS Design
 st.markdown("""
 <style>
     /* Global Styles */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
     * {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Exo 2', sans-serif;
     }
-    
     h1, h2, h3, h4, h5, h6, .logo-text, .cyberpunk-text {
-        font-family: 'Outfit', sans-serif;
-        letter-spacing: -0.02em;
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 1px;
     }
-    
     /* Main background and layout */
     .stApp {
-        background-color: #0B1121;
-        background-image: 
-            radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.08), transparent 25%),
-            radial-gradient(circle at 85% 30%, rgba(52, 211, 153, 0.08), transparent 25%);
-        color: #F8FAFC;
+        background: linear-gradient(135deg, #0a0a23, #1a1a3a, #2d2d5f, #0f0c29);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        color: #e0e0ff;
         overflow-x: hidden;
         min-height: 100vh;
     }
-    
-    /* Header Styles - Premium Modern */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    /* Floating Particles Background */
+    .stApp::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(2px 2px at 20px 30px, rgba(57, 255, 20, 0.3), transparent),
+            radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 0, 0.2), transparent),
+            radial-gradient(1px 1px at 90px 40px, rgba(57, 255, 20, 0.4), transparent),
+            radial-gradient(1px 1px at 130px 80px, rgba(57, 255, 20, 0.3), transparent);
+        background-repeat: repeat;
+        background-size: 150px 150px;
+        animation: particleFloat 20s linear infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+    @keyframes particleFloat {
+        0% { transform: translateY(0px) translateX(0px); }
+        33% { transform: translateY(-100px) translateX(50px); }
+        66% { transform: translateY(-200px) translateX(-50px); }
+        100% { transform: translateY(-300px) translateX(0px); }
+    }
+    /* Header Styles - Enhanced Cyberpunk */
     .main-header {
-        padding: 5rem 2rem 3rem 2rem;
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        padding: 4rem 2rem;
         border-radius: 0;
+        color: white;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
+        box-shadow: 
+            0 0 50px rgba(34, 139, 34, 0.8),
+            0 0 100px rgba(57, 255, 20, 0.4),
+            inset 0 0 50px rgba(255, 255, 255, 0.1);
         position: relative;
+        overflow: hidden;
+        border-bottom: 4px solid #39ff14;
+        animation: headerPulse 4s infinite;
     }
-    
+    @keyframes headerPulse {
+        0%, 100% { 
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.5),
+                       0 0 60px rgba(0, 255, 0, 0.3);
+        }
+        50% { 
+            box-shadow: 0 0 50px rgba(57, 255, 20, 0.9),
+                       0 0 100px rgba(0, 255, 0, 0.6);
+        }
+    }
+    .main-header::before {
+        content: "";
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent);
+        animation: headerRotate 8s linear infinite;
+    }
+    @keyframes headerRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
     .logo-text {
-        font-size: 4.5rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-transform: uppercase;
-        letter-spacing: -1px;
+        font-size: 5.5rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        text-shadow: 
+            0 0 10px rgba(57, 255, 20, 0.8),
+            0 0 20px rgba(0, 255, 0, 0.6),
+            0 0 30px rgba(57, 255, 20, 0.4);
+        color: white;
+        animation: logoGlow 3s infinite alternate;
+        position: relative;
+        z-index: 2;
     }
-    
+    @keyframes logoGlow {
+        from { 
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #39ff14, 0 0 20px #39ff14;
+            transform: scale(1);
+        }
+        to { 
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00ff00, 0 0 40px #00ff00;
+            transform: scale(1.05);
+        }
+    }
     .tagline {
-        font-size: 1.2rem;
+        font-size: 1.8rem;
+        opacity: 0.95;
         font-weight: 400;
-        color: #94A3B8;
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
-        letter-spacing: 0.5px;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        color: #e0ffe0;
+        position: relative;
+        z-index: 2;
+        animation: taglinePulse 4s infinite;
     }
-    
+    @keyframes taglinePulse {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 1; }
+    }
     /* Statistics Section */
     .stats-section {
         display: flex;
         justify-content: center;
-        gap: 2rem;
-        margin: 0 0 4rem 0;
+        gap: 3rem;
+        margin: 3rem 0;
         flex-wrap: wrap;
     }
-    
     .stat-card {
-        background: rgba(30, 41, 59, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 2.5rem;
         text-align: center;
-        min-width: 180px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-width: 200px;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
     }
-    
+    .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
+        transition: left 0.8s ease;
+    }
+    .stat-card:hover::before {
+        left: 100%;
+    }
     .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        border: 1px solid rgba(16, 185, 129, 0.2);
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(57, 255, 20, 0.4);
+        border: 1px solid rgba(57, 255, 20, 0.6);
     }
-    
     .stat-value {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #10B981;
-        margin-bottom: 0.25rem;
-        font-family: 'Outfit', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #39ff14;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        margin-bottom: 0.5rem;
+        font-family: 'Orbitron', sans-serif;
     }
-    
     .stat-label {
-        color: #94A3B8;
-        font-size: 0.9rem;
-        font-weight: 500;
+        color: #d8ffc0;
+        font-size: 1.2rem;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
-    /* Glassmorphism Container */
+    /* Glassmorphism Container Enhanced */
     .glass-container {
-        background: rgba(30, 41, 59, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
         padding: 3rem;
         margin-bottom: 3rem;
-        transition: transform 0.3s ease;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
     }
-    
-    /* How It Works Section */
+    .glass-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.6), transparent);
+    }
+    .glass-container:hover {
+        transform: translateY(-8px);
+        box-shadow: 
+            0 15px 50px rgba(57, 255, 20, 0.3),
+            0 5px 20px rgba(0, 255, 0, 0.2);
+        border: 1px solid rgba(57, 255, 20, 0.4);
+    }
+    /* How It Works Section - Enhanced */
     .how-it-works {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
         padding: 4rem;
-    }
-    
-    .section-title, .upload-title, .team-title {
-        color: #F8FAFC;
-        text-align: center;
-        font-size: 2.5rem;
         margin-bottom: 3rem;
-        font-weight: 700;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
     }
-    
-    .section-title span, .upload-title span, .team-title span {
-        color: #10B981;
+    .section-title {
+        color: #39ff14;
+        text-align: center;
+        font-size: 3.2rem;
+        margin-bottom: 3rem;
+        font-weight: 900;
+        text-shadow: 
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4);
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: titleGlow 3s infinite alternate;
     }
-    
+    @keyframes titleGlow {
+        from { 
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.6),
+                        0 0 20px rgba(57, 255, 20, 0.4);
+        }
+        to { 
+            text-shadow: 0 0 20px rgba(57, 255, 20, 1),
+                        0 0 40px rgba(57, 255, 20, 0.6);
+        }
+    }
+    .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #39ff14, #00ff00, #39ff14, transparent);
+        border-radius: 2px;
+        animation: underlineFlow 3s infinite;
+    }
+    @keyframes underlineFlow {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
     .steps-container {
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
-        gap: 2rem;
+        gap: 2.5rem;
     }
-    
     .step-card {
-        background: rgba(15, 23, 42, 0.6);
+        background: rgba(0, 30, 60, 0.8);
         border-radius: 20px;
-        padding: 2.5rem 2rem;
+        padding: 3rem 2.5rem;
         text-align: center;
         flex: 1;
-        min-width: 250px;
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        transition: all 0.3s ease;
+        min-width: 280px;
+        max-width: 350px;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.5s ease;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
     }
-    
+    .step-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
+        background-size: 200% 100%;
+        animation: borderFlow 3s linear infinite;
+    }
+    @keyframes borderFlow {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
     .step-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(16, 185, 129, 0.3);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        transform: translateY(-15px) scale(1.05);
+        box-shadow: 
+            0 20px 60px rgba(57, 255, 20, 0.5),
+            0 10px 30px rgba(0, 255, 0, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.7);
     }
-    
     .step-number {
-        width: 60px;
-        height: 60px;
-        background: rgba(16, 185, 129, 0.1);
-        color: #10B981;
-        border-radius: 16px;
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1.5rem;
-        font-weight: 700;
-        font-size: 1.5rem;
-        border: 1px solid rgba(16, 185, 129, 0.2);
+        margin: 0 auto 2rem;
+        font-weight: 900;
+        font-size: 2rem;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.6),
+            0 0 40px rgba(0, 255, 0, 0.3);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        animation: numberPulse 2s infinite;
     }
-    
+    @keyframes numberPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
     .step-icon {
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        color: #39ff14;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        animation: iconFloat 4s ease-in-out infinite;
     }
-    
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
     .step-title {
-        color: #E2E8F0;
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
+        color: #39ff14;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    
     .step-description {
-        color: #94A3B8;
-        font-size: 0.95rem;
+        color: #d8ffc0;
+        font-size: 1.1rem;
         line-height: 1.6;
+        font-weight: 400;
     }
-    
-    /* Upload Section */
+    /* Upload Section - Enhanced */
     .upload-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .upload-title {
+        color: #39ff14;
+        text-align: center;
+        font-size: 2.8rem;
+        margin-bottom: 3rem;
+        font-weight: 800;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    /* Drop Zone - Ultra Futuristic */
+    .drop-zone {
+        border: 4px dashed transparent;
+        border-radius: 25px;
         padding: 4rem;
         text-align: center;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        background: rgba(0, 30, 60, 0.4);
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.3),
+            inset 0 0 30px rgba(0, 0, 0, 0.2);
     }
-    
-    /* Analysis Section */
+    .drop-zone::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        background: linear-gradient(45deg, #39ff14, #228b22, #00ff00, #39ff14, #228b22);
+        background-size: 600% 600%;
+        animation: borderAnimation 4s ease infinite;
+        z-index: -1;
+        border-radius: 30px;
+    }
+    @keyframes borderAnimation {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    .drop-zone::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 30, 60, 0.9);
+        border-radius: 25px;
+        z-index: -1;
+    }
+    .drop-zone:hover {
+        transform: scale(1.02);
+        box-shadow: 
+            0 0 50px rgba(57, 255, 20, 0.5),
+            inset 0 0 50px rgba(57, 255, 20, 0.1);
+    }
+    .upload-icon {
+        font-size: 6rem;
+        color: #39ff14;
+        margin-bottom: 2rem;
+        text-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.8),
+            0 0 40px rgba(57, 255, 20, 0.4);
+        animation: iconPulse 3s ease-in-out infinite;
+    }
+    @keyframes iconPulse {
+        0%, 100% { 
+            transform: scale(1) translateY(0px);
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+        }
+        50% { 
+            transform: scale(1.1) translateY(-5px);
+            text-shadow: 0 0 30px rgba(57, 255, 20, 1);
+        }
+    }
+    .drop-text {
+        font-size: 1.8rem;
+        color: #e0ffe0;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .file-types {
+        color: #c0ffc0;
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 500;
+    }
+    .browse-button {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        border: none;
+        padding: 1.5rem 3rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1.4rem;
+        font-weight: 700;
+        transition: all 0.4s ease;
+        box-shadow: 
+            0 0 25px rgba(57, 255, 20, 0.6),
+            0 0 50px rgba(0, 255, 0, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    .browse-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s ease;
+    }
+    .browse-button:hover::before {
+        left: 100%;
+    }
+    .browse-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 15px 35px rgba(57, 255, 20, 0.8),
+            0 5px 15px rgba(0, 255, 0, 0.6);
+    }
+    /* Analysis Section - Enhanced */
     .analysis-section {
         display: flex;
-        gap: 2rem;
+        gap: 3rem;
         flex-wrap: wrap;
         margin-bottom: 3rem;
-        margin-top: 2rem;
     }
-    
     .image-preview-container, .results-container {
         flex: 1;
-        min-width: 320px;
-        background: rgba(30, 41, 59, 0.3);
-        border-radius: 24px;
-        padding: 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        min-width: 350px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 3rem;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        transition: all 0.4s ease;
     }
-    
+    .image-preview-container:hover, .results-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0 15px 50px rgba(57, 255, 20, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
     .section-subtitle {
-        color: #F8FAFC;
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-        font-weight: 600;
+        color: #39ff14;
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 700;
         text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    
     .preview-image {
         width: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        max-height: 450px;
+        object-fit: contain;
+        border-radius: 20px;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.4),
+            0 0 60px rgba(0, 255, 0, 0.2);
+        border: 3px solid rgba(57, 255, 20, 0.4);
+        transition: all 0.4s ease;
     }
-    
-    /* Loading Animation */
+    .preview-image:hover {
+        transform: scale(1.02);
+        box-shadow: 
+            0 0 40px rgba(57, 255, 20, 0.6),
+            0 0 80px rgba(0, 255, 0, 0.3);
+    }
+    /* Loading Animation - Enhanced */
     .loading-container {
         text-align: center;
-        padding: 3rem;
+        padding: 4rem;
     }
-    
     .spinner {
-        width: 60px;
-        height: 60px;
-        border: 4px solid rgba(16, 185, 129, 0.1);
-        border-top: 4px solid #10B981;
+        width: 100px;
+        height: 100px;
+        border: 6px solid rgba(57, 255, 20, 0.3);
+        border-top: 6px solid #39ff14;
+        border-right: 6px solid #00ff00;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 2rem;
+        animation: multiSpin 1.5s linear infinite;
+        margin: 0 auto 2.5rem;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.6),
+            inset 0 0 30px rgba(57, 255, 20, 0.2);
+        position: relative;
     }
-    
-    @keyframes spin {
+    .spinner::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border: 3px solid transparent;
+        border-top: 3px solid rgba(0, 255, 0, 0.6);
+        border-radius: 50%;
+        animation: multiSpin 1s linear infinite reverse;
+    }
+    @keyframes multiSpin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    
     .loading-text {
-        font-size: 1.25rem;
-        color: #E2E8F0;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+        color: #39ff14;
+        font-weight: 700;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        margin-bottom: 1rem;
+        animation: textPulse 2s infinite;
     }
-    
+    @keyframes textPulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
     .loading-subtext {
-        color: #94A3B8;
-        font-size: 0.95rem;
+        color: #c0ffc0;
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        font-weight: 500;
     }
-    
-    /* Results Card */
+    /* Results Card - Ultra Enhanced */
     .results-card {
-        animation: fadeIn 0.5s ease-out;
+        background: rgba(0, 30, 60, 0.8);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.4);
+        backdrop-filter: blur(10px);
+        animation: cardSlideIn 0.8s ease-out;
     }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes cardSlideIn {
+        0% { 
+            opacity: 0; 
+            transform: translateY(30px);
+        }
+        100% { 
+            opacity: 1; 
+            transform: translateY(0);
+        }
     }
-    
     .result-item {
-        margin-bottom: 1.5rem;
-        padding: 1.5rem;
-        border-radius: 16px;
-        background: rgba(15, 23, 42, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.03);
+        margin-bottom: 2.5rem;
+        padding: 2rem;
+        border-radius: 15px;
+        background: rgba(0, 20, 40, 0.6);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
-    
+    .result-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #39ff14, #00ff00);
+        animation: resultGlow 3s infinite;
+    }
+    @keyframes resultGlow {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    .result-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 5px 20px rgba(57, 255, 20, 0.3);
+    }
     .result-title {
-        color: #94A3B8;
-        font-size: 0.9rem;
-        font-weight: 600;
+        color: #39ff14;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-bottom: 1rem;
     }
-    
     .disease-name {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #F8FAFC;
-        margin: 0.5rem 0;
-    }
-    
-    /* Progress Bar */
-    .progress-container {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: #ffffff;
+        background: linear-gradient(45deg, #39ff14, #00ff00, #39ff14);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        text-align: center;
         margin: 1.5rem 0;
+        animation: diseaseGlow 2s infinite alternate;
+        text-transform: uppercase;
+        letter-spacing: 2px;
     }
-    
+    @keyframes diseaseGlow {
+        0% { 
+            filter: brightness(1);
+            transform: scale(1);
+        }
+        100% { 
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+    }
+    /* Progress Bar - Ultra Futuristic */
+    .progress-container {
+        margin: 2rem 0;
+    }
     .progress-label {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 0.75rem;
-        font-weight: 500;
-        color: #CBD5E1;
-        font-size: 0.95rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: #e0ffe0;
+        font-size: 1.1rem;
     }
-    
     .progress-bar-bg {
         width: 100%;
-        height: 8px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
+        height: 20px;
+        background-color: rgba(0, 30, 60, 0.8);
+        border-radius: 15px;
         overflow: hidden;
+        box-shadow: 
+            inset 0 0 15px rgba(0, 0, 0, 0.6),
+            0 0 10px rgba(57, 255, 20, 0.3);
+        border: 2px solid rgba(57, 255, 20, 0.4);
+        position: relative;
     }
-    
+    .progress-bar-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, 
+            rgba(57, 255, 20, 0.1) 25%, 
+            transparent, 
+            transparent 50%, 
+            rgba(57, 255, 20, 0.1) 50%, 
+            rgba(57, 255, 20, 0.1) 75%, 
+            transparent);
+        background-size: 20px 20px;
+        animation: progressPattern 2s linear infinite;
+    }
+    @keyframes progressPattern {
+        0% { background-position: 0 0; }
+        100% { background-position: 20px 0; }
+    }
     .progress-bar-fill {
         height: 100%;
-        background: linear-gradient(90deg, #34D399, #10B981);
-        border-radius: 8px;
-        transition: width 1s ease-out;
+        background: linear-gradient(90deg, #39ff14, #228b22, #00ff00, #39ff14);
+        background-size: 200% 100%;
+        border-radius: 15px;
+        transition: width 2s ease-in-out;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.8),
+            inset 0 2px 10px rgba(255, 255, 255, 0.3);
+        position: relative;
+        animation: progressFlow 3s linear infinite;
     }
-    
+    @keyframes progressFlow {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+    }
+    .progress-bar-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4), 
+            transparent);
+        animation: progressShine 2s infinite;
+    }
+    @keyframes progressShine {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
     .confidence-text {
-        font-weight: 600;
-        color: #10B981;
+        font-weight: 900;
+        color: #39ff14;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+        font-size: 1.4rem;
+        font-family: 'Orbitron', sans-serif;
     }
-    
-    /* Treatment Box */
+    /* Treatment Box - Enhanced */
     .treatment-box {
-        background: rgba(16, 185, 129, 0.05);
-        border-left: 4px solid #10B981;
-        border-radius: 0 12px 12px 0;
-        padding: 1.5rem;
-        margin-top: 1rem;
-    }
-    
-    .treatment-text {
-        line-height: 1.6;
-        color: #E2E8F0;
-        font-size: 1rem;
-        margin: 0;
-    }
-    
-    /* Buttons */
-    .stButton>button {
-        background: #10B981 !important;
-        color: white !important;
-        border: none !important;
-        padding: 1.5rem !important;
-        border-radius: 12px !important;
-        cursor: pointer !important;
-        font-size: 1.1rem !important;
-        font-weight: 600 !important;
-        width: 100% !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
-    }
-    
-    .stButton>button:hover {
-        background: #059669 !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
-    }
-    
-    /* Status Boxes */
-    .error-box {
-        background: rgba(239, 68, 68, 0.1);
-        border-left: 4px solid #EF4444;
-        border-radius: 0 12px 12px 0;
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        color: #FCA5A5;
-    }
-    
-    /* Info Box styling */
-    .info-box {
-        background: rgba(15, 23, 42, 0.6);
-        padding: 1.25rem;
-        border-radius: 12px;
+        background: rgba(0, 40, 80, 0.7);
+        border-left: 6px solid #39ff14;
+        border-radius: 15px;
+        padding: 2.5rem;
         margin-top: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        position: relative;
+        overflow: hidden;
     }
-    
-    .info-box p {
-        color: #CBD5E1 !important;
-        margin: 0.4rem 0 !important;
-        font-size: 0.95rem !important;
+    .treatment-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: linear-gradient(180deg, #39ff14, #00ff00, #39ff14);
+        animation: treatmentGlow 3s infinite;
     }
-    
-    .info-box strong {
-        color: #10B981 !important;
+    @keyframes treatmentGlow {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
     }
-    
-    /* About & Team Sections */
-    .about-section, .team-section {
-        padding: 4rem;
-        margin-bottom: 2rem;
-    }
-    
-    .about-text {
-        font-size: 1.1rem;
+    .treatment-text {
         line-height: 1.8;
-        color: #94A3B8;
-        margin-bottom: 2rem;
-        text-align: center;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
+        color: #e0ffe0;
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
     }
-    
+    /* Buttons - Ultra Enhanced */
+    .analyze-button, .reset-button {
+        border: none;
+        padding: 2rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 1.4rem;
+        font-weight: 800;
+        transition: all 0.4s ease;
+        width: 100%;
+        margin-top: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+    .analyze-button {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.6),
+            0 0 60px rgba(0, 255, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .analyze-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.3), 
+            transparent);
+        transition: left 0.8s ease;
+    }
+    .analyze-button:hover::before {
+        left: 100%;
+    }
+    .analyze-button:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 15px 40px rgba(57, 255, 20, 0.8),
+            0 5px 20px rgba(0, 255, 0, 0.6);
+    }
+    .reset-button {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        box-shadow: 
+            0 0 25px rgba(57, 255, 20, 0.5),
+            0 0 50px rgba(34, 139, 34, 0.3);
+        border: 2px solid rgba(57, 255, 20, 0.3);
+    }
+    .reset-button:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 
+            0 12px 30px rgba(57, 255, 20, 0.7),
+            0 5px 15px rgba(34, 139, 34, 0.5);
+    }
+    .analyze-button:disabled {
+        background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        border: 1px solid #444466;
+        opacity: 0.5;
+    }
+    /* Error Message - Enhanced */
+    .error-box {
+        background: rgba(100, 0, 40, 0.5);
+        border-left: 6px solid #39ff14;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: #00ff00;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        backdrop-filter: blur(10px);
+        animation: errorPulse 2s infinite;
+    }
+    @keyframes errorPulse {
+        0%, 100% { border-left-color: #39ff14; }
+        50% { border-left-color: #00ff00; }
+    }
+    /* About Section - Enhanced */
+    .about-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .about-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .about-text {
+        font-size: 1.3rem;
+        line-height: 1.9;
+        color: #d8ffc0;
+        margin-bottom: 3rem;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        font-weight: 400;
+    }
+    /* Tech Stack Section */
     .tech-stack {
         display: flex;
         justify-content: center;
-        gap: 1rem;
+        gap: 2rem;
         flex-wrap: wrap;
         margin: 3rem 0;
     }
-    
     .tech-item {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 0.75rem 1.5rem;
-        border-radius: 100px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        color: #E2E8F0;
-        font-weight: 500;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
-    
-    .tech-item:hover {
-        background: rgba(16, 185, 129, 0.1);
-        border-color: #10B981;
-        color: #10B981;
-    }
-    
-    .team-container {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        flex-wrap: wrap;
-    }
-    
-    .team-card {
-        background: rgba(15, 23, 42, 0.5);
-        border-radius: 20px;
-        padding: 2.5rem 2rem;
-        text-align: center;
-        flex: 1;
-        min-width: 250px;
-        max-width: 320px;
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        transition: transform 0.3s ease;
-    }
-    
-    .team-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    .team-name {
-        color: #F8FAFC;
-        font-size: 1.5rem;
+        background: rgba(0, 30, 60, 0.6);
+        padding: 1.5rem 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        color: #39ff14;
         font-weight: 600;
-        margin: 1rem 0 0.5rem;
-    }
-    
-    .team-role {
-        color: #10B981;
-        font-size: 0.9rem;
-        font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 1rem;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        font-size: 1.1rem;
     }
-    
-    .team-desc {
-        color: #94A3B8;
-        font-size: 0.95rem;
-        line-height: 1.6;
+    .tech-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(57, 255, 20, 0.4);
+        border-color: #39ff14;
     }
-    
-    .love-icon {
-        text-align: center;
-        font-size: 2rem;
-        margin: 3rem 0 1rem;
-        color: #EF4444;
-    }
-    
-    /* Footer */
+    /* Footer - Enhanced */
     .footer {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
         text-align: center;
-        padding: 3rem 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        margin-top: 4rem;
+        padding: 3rem;
+        border-radius: 0;
+        margin-top: 3rem;
+        box-shadow: 
+            0 0 40px rgba(34, 139, 34, 0.8),
+            0 0 80px rgba(0, 255, 0, 0.4);
+        border-top: 4px solid #39ff14;
+        position: relative;
+        overflow: hidden;
     }
-    
+    .footer::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+        animation: footerRotate 20s linear infinite;
+    }
+    @keyframes footerRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
     .footer-text {
-        font-size: 0.95rem;
-        color: #94A3B8;
-        margin: 0.5rem 0;
+        font-size: 1.3rem;
+        opacity: 0.95;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        margin: 1rem 0;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
     }
-    
     .creator-info {
-        margin: 2rem 0;
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        flex-wrap: wrap;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid rgba(255, 255, 255, 0.2);
+        font-size: 1.1rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
     }
-    
-    .creator-info .footer-text {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        font-size: 0.9rem;
-    }
-    
-    /* Sidebar Styles */
+    /* Sidebar Styles - Enhanced */
     [data-testid="stSidebar"] {
-        background-color: #0F172A;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(10, 15, 40, 0.9);
+        backdrop-filter: blur(15px);
+        border-right: 2px solid rgba(57, 255, 20, 0.4);
     }
-    
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
-        color: #F8FAFC !important;
-        font-family: 'Outfit', sans-serif;
+        color: #39ff14 !important;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6) !important;
     }
-    
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] li {
-        color: #94A3B8 !important;
+    [data-testid="stSidebar"] p {
+        color: #d8ffc0 !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.1) !important;
     }
-    
     [data-testid="stSidebar"] .stMarkdown {
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
         padding: 1rem;
         margin: 1rem 0;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(57, 255, 20, 0.2);
     }
-    
-    /* Status Pills */
-    .status-pill {
-        display: inline-block;
-        padding: 0.4rem 1.2rem;
-        border-radius: 100px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        letter-spacing: 0.5px;
+    /* Success Message */
+    .success-box {
+        background: rgba(0, 100, 50, 0.5);
+        border-left: 6px solid #00ff88;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: #88ffaa;
+        box-shadow: 
+            0 0 20px rgba(0, 255, 136, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        backdrop-filter: blur(10px);
     }
-    
-    .status-healthy {
-        background: rgba(16, 185, 129, 0.15);
-        color: #10B981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+    /* Responsive Design - Enhanced */
+    @media (max-width: 1200px) {
+        .logo-text {
+            font-size: 4.5rem;
+        }
+        .section-title {
+            font-size: 2.8rem;
+        }
     }
-    
-    .status-disease {
-        background: rgba(245, 158, 11, 0.15);
-        color: #F59E0B;
-        border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-    
-    /* Responsive Design */
     @media (max-width: 768px) {
-        .main-header { padding: 3rem 1rem 2rem; }
-        .logo-text { font-size: 3rem; }
-        .analysis-section { flex-direction: column; }
-        .glass-container { padding: 2rem; }
+        .main-header {
+            padding: 3rem 1.5rem;
+        }
+        .logo-text {
+            font-size: 3.5rem;
+        }
+        .tagline {
+            font-size: 1.4rem;
+        }
+        .steps-container {
+            flex-direction: column;
+        }
+        .analysis-section {
+            flex-direction: column;
+        }
+        .drop-zone {
+            padding: 3rem 2rem;
+        }
+        .stats-section {
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-card {
+            min-width: 200px;
+            max-width: 300px;
+        }
+        .section-title {
+            font-size: 2.2rem;
+        }
+        .tech-stack {
+            justify-content: center;
+        }
     }
-    
-    /* Custom scrollbar */
+    @media (max-width: 480px) {
+        .main-header {
+            padding: 2rem 1rem;
+        }
+        .logo-text {
+            font-size: 2.8rem;
+        }
+        .tagline {
+            font-size: 1.2rem;
+        }
+        .glass-container, .upload-section, .about-section {
+            padding: 2rem;
+        }
+        .step-card {
+            min-width: 100%;
+            padding: 2rem 1.5rem;
+        }
+        .upload-icon {
+            font-size: 4rem;
+        }
+        .drop-zone {
+            padding: 2rem 1rem;
+        }
+        .analyze-button, .reset-button {
+            padding: 1.5rem;
+            font-size: 1.2rem;
+        }
+    }
+    /* Custom scrollbar - Enhanced */
     ::-webkit-scrollbar {
-        width: 8px;
+        width: 12px;
     }
     ::-webkit-scrollbar-track {
-        background: #0B1121;
+        background: rgba(10, 15, 40, 0.8);
+        border-radius: 6px;
     }
     ::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 4px;
+        background: linear-gradient(180deg, #39ff14, #228b22, #00ff00);
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: #475569;
+        background: linear-gradient(180deg, #00ff00, #228b22, #39ff14);
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
     }
-    
-    /* Streamlit uploader tweaks */
-    [data-testid="stFileUploader"] {
-        max-width: 600px;
-        margin: 0 auto;
+    /* Additional Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+    }
+    /* Notification Styles */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(57, 255, 20, 0.9);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 1000;
+        animation: slideInRight 0.5s ease-out;
+    }
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    /* Team Section - New */
+    .team-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .team-title {
+        color: #39ff14;
+        text-align: center;
+        font-size: 3.2rem;
+        margin-bottom: 3rem;
+        font-weight: 900;
+        text-shadow: 
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4);
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: titleGlow 3s infinite alternate;
+    }
+    .team-container {
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        flex-wrap: wrap;
+    }
+    .team-card {
+        background: rgba(0, 30, 60, 0.8);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        flex: 1;
+        min-width: 280px;
+        max-width: 320px;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .team-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
+        background-size: 200% 100%;
+        animation: borderFlow 3s linear infinite;
+    }
+    .team-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 
+            0 15px 50px rgba(57, 255, 20, 0.5),
+            0 5px 20px rgba(0, 255, 0, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.7);
+    }
+    .team-name {
+        color: #39ff14;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+    }
+    .team-role {
+        color: #00ff00;
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .team-desc {
+        color: #d8ffc0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    .love-icon {
+        display: block;
+        text-align: center;
+        font-size: 2.5rem;
+        margin: 2rem 0;
+        color: #39ff14;
+        animation: heartBeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartBeat {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Main header
+
+
+# Main header with enhanced futuristic design
 st.markdown("""
 <div class="main-header">
     <h1 class="logo-text">🌱 PLANT SAVIOR AI</h1>
@@ -682,7 +1360,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Statistics Section
+# Statistics Section - Removed "24/7 Available" as requested
 st.markdown("""
 <div class="stats-section">
     <div class="stat-card">
@@ -750,9 +1428,9 @@ with st.sidebar:
     • **Custom CNN** - Disease Classification
     """)
 
-# How it works section
+# How it works section with enhanced design
 st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">HOW THE <span>AI SYSTEM</span> WORKS</h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">HOW THE AI SYSTEM WORKS</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="steps-container">
     <div class="step-card">
@@ -777,7 +1455,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Function to load model
+# Function to load model with enhanced caching
 @st.cache_resource(show_spinner=False)
 def load_model():
     """Load the trained model with enhanced error handling"""
@@ -795,10 +1473,10 @@ def load_model():
         st.error(f"🚨 **SYSTEM ERROR**: {str(e)}")
         return None
 
-# Load treatment dictionary
+# Load treatment dictionary with enhanced error handling
 @st.cache_resource(show_spinner=False)
 def load_treatments():
-    """Load treatment recommendations with enhanced error handling"""
+    """Load treatment recommendations with enhanced error handling - Updated for healthy classes"""
     try:
         with open('treatment_dict_complete.json', 'r') as f:
             treatments = json.load(f)
@@ -830,35 +1508,33 @@ def load_treatments():
         st.sidebar.error(f"❌ TREATMENT LOADING ERROR: {str(e)}")
         return {}
 
-# Initialize session state
+# Initialize session state with enhanced management
 if 'model' not in st.session_state:
     st.session_state.model = None
     st.session_state.treatments = {}
     st.session_state.analysis_count = 0
 
-# Load model and treatments
+# Load model and treatments with progress tracking
 if st.session_state.model is None:
     with st.spinner("⚡ BOOTING UP PLANT SAVIOR AI SYSTEM..."):
         model = load_model()
         st.session_state.model = model
         if model is not None:
             st.success("🚀 **SYSTEM READY**: Plant Savior AI is now fully operational!")
-            time.sleep(1)
+            time.sleep(1)  # Brief pause for effect
 
-# Always load treatments
+# Always load treatments to ensure updates are picked up
 st.session_state.treatments = load_treatments()
 
-# Main upload section
+# Main upload section with enhanced design
 st.markdown('<div class="upload-section glass-container fade-in-up">', unsafe_allow_html=True)
-st.markdown('<h2 class="upload-title">🔬 AI-POWERED <span>PLANT ANALYSIS</span></h2>', unsafe_allow_html=True)
-
+st.markdown('<h2 class="upload-title">🔬 AI-POWERED PLANT ANALYSIS</h2>', unsafe_allow_html=True)
 # Enhanced file uploader
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Upload a clear image of the plant leaf for AI analysis")
-
 if uploaded_file is not None:
-    # Analysis section
+    # Analysis section with enhanced two-column layout
     st.markdown('<div class="analysis-section fade-in-up">', unsafe_allow_html=True)
-    # Left column
+    # Left column - Enhanced image preview
     col1, col2 = st.columns([1, 1], gap="large")
     with col1:
         st.markdown('<div class="image-preview-container">', unsafe_allow_html=True)
@@ -869,32 +1545,31 @@ if uploaded_file is not None:
         width, height = image.size
         file_size = len(uploaded_file.getvalue()) / 1024  # KB
         st.markdown(f"""
-        <div class="info-box">
-            <p style="margin: 0; color: #10B981 !important;"><strong>📊 IMAGE DETAILS:</strong></p>
-            <p style="margin: 5px 0;">📐 Dimensions: {width} × {height} pixels</p>
-            <p style="margin: 5px 0;">💾 Size: {file_size:.1f} KB</p>
-            <p style="margin: 5px 0;">📁 Format: {uploaded_file.type}</p>
+        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(57, 255, 20, 0.3);">
+            <p style="color: #39ff14; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
+            <p style="color: #d8ffc0; margin: 5px 0;">📐 Dimensions: {width} × {height} pixels</p>
+            <p style="color: #d8ffc0; margin: 5px 0;">💾 Size: {file_size:.1f} KB</p>
+            <p style="color: #d8ffc0; margin: 5px 0;">📁 Format: {uploaded_file.type}</p>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("🔄 UPLOAD NEW IMAGE", key="reset", help="Upload a different leaf image", use_container_width=True):
+        if st.button("🔄 **UPLOAD NEW IMAGE**", key="reset", help="Upload a different leaf image", use_container_width=True):
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Right column
+    # Right column - Enhanced results
     with col2:
         st.markdown('<div class="results-container">', unsafe_allow_html=True)
         st.markdown('<h3 class="section-subtitle">🧬 AI ANALYSIS CENTER</h3>', unsafe_allow_html=True)
         if st.session_state.model is not None and st.session_state.treatments:
-            if st.button("🚀 ANALYZE WITH AI", key="analyze", help="Start advanced AI analysis", use_container_width=True):
+            if st.button("🚀 **ANALYZE WITH AI**", key="analyze", help="Start advanced AI analysis", use_container_width=True):
                 # Save uploaded file temporarily
                 with open("temp_image.jpg", "wb") as f:
                     f.write(uploaded_file.getbuffer())
                 
                 if not is_leaf_image("temp_image.jpg"):
-                    st.markdown('<div class="error-box" style="text-align: center;">', unsafe_allow_html=True)
-                    st.markdown('<h3 style="color: #F8FAFC; margin-bottom: 0.5rem;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
-                    st.markdown('<p style="color: #FCA5A5;">This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>', unsafe_allow_html=True)
-                    st.markdown('<p style="color: #FCA5A5;"><strong>Please upload a clear leaf picture and try again.</strong></p>', unsafe_allow_html=True)
+                    st.markdown('<div class="error-box" style="border-left-color: #ffaa00; text-align: center;">', unsafe_allow_html=True)
+                    st.markdown('<h3 style="color: #ffaa00;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
+                    st.markdown('<p>This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>', unsafe_allow_html=True)
+                    st.markdown('<p><strong>Please upload a clear leaf picture and try again.</strong></p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     try:
                         os.remove("temp_image.jpg")
@@ -941,34 +1616,29 @@ if uploaded_file is not None:
                     predictions = st.session_state.model.predict(img_array, verbose=0)
                     predicted_class = np.argmax(predictions[0])
                     confidence_score = float(predictions[0][predicted_class])
-                    
+                    # Get all predictions for top 3 results
+                    top_3_indices = np.argsort(predictions[0])[-3:][::-1]
                     # Get class names and prediction
                     class_names = list(st.session_state.treatments.keys())
                     predicted_disease = class_names[predicted_class]
                     treatment = st.session_state.treatments.get(predicted_disease, "Consult with an agricultural expert for specialized treatment.")
-                    
                     # Update analysis counter
                     st.session_state.analysis_count += 1
-                    
-                    # Display results
+                    # Display enhanced results
                     st.markdown('<div class="results-card">', unsafe_allow_html=True)
-                    
                     # Main diagnosis result
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">🎯 PRIMARY DIAGNOSIS</h4>', unsafe_allow_html=True)
-                    
                     # Clean disease name for display
                     display_disease = predicted_disease.replace('_', ' ').title()
-                    st.markdown(f'<p class="disease-name" style="text-align: center;">{display_disease}</p>', unsafe_allow_html=True)
-                    
+                    st.markdown(f'<p class="disease-name">{display_disease}</p>', unsafe_allow_html=True)
                     # Health status indicator
                     if "healthy" in predicted_disease.lower():
-                        st.markdown('<div style="text-align: center; margin: 1.5rem 0;"><span class="status-pill status-healthy">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff88, #00cc66); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
                     else:
-                        st.markdown('<div style="text-align: center; margin: 1.5rem 0;"><span class="status-pill status-disease">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff00, #39ff14); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
-                    # Confidence score
+                    # Confidence score with enhanced progress bar
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">🎯 CONFIDENCE ANALYSIS</h4>', unsafe_allow_html=True)
                     st.markdown(f"""
@@ -982,24 +1652,24 @@ if uploaded_file is not None:
                             </div>
                         </div>
                     """, unsafe_allow_html=True)
-                    
                     # Confidence interpretation
                     if confidence_score > 0.9:
-                        conf_msg = "🟢 VERY HIGH CONFIDENCE - Diagnosis is highly reliable"
-                        conf_color = "#10B981"
+                        conf_msg = "🟢 **VERY HIGH CONFIDENCE** - Diagnosis is highly reliable"
+                        conf_color = "#00ff88"
                     elif confidence_score > 0.7:
-                        conf_msg = "🟡 HIGH CONFIDENCE - Diagnosis is reliable"
-                        conf_color = "#F59E0B"
+                        conf_msg = "🟡 **HIGH CONFIDENCE** - Diagnosis is reliable"
+                        conf_color = "#ffaa00"
                     elif confidence_score > 0.5:
-                        conf_msg = "🟠 MODERATE CONFIDENCE - Consider expert consultation"
-                        conf_color = "#34D399"
+                        conf_msg = "🟠 **MODERATE CONFIDENCE** - Consider expert consultation"
+                        conf_color = "#00ff00"
                     else:
-                        conf_msg = "🔴 LOW CONFIDENCE - Recommend professional diagnosis"
-                        conf_color = "#EF4444"
-                    st.markdown(f'<p style="color: {conf_color}; font-weight: 500; font-size: 0.95rem; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
+                        conf_msg = "🔴 **LOW CONFIDENCE** - Recommend professional diagnosis"
+                        conf_color = "#39ff14"
+                    st.markdown(f'<p style="color: {conf_color}; font-weight: 600; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
-                    # Treatment recommendation
+                    # Top 3 predictions
+
+                    # Treatment recommendation with enhanced styling
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     if "healthy" in predicted_disease.lower():
                         st.markdown('<h4 class="result-title">🌿 CARE RECOMMENDATION</h4>', unsafe_allow_html=True)
@@ -1007,30 +1677,27 @@ if uploaded_file is not None:
                         st.markdown('<h4 class="result-title">💊 TREATMENT PROTOCOL</h4>', unsafe_allow_html=True)
                     st.markdown(f'<div class="treatment-box"><p class="treatment-text">{treatment}</p></div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Analysis summary
                     st.markdown('<div class="result-item">', unsafe_allow_html=True)
                     st.markdown('<h4 class="result-title">📈 ANALYSIS SUMMARY</h4>', unsafe_allow_html=True)
                     st.markdown(f"""
-                    <div class="info-box">
-                        <p style="margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
-                        <p style="margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
-                        <p style="margin: 0.5rem 0;">⚡ Processing Time: <3 seconds</p>
-                        <p style="margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
+                    <div style="background: rgba(0, 40, 80, 0.5); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">⚡ Processing Time: <3 seconds</p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
                     </div>
                     """, unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
                     # Success notification
                     st.success("✅ **ANALYSIS COMPLETE!** Your plant has been successfully diagnosed by our AI system.")
 
                 except Exception as e:
                     st.markdown('<div class="error-box">', unsafe_allow_html=True)
-                    st.markdown(f'<p style="margin: 0; font-weight: 600;">❌ ANALYSIS ERROR: {str(e)}</p>', unsafe_allow_html=True)
-                    st.markdown('<p style="margin-top: 0.5rem;">Please try uploading a different image or contact support if the issue persists.</p>', unsafe_allow_html=True)
+                    st.markdown(f'<p>❌ **ANALYSIS ERROR**: {str(e)}</p>', unsafe_allow_html=True)
+                    st.markdown('<p>Please try uploading a different image or contact support if the issue persists.</p>', unsafe_allow_html=True)
                     st.markdown('</div>', unsafe_allow_html=True)
-                
                 # Clean up temporary file
                 try:
                     os.remove("temp_image.jpg")
@@ -1038,15 +1705,15 @@ if uploaded_file is not None:
                     pass
             else:
                 st.markdown("""
-                <div class="info-box" style="text-align: center; border: 2px dashed rgba(255,255,255,0.1); padding: 3rem 1.5rem;">
+                <div style="text-align: center; padding: 2rem; background: rgba(0, 30, 60, 0.4); border-radius: 15px; border: 2px dashed rgba(57, 255, 20, 0.3);">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
-                    <h4 style="color: #F8FAFC; font-family: Outfit; font-size: 1.5rem; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
-                    <p style="color: #94A3B8;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
+                    <h4 style="color: #39ff14; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
+                    <p style="color: #d8ffc0;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
                 </div>
                 """, unsafe_allow_html=True)
         else:
             st.markdown('<div class="error-box">', unsafe_allow_html=True)
-            st.markdown('<p style="font-weight: 600;">❌ SYSTEM ERROR: AI model or treatment database not properly loaded.</p>', unsafe_allow_html=True)
+            st.markdown('<p>❌ **SYSTEM ERROR**: AI model or treatment database not properly loaded.</p>', unsafe_allow_html=True)
             st.markdown('<p>Please refresh the page or contact technical support.</p>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
@@ -1054,21 +1721,21 @@ if uploaded_file is not None:
 else:
     # Enhanced upload prompt
     st.markdown("""
-    <div class="glass-container" style="text-align: center; border: 2px dashed rgba(255,255,255,0.1); padding: 5rem 2rem; max-width: 800px; margin: 2rem auto;">
-        <div style="font-size: 4rem; margin-bottom: 1.5rem;">📸</div>
-        <h3 style="color: #F8FAFC; font-family: Outfit; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR <span style="color: #10B981;">AI ANALYSIS</span></h3>
-        <p style="color: #94A3B8; font-size: 1.1rem; margin-bottom: 2rem;">Select a clear image of the plant leaf you want to analyze</p>
-        <div class="info-box" style="max-width: 400px; margin: 0 auto;">
-            <p>Supported formats: JPG, JPEG, PNG</p>
-            <p>Maximum file size: 200MB</p>
+    <div style="text-align: center; padding: 3rem; background: rgba(0, 30, 60, 0.3); border-radius: 20px; border: 3px dashed rgba(57, 255, 20, 0.4); margin: 2rem 0;">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: bounce 2s infinite;">📸</div>
+        <h3 style="color: #39ff14; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR AI ANALYSIS</h3>
+        <p style="color: #d8ffc0; font-size: 1.2rem; margin-bottom: 1.5rem;">Select a clear image of the plant leaf you want to analyze</p>
+        <div style="background: rgba(0, 50, 100, 0.5); padding: 1rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
+            <p style="color: #c0ffc0; margin: 0;">Supported formats: JPG, JPEG, PNG</p>
+            <p style="color: #c0ffc0; margin: 0;">Maximum file size: 200MB</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# About section
+# Enhanced About section
 st.markdown('<div class="about-section glass-container fade-in-up">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">🚀 ABOUT <span>PLANT SAVIOR AI</span></h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">🚀 ABOUT PLANT SAVIOR AI</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="about-content">
     <p class="about-text">
@@ -1092,9 +1759,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Team Section
+# === NEW: Team Section ===
 st.markdown('<div class="team-section glass-container fade-in-up">', unsafe_allow_html=True)
-st.markdown('<h2 class="team-title">👥 MEET <span>THE TEAM</span></h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="team-title">👥 MEET THE TEAM</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="team-container">
     <div class="team-card">
@@ -1105,7 +1772,7 @@ st.markdown("""
     <div class="team-card">
         <h3 class="team-name">Tooba</h3>
         <p class="team-role">Web Designer</p>
-        <p class="team-desc">Crafting the futuristic UI/UX experience. Responsible for the modern design, animations, and responsive interface that powers Plant Savior AI.</p>
+        <p class="team-desc">Crafting the futuristic UI/UX experience. Responsible for the cyberpunk design, animations, and responsive interface that powers Plant Savior AI.</p>
     </div>
     <div class="team-card">
         <h3 class="team-name">Taiba</h3>
@@ -1114,22 +1781,22 @@ st.markdown("""
     </div>
 </div>
 <div class="love-icon">❤️</div>
-<p style="text-align: center; color: #10B981; font-size: 1.1rem; font-weight: 500;">Made with ❤️ by the Plant Savior AI Team</p>
+<p style="text-align: center; color: #39ff14; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer
+# Enhanced Footer
 st.markdown("""
 <div class="footer">
-    <div class="footer-text" style="color: #F8FAFC; font-weight: 600; font-size: 1.1rem;">🌱 PLANT SAVIOR AI - REVOLUTIONIZING AGRICULTURE WITH ARTIFICIAL INTELLIGENCE</div>
+    <div class="footer-text">🌱 PLANT SAVIOR AI - REVOLUTIONIZING AGRICULTURE WITH ARTIFICIAL INTELLIGENCE</div>
     <div class="footer-text">Powered by Advanced Deep Learning • Real-time Disease Detection • Professional Treatment Recommendations</div>
     <div class="creator-info">
         <div class="footer-text">🎯 <strong>MODEL ACCURACY:</strong> 99.2% on validation data</div>
         <div class="footer-text">⚡ <strong>PROCESSING SPEED:</strong> Sub-3-second analysis</div>
-        <div class="footer-text">🌍 <strong>IMPACT:</strong> Helping farmers worldwide save crops</div>
+        <div class="footer-text">🌍 <strong>IMPACT:</strong> Helping farmers worldwide save crops and reduce pesticide use</div>
     </div>
-    <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05);">
-        <div class="footer-text" style="font-size: 0.85rem;">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid rgba(255, 255, 255, 0.2);">
+        <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
