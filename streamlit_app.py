@@ -75,177 +75,1308 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed"
 )
-
-# Semantic CSS Design (Light Mode Modern Forest Green)
+# Enhanced Futuristic Cyberpunk CSS Design
 st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
-/* Global */
-.stApp { background-color: #f8faf9 !important; color: #191c1c !important; font-family: 'Inter', sans-serif !important; }
-[data-testid="stHeader"] { background-color: transparent !important; }
-
-/* Streamlit overrides */
-.stExpander { background-color: #ffffff !important; border: 1px solid #eceeed !important; border-radius: 16px !important; box-shadow: 0 4px 20px -10px rgba(27, 67, 50, 0.12) !important; margin-bottom: 2rem !important; }
-[data-testid="stFileUploader"] { border: 2px dashed #c1c8c2 !important; border-radius: 24px !important; padding: 40px 20px !important; background-color: #f2f4f3 !important; }
-[data-testid="stFileUploader"] section { background-color: transparent !important; }
-div.stButton > button { background-color: #012d1d !important; color: white !important; border-radius: 12px !important; border: none !important; padding: 12px 28px !important; font-weight: 600 !important; transition: all 0.2s !important; width: 100% !important; }
-div.stButton > button:hover { background-color: #0e6c4a !important; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(14,108,74,0.2); }
-
-/* Semantic Layout Classes */
-.navbar { background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 1rem 1rem; margin-bottom: 2rem; border-bottom: 1px solid #eceeed; }
-.nav-logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: 700; color: #012d1d; }
-.nav-links { display: flex; gap: 2rem; align-items: center; }
-.nav-links a { color: #414844; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
-.nav-links a:hover { color: #012d1d; }
-.nav-links a.active { color: #0e6c4a; border-bottom: 2px solid #0e6c4a; padding-bottom: 0.25rem; font-weight: 700; }
-.nav-actions { display: flex; align-items: center; gap: 1.5rem; }
-.btn-primary { background: #012d1d; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
-.btn-outline { border: 2px solid #0e6c4a; color: #0e6c4a; padding: 0.65rem 1.5rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 700; background: transparent; cursor: pointer; text-decoration: none; display: inline-block; }
-.btn-primary-lg { background: #012d1d; color: white; padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-decoration: none; display: inline-block; }
-
-.hero-tag { display: inline-block; padding: 0.25rem 0.75rem; background: #a0f4c8; color: #19724f; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
-.hero-title { font-size: 2.5rem; font-weight: 700; color: #012d1d; line-height: 1.2; margin: 0 0 1rem 0; }
-.hero-desc { font-size: 1rem; color: #414844; line-height: 1.6; margin-bottom: 1.5rem; }
-.hero-btns { display: flex; gap: 1rem; padding-top: 0.5rem; }
-
-.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2rem auto; max-width: 800px; }
-.stat-box { background: white; border: 1px solid #eceeed; border-radius: 1rem; padding: 1.25rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.stat-val { font-size: 1.875rem; font-weight: 700; color: #0e6c4a; margin: 0; }
-.stat-label { font-size: 0.75rem; color: #717973; text-transform: uppercase; font-weight: 600; margin-top: 0.25rem; letter-spacing: 0.05em; }
-
-.section-wrapper { padding: 3rem 0; border-top: 1px solid #eceeed; margin-top: 3rem; }
-.section-title { font-size: 1.875rem; font-weight: 700; color: #012d1d; margin: 0 0 0.5rem 0; text-align: center; }
-.section-desc { font-size: 1rem; color: #414844; text-align: center; margin: 0 0 2.5rem 0; }
-
-.cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 1rem; }
-.card { background: white; border: 1px solid #eceeed; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: border-color 0.3s; }
-.card:hover { border-color: #0e6c4a; }
-.card-icon { width: 3.5rem; height: 3.5rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
-.card-title { font-size: 1.125rem; font-weight: 700; color: #012d1d; margin: 0 0 0.5rem 0; }
-.card-text { font-size: 0.875rem; color: #414844; line-height: 1.5; margin: 0; }
-
-.team-card { background: #f2f4f3; border: 1px solid #eceeed; border-radius: 1.5rem; padding: 1.5rem; text-align: center; transition: border-color 0.3s; }
-.team-card:hover { border-color: #0e6c4a; }
-.team-role { font-size: 0.75rem; color: #0e6c4a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem 0; }
-
-.footer { background: white; border-top: 1px solid #eceeed; padding: 2rem 1.5rem; border-radius: 1rem 1rem 0 0; display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; }
-.footer-links { display: flex; gap: 1.5rem; font-size: 0.75rem; }
-.footer-links a { color: #414844; text-decoration: none; }
-.footer-links a:hover { color: #0e6c4a; }
-
-/* Analysis Card */
-.analysis-card { background: white; border: 1px solid #eceeed; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 10px 30px -12px rgba(27,67,50,0.12); display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
-.analysis-img-col { flex: 2; position: relative; border-radius: 0.75rem; overflow: hidden; min-height: 250px; }
-.analysis-img { width: 100%; height: 100%; object-fit: cover; }
-.analysis-info-col { flex: 3; display: flex; flex-direction: column; gap: 1rem; }
-.badge { position: absolute; top: 1rem; left: 1rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem; }
-.badge-success { background: #a0f4c8; color: #19724f; }
-.badge-danger { background: #ffdad6; color: #93000a; }
-
-.plant-title { font-size: 1.5rem; font-weight: 700; color: #012d1d; margin: 0; }
-.plant-sub { font-size: 0.875rem; color: #414844; font-style: italic; margin: 0; }
-
-.diag-box { padding: 1rem; border-radius: 0.75rem; border: 1px solid; }
-.diag-box-success { background: rgba(160,244,200,0.2); border-color: rgba(160,244,200,0.4); }
-.diag-box-danger { background: rgba(255,218,214,0.2); border-color: rgba(255,218,214,0.4); }
-.diag-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; margin: 0 0 0.25rem 0; }
-.diag-value { font-size: 1.125rem; font-weight: 700; margin: 0; }
-.diag-conf { font-size: 0.75rem; color: #414844; font-weight: 500; margin: 0.5rem 0 0 0; }
-.text-success { color: #19724f; }
-.text-danger { color: #ba1a1a; }
-
-.treatment-label { font-size: 0.75rem; font-weight: 700; color: #012d1d; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem 0; }
-.step-item { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 0.75rem; }
-.step-num { width: 1.5rem; height: 1.5rem; border-radius: 9999px; background: #1b4332; color: #86af99; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
-.step-text { font-size: 0.875rem; color: #191c1c; margin: 0; padding-top: 0.1rem; }
-
-/* Side Stats */
-.side-stat-box { background: white; padding: 1.25rem; border-radius: 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #eceeed; margin-bottom: 1rem; }
-.side-stat-flex { display: flex; align-items: center; gap: 1rem; }
-.side-icon { width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; }
-.icon-blue { background: rgba(14,108,74,0.1); color: #0e6c4a; }
-.icon-orange { background: rgba(58,32,23,0.1); color: #3a2017; }
-.progress-bg { height: 0.5rem; width: 100%; background: #eceeed; border-radius: 9999px; margin-top: 1rem; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 9999px; }
-
-.expert-box { background: #012d1d; color: white; padding: 1.5rem; border-radius: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 1rem; }
-.expert-title { font-size: 1.125rem; font-weight: 700; margin: 0 0 0.5rem 0; position: relative; z-index: 10; }
-.expert-desc { font-size: 0.875rem; opacity: 0.9; margin: 0 0 1rem 0; line-height: 1.5; position: relative; z-index: 10; }
-.expert-btn { background: white; color: #012d1d; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; border: none; cursor: pointer; position: relative; z-index: 10; }
-.expert-bg-icon { position: absolute; bottom: -1rem; right: -1rem; font-size: 120px; opacity: 0.1; transform: rotate(12deg); pointer-events: none; }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .cards-grid, .stats-grid { grid-template-columns: 1fr; }
-    .analysis-card { flex-direction: column; }
-    .nav-links { display: none; }
-    .footer { flex-direction: column; gap: 1rem; text-align: center; }
-}
+    /* Global Styles */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
+    * {
+        font-family: 'Exo 2', sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6, .logo-text, .cyberpunk-text {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 1px;
+    }
+    /* Main background and layout */
+    .stApp {
+        background: linear-gradient(135deg, #0a0a23, #1a1a3a, #2d2d5f, #0f0c29);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        color: #e0e0ff;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    /* Floating Particles Background */
+    .stApp::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(2px 2px at 20px 30px, rgba(57, 255, 20, 0.3), transparent),
+            radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 0, 0.2), transparent),
+            radial-gradient(1px 1px at 90px 40px, rgba(57, 255, 20, 0.4), transparent),
+            radial-gradient(1px 1px at 130px 80px, rgba(57, 255, 20, 0.3), transparent);
+        background-repeat: repeat;
+        background-size: 150px 150px;
+        animation: particleFloat 20s linear infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+    @keyframes particleFloat {
+        0% { transform: translateY(0px) translateX(0px); }
+        33% { transform: translateY(-100px) translateX(50px); }
+        66% { transform: translateY(-200px) translateX(-50px); }
+        100% { transform: translateY(-300px) translateX(0px); }
+    }
+    /* Header Styles - Enhanced Cyberpunk */
+    .main-header {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        padding: 4rem 2rem;
+        border-radius: 0;
+        color: white;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: 
+            0 0 50px rgba(34, 139, 34, 0.8),
+            0 0 100px rgba(57, 255, 20, 0.4),
+            inset 0 0 50px rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        border-bottom: 4px solid #39ff14;
+        animation: headerPulse 4s infinite;
+    }
+    @keyframes headerPulse {
+        0%, 100% { 
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.5),
+                       0 0 60px rgba(0, 255, 0, 0.3);
+        }
+        50% { 
+            box-shadow: 0 0 50px rgba(57, 255, 20, 0.9),
+                       0 0 100px rgba(0, 255, 0, 0.6);
+        }
+    }
+    .main-header::before {
+        content: "";
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent);
+        animation: headerRotate 8s linear infinite;
+    }
+    @keyframes headerRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .logo-text {
+        font-size: 5.5rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        text-shadow: 
+            0 0 10px rgba(57, 255, 20, 0.8),
+            0 0 20px rgba(0, 255, 0, 0.6),
+            0 0 30px rgba(57, 255, 20, 0.4);
+        color: white;
+        animation: logoGlow 3s infinite alternate;
+        position: relative;
+        z-index: 2;
+    }
+    @keyframes logoGlow {
+        from { 
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #39ff14, 0 0 20px #39ff14;
+            transform: scale(1);
+        }
+        to { 
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00ff00, 0 0 40px #00ff00;
+            transform: scale(1.05);
+        }
+    }
+    .tagline {
+        font-size: 1.8rem;
+        opacity: 0.95;
+        font-weight: 400;
+        max-width: 1000px;
+        margin: 0 auto;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        color: #e0ffe0;
+        position: relative;
+        z-index: 2;
+        animation: taglinePulse 4s infinite;
+    }
+    @keyframes taglinePulse {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 1; }
+    }
+    /* Statistics Section */
+    .stats-section {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin: 3rem 0;
+        flex-wrap: wrap;
+    }
+    .stat-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        min-width: 200px;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.1), transparent);
+        transition: left 0.8s ease;
+    }
+    .stat-card:hover::before {
+        left: 100%;
+    }
+    .stat-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(57, 255, 20, 0.4);
+        border: 1px solid rgba(57, 255, 20, 0.6);
+    }
+    .stat-value {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #39ff14;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        margin-bottom: 0.5rem;
+        font-family: 'Orbitron', sans-serif;
+    }
+    .stat-label {
+        color: #d8ffc0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    /* Glassmorphism Container Enhanced */
+    .glass-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        padding: 3rem;
+        margin-bottom: 3rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .glass-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.6), transparent);
+    }
+    .glass-container:hover {
+        transform: translateY(-8px);
+        box-shadow: 
+            0 15px 50px rgba(57, 255, 20, 0.3),
+            0 5px 20px rgba(0, 255, 0, 0.2);
+        border: 1px solid rgba(57, 255, 20, 0.4);
+    }
+    /* How It Works Section - Enhanced */
+    .how-it-works {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+    .section-title {
+        color: #39ff14;
+        text-align: center;
+        font-size: 3.2rem;
+        margin-bottom: 3rem;
+        font-weight: 900;
+        text-shadow: 
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4);
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: titleGlow 3s infinite alternate;
+    }
+    @keyframes titleGlow {
+        from { 
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.6),
+                        0 0 20px rgba(57, 255, 20, 0.4);
+        }
+        to { 
+            text-shadow: 0 0 20px rgba(57, 255, 20, 1),
+                        0 0 40px rgba(57, 255, 20, 0.6);
+        }
+    }
+    .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #39ff14, #00ff00, #39ff14, transparent);
+        border-radius: 2px;
+        animation: underlineFlow 3s infinite;
+    }
+    @keyframes underlineFlow {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    .steps-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+    }
+    .step-card {
+        background: rgba(0, 30, 60, 0.8);
+        border-radius: 20px;
+        padding: 3rem 2.5rem;
+        text-align: center;
+        flex: 1;
+        min-width: 280px;
+        max-width: 350px;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.5s ease;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+    .step-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
+        background-size: 200% 100%;
+        animation: borderFlow 3s linear infinite;
+    }
+    @keyframes borderFlow {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    .step-card:hover {
+        transform: translateY(-15px) scale(1.05);
+        box-shadow: 
+            0 20px 60px rgba(57, 255, 20, 0.5),
+            0 10px 30px rgba(0, 255, 0, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.7);
+    }
+    .step-number {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        font-weight: 900;
+        font-size: 2rem;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.6),
+            0 0 40px rgba(0, 255, 0, 0.3);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        animation: numberPulse 2s infinite;
+    }
+    @keyframes numberPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    .step-icon {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        color: #39ff14;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        animation: iconFloat 4s ease-in-out infinite;
+    }
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    .step-title {
+        color: #39ff14;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .step-description {
+        color: #d8ffc0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+    /* Upload Section - Enhanced */
+    .upload-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .upload-title {
+        color: #39ff14;
+        text-align: center;
+        font-size: 2.8rem;
+        margin-bottom: 3rem;
+        font-weight: 800;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    /* Drop Zone - Ultra Futuristic */
+    .drop-zone {
+        border: 4px dashed transparent;
+        border-radius: 25px;
+        padding: 4rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        background: rgba(0, 30, 60, 0.4);
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.3),
+            inset 0 0 30px rgba(0, 0, 0, 0.2);
+    }
+    .drop-zone::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        background: linear-gradient(45deg, #39ff14, #228b22, #00ff00, #39ff14, #228b22);
+        background-size: 600% 600%;
+        animation: borderAnimation 4s ease infinite;
+        z-index: -1;
+        border-radius: 30px;
+    }
+    @keyframes borderAnimation {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    .drop-zone::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 30, 60, 0.9);
+        border-radius: 25px;
+        z-index: -1;
+    }
+    .drop-zone:hover {
+        transform: scale(1.02);
+        box-shadow: 
+            0 0 50px rgba(57, 255, 20, 0.5),
+            inset 0 0 50px rgba(57, 255, 20, 0.1);
+    }
+    .upload-icon {
+        font-size: 6rem;
+        color: #39ff14;
+        margin-bottom: 2rem;
+        text-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.8),
+            0 0 40px rgba(57, 255, 20, 0.4);
+        animation: iconPulse 3s ease-in-out infinite;
+    }
+    @keyframes iconPulse {
+        0%, 100% { 
+            transform: scale(1) translateY(0px);
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+        }
+        50% { 
+            transform: scale(1.1) translateY(-5px);
+            text-shadow: 0 0 30px rgba(57, 255, 20, 1);
+        }
+    }
+    .drop-text {
+        font-size: 1.8rem;
+        color: #e0ffe0;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .file-types {
+        color: #c0ffc0;
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 500;
+    }
+    .browse-button {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        border: none;
+        padding: 1.5rem 3rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1.4rem;
+        font-weight: 700;
+        transition: all 0.4s ease;
+        box-shadow: 
+            0 0 25px rgba(57, 255, 20, 0.6),
+            0 0 50px rgba(0, 255, 0, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    .browse-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s ease;
+    }
+    .browse-button:hover::before {
+        left: 100%;
+    }
+    .browse-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 15px 35px rgba(57, 255, 20, 0.8),
+            0 5px 15px rgba(0, 255, 0, 0.6);
+    }
+    /* Analysis Section - Enhanced */
+    .analysis-section {
+        display: flex;
+        gap: 3rem;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+    }
+    .image-preview-container, .results-container {
+        flex: 1;
+        min-width: 350px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 3rem;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        transition: all 0.4s ease;
+    }
+    .image-preview-container:hover, .results-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0 15px 50px rgba(57, 255, 20, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    .section-subtitle {
+        color: #39ff14;
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .preview-image {
+        width: 100%;
+        max-height: 450px;
+        object-fit: contain;
+        border-radius: 20px;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.4),
+            0 0 60px rgba(0, 255, 0, 0.2);
+        border: 3px solid rgba(57, 255, 20, 0.4);
+        transition: all 0.4s ease;
+    }
+    .preview-image:hover {
+        transform: scale(1.02);
+        box-shadow: 
+            0 0 40px rgba(57, 255, 20, 0.6),
+            0 0 80px rgba(0, 255, 0, 0.3);
+    }
+    /* Loading Animation - Enhanced */
+    .loading-container {
+        text-align: center;
+        padding: 4rem;
+    }
+    .spinner {
+        width: 100px;
+        height: 100px;
+        border: 6px solid rgba(57, 255, 20, 0.3);
+        border-top: 6px solid #39ff14;
+        border-right: 6px solid #00ff00;
+        border-radius: 50%;
+        animation: multiSpin 1.5s linear infinite;
+        margin: 0 auto 2.5rem;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.6),
+            inset 0 0 30px rgba(57, 255, 20, 0.2);
+        position: relative;
+    }
+    .spinner::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border: 3px solid transparent;
+        border-top: 3px solid rgba(0, 255, 0, 0.6);
+        border-radius: 50%;
+        animation: multiSpin 1s linear infinite reverse;
+    }
+    @keyframes multiSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .loading-text {
+        font-size: 1.8rem;
+        color: #39ff14;
+        font-weight: 700;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        margin-bottom: 1rem;
+        animation: textPulse 2s infinite;
+    }
+    @keyframes textPulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
+    .loading-subtext {
+        color: #c0ffc0;
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+    /* Results Card - Ultra Enhanced */
+    .results-card {
+        background: rgba(0, 30, 60, 0.8);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.4);
+        backdrop-filter: blur(10px);
+        animation: cardSlideIn 0.8s ease-out;
+    }
+    @keyframes cardSlideIn {
+        0% { 
+            opacity: 0; 
+            transform: translateY(30px);
+        }
+        100% { 
+            opacity: 1; 
+            transform: translateY(0);
+        }
+    }
+    .result-item {
+        margin-bottom: 2.5rem;
+        padding: 2rem;
+        border-radius: 15px;
+        background: rgba(0, 20, 40, 0.6);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .result-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #39ff14, #00ff00);
+        animation: resultGlow 3s infinite;
+    }
+    @keyframes resultGlow {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    .result-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 5px 20px rgba(57, 255, 20, 0.3);
+    }
+    .result-title {
+        color: #39ff14;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .disease-name {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: #ffffff;
+        background: linear-gradient(45deg, #39ff14, #00ff00, #39ff14);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.8);
+        text-align: center;
+        margin: 1.5rem 0;
+        animation: diseaseGlow 2s infinite alternate;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    @keyframes diseaseGlow {
+        0% { 
+            filter: brightness(1);
+            transform: scale(1);
+        }
+        100% { 
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+    }
+    /* Progress Bar - Ultra Futuristic */
+    .progress-container {
+        margin: 2rem 0;
+    }
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: #e0ffe0;
+        font-size: 1.1rem;
+    }
+    .progress-bar-bg {
+        width: 100%;
+        height: 20px;
+        background-color: rgba(0, 30, 60, 0.8);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 
+            inset 0 0 15px rgba(0, 0, 0, 0.6),
+            0 0 10px rgba(57, 255, 20, 0.3);
+        border: 2px solid rgba(57, 255, 20, 0.4);
+        position: relative;
+    }
+    .progress-bar-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, 
+            rgba(57, 255, 20, 0.1) 25%, 
+            transparent, 
+            transparent 50%, 
+            rgba(57, 255, 20, 0.1) 50%, 
+            rgba(57, 255, 20, 0.1) 75%, 
+            transparent);
+        background-size: 20px 20px;
+        animation: progressPattern 2s linear infinite;
+    }
+    @keyframes progressPattern {
+        0% { background-position: 0 0; }
+        100% { background-position: 20px 0; }
+    }
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #39ff14, #228b22, #00ff00, #39ff14);
+        background-size: 200% 100%;
+        border-radius: 15px;
+        transition: width 2s ease-in-out;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.8),
+            inset 0 2px 10px rgba(255, 255, 255, 0.3);
+        position: relative;
+        animation: progressFlow 3s linear infinite;
+    }
+    @keyframes progressFlow {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+    }
+    .progress-bar-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4), 
+            transparent);
+        animation: progressShine 2s infinite;
+    }
+    @keyframes progressShine {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    .confidence-text {
+        font-weight: 900;
+        color: #39ff14;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+        font-size: 1.4rem;
+        font-family: 'Orbitron', sans-serif;
+    }
+    /* Treatment Box - Enhanced */
+    .treatment-box {
+        background: rgba(0, 40, 80, 0.7);
+        border-left: 6px solid #39ff14;
+        border-radius: 15px;
+        padding: 2.5rem;
+        margin-top: 1.5rem;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .treatment-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: linear-gradient(180deg, #39ff14, #00ff00, #39ff14);
+        animation: treatmentGlow 3s infinite;
+    }
+    @keyframes treatmentGlow {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+    }
+    .treatment-text {
+        line-height: 1.8;
+        color: #e0ffe0;
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    }
+    /* Buttons - Ultra Enhanced */
+    .analyze-button, .reset-button {
+        border: none;
+        padding: 2rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 1.4rem;
+        font-weight: 800;
+        transition: all 0.4s ease;
+        width: 100%;
+        margin-top: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+    .analyze-button {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        box-shadow: 
+            0 0 30px rgba(57, 255, 20, 0.6),
+            0 0 60px rgba(0, 255, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .analyze-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.3), 
+            transparent);
+        transition: left 0.8s ease;
+    }
+    .analyze-button:hover::before {
+        left: 100%;
+    }
+    .analyze-button:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 15px 40px rgba(57, 255, 20, 0.8),
+            0 5px 20px rgba(0, 255, 0, 0.6);
+    }
+    .reset-button {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        box-shadow: 
+            0 0 25px rgba(57, 255, 20, 0.5),
+            0 0 50px rgba(34, 139, 34, 0.3);
+        border: 2px solid rgba(57, 255, 20, 0.3);
+    }
+    .reset-button:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 
+            0 12px 30px rgba(57, 255, 20, 0.7),
+            0 5px 15px rgba(34, 139, 34, 0.5);
+    }
+    .analyze-button:disabled {
+        background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        border: 1px solid #444466;
+        opacity: 0.5;
+    }
+    /* Error Message - Enhanced */
+    .error-box {
+        background: rgba(100, 0, 40, 0.5);
+        border-left: 6px solid #39ff14;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: #00ff00;
+        box-shadow: 
+            0 0 20px rgba(57, 255, 20, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        backdrop-filter: blur(10px);
+        animation: errorPulse 2s infinite;
+    }
+    @keyframes errorPulse {
+        0%, 100% { border-left-color: #39ff14; }
+        50% { border-left-color: #00ff00; }
+    }
+    /* About Section - Enhanced */
+    .about-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .about-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .about-text {
+        font-size: 1.3rem;
+        line-height: 1.9;
+        color: #d8ffc0;
+        margin-bottom: 3rem;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        font-weight: 400;
+    }
+    /* Tech Stack Section */
+    .tech-stack {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin: 3rem 0;
+    }
+    .tech-item {
+        background: rgba(0, 30, 60, 0.6);
+        padding: 1.5rem 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        color: #39ff14;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        font-size: 1.1rem;
+    }
+    .tech-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(57, 255, 20, 0.4);
+        border-color: #39ff14;
+    }
+    /* Footer - Enhanced */
+    .footer {
+        background: linear-gradient(135deg, #39ff14 0%, #228b22 50%, #00ff00 100%);
+        color: white;
+        text-align: center;
+        padding: 3rem;
+        border-radius: 0;
+        margin-top: 3rem;
+        box-shadow: 
+            0 0 40px rgba(34, 139, 34, 0.8),
+            0 0 80px rgba(0, 255, 0, 0.4);
+        border-top: 4px solid #39ff14;
+        position: relative;
+        overflow: hidden;
+    }
+    .footer::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+        animation: footerRotate 20s linear infinite;
+    }
+    @keyframes footerRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .footer-text {
+        font-size: 1.3rem;
+        opacity: 0.95;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        margin: 1rem 0;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+    }
+    .creator-info {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid rgba(255, 255, 255, 0.2);
+        font-size: 1.1rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+    }
+    /* Sidebar Styles - Enhanced */
+    [data-testid="stSidebar"] {
+        background: rgba(10, 15, 40, 0.9);
+        backdrop-filter: blur(15px);
+        border-right: 2px solid rgba(57, 255, 20, 0.4);
+    }
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {
+        color: #39ff14 !important;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6) !important;
+    }
+    [data-testid="stSidebar"] p {
+        color: #d8ffc0 !important;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.1) !important;
+    }
+    [data-testid="stSidebar"] .stMarkdown {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+        border: 1px solid rgba(57, 255, 20, 0.2);
+    }
+    /* Success Message */
+    .success-box {
+        background: rgba(0, 100, 50, 0.5);
+        border-left: 6px solid #00ff88;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: #88ffaa;
+        box-shadow: 
+            0 0 20px rgba(0, 255, 136, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    /* Responsive Design - Enhanced */
+    @media (max-width: 1200px) {
+        .logo-text {
+            font-size: 4.5rem;
+        }
+        .section-title {
+            font-size: 2.8rem;
+        }
+    }
+    @media (max-width: 768px) {
+        .main-header {
+            padding: 3rem 1.5rem;
+        }
+        .logo-text {
+            font-size: 3.5rem;
+        }
+        .tagline {
+            font-size: 1.4rem;
+        }
+        .steps-container {
+            flex-direction: column;
+        }
+        .analysis-section {
+            flex-direction: column;
+        }
+        .drop-zone {
+            padding: 3rem 2rem;
+        }
+        .stats-section {
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-card {
+            min-width: 200px;
+            max-width: 300px;
+        }
+        .section-title {
+            font-size: 2.2rem;
+        }
+        .tech-stack {
+            justify-content: center;
+        }
+    }
+    @media (max-width: 480px) {
+        .main-header {
+            padding: 2rem 1rem;
+        }
+        .logo-text {
+            font-size: 2.8rem;
+        }
+        .tagline {
+            font-size: 1.2rem;
+        }
+        .glass-container, .upload-section, .about-section {
+            padding: 2rem;
+        }
+        .step-card {
+            min-width: 100%;
+            padding: 2rem 1.5rem;
+        }
+        .upload-icon {
+            font-size: 4rem;
+        }
+        .drop-zone {
+            padding: 2rem 1rem;
+        }
+        .analyze-button, .reset-button {
+            padding: 1.5rem;
+            font-size: 1.2rem;
+        }
+    }
+    /* Custom scrollbar - Enhanced */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(10, 15, 40, 0.8);
+        border-radius: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #39ff14, #228b22, #00ff00);
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #00ff00, #228b22, #39ff14);
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    }
+    /* Additional Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+    }
+    /* Notification Styles */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(57, 255, 20, 0.9);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 1000;
+        animation: slideInRight 0.5s ease-out;
+    }
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    /* Team Section - New */
+    .team-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 4rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(57, 255, 20, 0.25);
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .team-title {
+        color: #39ff14;
+        text-align: center;
+        font-size: 3.2rem;
+        margin-bottom: 3rem;
+        font-weight: 900;
+        text-shadow: 
+            0 0 15px rgba(57, 255, 20, 0.8),
+            0 0 30px rgba(57, 255, 20, 0.4);
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: titleGlow 3s infinite alternate;
+    }
+    .team-container {
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        flex-wrap: wrap;
+    }
+    .team-card {
+        background: rgba(0, 30, 60, 0.8);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        flex: 1;
+        min-width: 280px;
+        max-width: 320px;
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(57, 255, 20, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .team-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #39ff14, #00ff00, #39ff14);
+        background-size: 200% 100%;
+        animation: borderFlow 3s linear infinite;
+    }
+    .team-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 
+            0 15px 50px rgba(57, 255, 20, 0.5),
+            0 5px 20px rgba(0, 255, 0, 0.3);
+        border: 1px solid rgba(57, 255, 20, 0.7);
+    }
+    .team-name {
+        color: #39ff14;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+    }
+    .team-role {
+        color: #00ff00;
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .team-desc {
+        color: #d8ffc0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    .love-icon {
+        display: block;
+        text-align: center;
+        font-size: 2.5rem;
+        margin: 2rem 0;
+        color: #39ff14;
+        animation: heartBeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartBeat {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
 </style>
-
-<!-- Top Navigation Bar -->
-<div class="navbar">
-    <div class="nav-logo">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
-        <span>Plant Savior AI</span>
-    </div>
-    <div class="nav-links">
-        <a href="#" class="active">Dashboard</a>
-        <a href="#">My Plants</a>
-        <a href="#">Plant Care Guide</a>
-        <a href="#">Support</a>
-    </div>
-    <div class="nav-actions">
-        <a href="#" class="btn-primary">Identify Plant</a>
-        <div style="display: flex; gap: 0.75rem; align-items: center; color: #414844;">
-            <span class="material-symbols-outlined" style="cursor: pointer;">notifications</span>
-            <span class="material-symbols-outlined" style="cursor: pointer;">account_circle</span>
-        </div>
-    </div>
-</div>
 """, unsafe_allow_html=True)
 
 
-# Hero Section
-col_hero_left, col_hero_right = st.columns([1.2, 1], gap="large")
 
-with col_hero_left:
-    st.markdown("""
-    <div style="padding: 1.5rem 0;">
-        <span class="hero-tag">Powered by Advanced AI</span>
-        <h1 class="hero-title">Heal Your Plants<br>with AI</h1>
-        <p class="hero-desc">
-            Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our botanical intelligence guide your garden to health.
-        </p>
-        <div class="hero-btns">
-            <a href="#" class="btn-primary-lg">Get Started</a>
-            <a href="#" class="btn-outline">View Demo</a>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col_hero_right:
-    uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Upload a clear image of the plant leaf for AI analysis")
-
-
-# Statistics Section
+# Main header with enhanced futuristic design
 st.markdown("""
-<div class="stats-grid">
-    <div class="stat-box">
-        <p class="stat-val">99.2%</p>
-        <p class="stat-label">Accuracy</p>
-    </div>
-    <div class="stat-box">
-        <p class="stat-val">15+</p>
-        <p class="stat-label">Plant Diseases</p>
-    </div>
-    <div class="stat-box">
-        <p class="stat-val">&lt;3s</p>
-        <p class="stat-label">Analysis Time</p>
-    </div>
+<div class="main-header">
+    <h1 class="logo-text">🌱 PLANT SAVIOR AI</h1>
+    <p class="tagline">NEXT-GENERATION PLANT DISEASE DETECTION POWERED BY ADVANCED ARTIFICIAL INTELLIGENCE</p>
 </div>
 """, unsafe_allow_html=True)
 
+# Statistics Section - Removed "24/7 Available" as requested
+st.markdown("""
+<div class="stats-section">
+    <div class="stat-card">
+        <div class="stat-value">99.2%</div>
+        <div class="stat-label">Accuracy</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">15+</div>
+        <div class="stat-label">Plant Diseases</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value"><3s</div>
+        <div class="stat-label">Analysis Time</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # System Information Expander instead of Sidebar
 with st.expander("ℹ️ SYSTEM INFORMATION & GUIDE", expanded=False):
@@ -296,32 +1427,32 @@ with st.expander("ℹ️ SYSTEM INFORMATION & GUIDE", expanded=False):
         **🌶️ PEPPER (2 TYPES):** Bacterial Spot, Healthy
         """)
 
-
-# How the AI System Works
+# How it works section with enhanced design
+st.markdown('<div class="how-it-works glass-container fade-in-up">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">HOW THE AI SYSTEM WORKS</h2>', unsafe_allow_html=True)
 st.markdown("""
-<div class="section-wrapper" style="border-top: none; margin-top: 1rem;">
-    <h2 class="section-title">How the AI System Works</h2>
-    <p class="section-desc">Follow three simple steps to diagnostic clarity.</p>
-    <div class="cards-grid">
-        <div class="card" style="text-align: center;">
-            <div class="card-icon" style="background: rgba(14,108,74,0.1); color: #0e6c4a; margin: 0 auto 1rem auto; font-size: 1.25rem; font-weight: bold;">1</div>
-            <h3 class="card-title">Image Capture</h3>
-            <p class="card-text">Upload a high-quality image of the affected plant leaf. Our system accepts JPG, JPEG, and PNG formats.</p>
-        </div>
-        <div class="card" style="text-align: center;">
-            <div class="card-icon" style="background: rgba(14,108,74,0.1); color: #0e6c4a; margin: 0 auto 1rem auto; font-size: 1.25rem; font-weight: bold;">2</div>
-            <h3 class="card-title">AI Processing</h3>
-            <p class="card-text">Our custom CNN model trained on 87K botanical images evaluates leaf spots and texture patterns.</p>
-        </div>
-        <div class="card" style="text-align: center;">
-            <div class="card-icon" style="background: rgba(14,108,74,0.1); color: #0e6c4a; margin: 0 auto 1rem auto; font-size: 1.25rem; font-weight: bold;">3</div>
-            <h3 class="card-title">Instant Diagnosis</h3>
-            <p class="card-text">Receive a complete diagnostic report with AI confidence and professional treatment suggestions.</p>
-        </div>
+<div class="steps-container">
+    <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-icon">📱</div>
+        <h3 class="step-title">IMAGE CAPTURE</h3>
+        <p class="step-description">Upload a high-quality image of the affected plant leaf. Our system accepts JPG, JPEG, and PNG formats for maximum compatibility.</p>
+    </div>
+    <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-icon">🧠</div>
+        <h3 class="step-title">AI PROCESSING</h3>
+        <p class="step-description">Advanced convolutional neural network analyzes the image using deep learning algorithms trained on 87K rgb images of healthy and diseased crop leaves which is categorized into 38 different classes.</p>
+    </div>
+    <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-icon">📊</div>
+        <h3 class="step-title">INSTANT DIAGNOSIS</h3>
+        <p class="step-description">Receive comprehensive results with disease identification, confidence score, and professional treatment recommendations.</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Function to load model with enhanced caching
 @st.cache_resource(show_spinner=False)
@@ -389,286 +1520,276 @@ if st.session_state.model is None:
 # Always load treatments to ensure updates are picked up
 st.session_state.treatments = load_treatments()
 
-
+# Main upload section with enhanced design
+st.markdown('<div class="upload-section glass-container fade-in-up">', unsafe_allow_html=True)
+st.markdown('<h2 class="upload-title">🔬 AI-POWERED PLANT ANALYSIS</h2>', unsafe_allow_html=True)
+# Enhanced file uploader
+uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Upload a clear image of the plant leaf for AI analysis")
 if uploaded_file is not None:
-    st.markdown('<div style="margin-top: 2rem;">', unsafe_allow_html=True)
+    # Analysis section merged into a single flow layout
+    st.markdown('<div class="analysis-section fade-in-up" style="flex-direction: column;">', unsafe_allow_html=True)
     
-    image = Image.open(uploaded_file)
-    width, height = image.size
-    file_size = len(uploaded_file.getvalue()) / 1024  # KB
-    
-    col_img_details, col_analyze_btn = st.columns([2, 1], gap="medium")
-    with col_img_details:
+    with st.container():
+        st.markdown('<div class="image-preview-container" style="margin-bottom: 2rem;">', unsafe_allow_html=True)
+        st.markdown('<h3 class="section-subtitle">📸 UPLOADED IMAGE</h3>', unsafe_allow_html=True)
+        image = Image.open(uploaded_file)
+        st.image(image, caption="🌿 Ready for AI Analysis", use_column_width=True, clamp=True)
+        # Image info display
+        width, height = image.size
+        file_size = len(uploaded_file.getvalue()) / 1024  # KB
         st.markdown(f"""
-        <div style="background: #ffffff; padding: 1rem; border-radius: 12px; border: 1px solid #eceeed; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-            <p style="color: #012d1d; margin: 0; font-weight: bold; font-size: 0.875rem;">📊 IMAGE DETAILS</p>
-            <p style="color: #414844; margin: 0; font-size: 0.875rem;">📐 {width} × {height} px</p>
-            <p style="color: #414844; margin: 0; font-size: 0.875rem;">💾 {file_size:.1f} KB</p>
-            <p style="color: #414844; margin: 0; font-size: 0.875rem;">📁 {uploaded_file.type}</p>
+        <div style="background: rgba(0, 30, 60, 0.5); padding: 1rem; border-radius: 10px; margin-top: 1rem; border: 1px solid rgba(57, 255, 20, 0.3); text-align: center;">
+            <p style="color: #39ff14; margin: 0;"><strong>📊 IMAGE DETAILS:</strong></p>
+            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">📐 Dimensions: {width} × {height} px</p>
+            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">💾 Size: {file_size:.1f} KB</p>
+            <p style="color: #d8ffc0; margin: 5px 0; display: inline-block; padding: 0 15px;">📁 Format: {uploaded_file.type}</p>
         </div>
         """, unsafe_allow_html=True)
-        
-    with col_analyze_btn:
-        analyze_trigger = st.button("🚀 **ANALYZE WITH AI**", key="analyze", help="Start advanced AI analysis")
-        
-    if analyze_trigger:
-        # Save uploaded file temporarily
-        with open("temp_image.jpg", "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        
-        if not is_leaf_image("temp_image.jpg"):
-            st.markdown("""
-            <div class="diag-box diag-box-danger" style="margin: 2rem 0; text-align: center;">
-                <h3 class="diag-value text-danger" style="margin-bottom: 0.5rem;">⚠️ NOT A LEAF PICTURE</h3>
-                <p style="margin: 0;">This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>
-                <p style="margin: 0; font-weight: bold; margin-top: 0.5rem;">Please upload a clear leaf picture and try again.</p>
-            </div>
-            """, unsafe_allow_html=True)
-            try:
-                os.remove("temp_image.jpg")
-            except:
-                pass
-            st.stop()
-            
-        # Enhanced loading animation
-        loading_placeholder = st.empty()
-        with loading_placeholder:
-            st.markdown("""
-            <div style="text-align: center; padding: 3rem 0;">
-                <div style="width: 3rem; height: 3rem; border: 4px solid rgba(14,108,74,0.3); border-top-color: #0e6c4a; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem auto;"></div>
-                <div style="color: #012d1d; font-weight: bold; font-size: 1.125rem;">🧠 AI PROCESSING IMAGE...</div>
-                <div style="color: #717973; font-size: 0.875rem; margin-top: 0.5rem;">Neural network analyzing leaf patterns</div>
-                <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-            </div>
-            """, unsafe_allow_html=True)
-            time.sleep(1.5)
-        
-        # Clear the loading animation
-        loading_placeholder.empty()
-        
-        try:
-            # Preprocess image
-            img = load_img("temp_image.jpg", target_size=(224, 224))
-            img_array = img_to_array(img)
-            img_array = img_array.reshape(1, 224, 224, 3) / 255.0
-            
-            # Make prediction
-            predictions = st.session_state.model.predict(img_array, verbose=0)
-            predicted_class = np.argmax(predictions[0])
-            confidence_score = float(predictions[0][predicted_class])
-            
-            # Get class names and prediction
-            class_names = list(st.session_state.treatments.keys())
-            predicted_disease = class_names[predicted_class]
-            treatment = st.session_state.treatments.get(predicted_disease, "Consult with an agricultural expert for specialized treatment.")
-            
-            # Update analysis counter
-            st.session_state.analysis_count += 1
-            
-            # Parse plant details
-            plant_name = "Unknown Plant"
-            if predicted_disease.startswith("Tomato"):
-                plant_name = "Tomato Plant"
-            elif predicted_disease.startswith("Potato"):
-                plant_name = "Potato Plant"
-            elif predicted_disease.startswith("Pepper"):
-                plant_name = "Pepper Bell"
-            
-            scientific_names = {
-                "Tomato Plant": "Solanum lycopersicum",
-                "Potato Plant": "Solanum tuberosum",
-                "Pepper Bell": "Capsicum annuum"
-            }
-            subtext = scientific_names.get(plant_name, "Leaf Detail Analysis")
-            
-            # Clean display name
-            display_disease = predicted_disease.replace('_', ' ').title()
-            
-            # Display Diagnostic Card and Quick Stats
-            col_res_main, col_res_side = st.columns([2, 1], gap="large")
-            
-            with col_res_main:
-                # Encode image to base64 for pure HTML card presentation
-                buffered = BytesIO()
-                image.save(buffered, format="JPEG")
-                img_str = base64.b64encode(buffered.getvalue()).decode()
-                img_data_url = f"data:image/jpeg;base64,{img_str}"
+        if st.button("🔄 **UPLOAD NEW IMAGE**", key="reset", help="Upload a different leaf image", use_container_width=True):
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with st.container():
+        st.markdown('<div class="results-container">', unsafe_allow_html=True)
+        st.markdown('<h3 class="section-subtitle">🧬 AI ANALYSIS CENTER</h3>', unsafe_allow_html=True)
+        if st.session_state.model is not None and st.session_state.treatments:
+            if st.button("🚀 **ANALYZE WITH AI**", key="analyze", help="Start advanced AI analysis", use_container_width=True):
+                # Save uploaded file temporarily
+                with open("temp_image.jpg", "wb") as f:
+                    f.write(uploaded_file.getbuffer())
                 
-                is_healthy = "healthy" in predicted_disease.lower()
-                badge_class = "badge-success" if is_healthy else "badge-danger"
-                badge_icon = "check_circle" if is_healthy else "warning"
-                badge_text = "Optimal Health" if is_healthy else "Critical Health"
-                
-                diag_box_class = "diag-box-success" if is_healthy else "diag-box-danger"
-                diag_text_class = "text-success" if is_healthy else "text-danger"
-                diag_label_text = "Status" if is_healthy else "Diagnosis"
-                
-                # Format numbered treatment steps
-                steps = [s.strip() for s in treatment.split('.') if s.strip()]
-                steps_html = ""
-                for i, step in enumerate(steps[:4]):
-                    steps_html += f"""
-                    <div class="step-item">
-                        <div class="step-num">{i+1}</div>
-                        <p class="step-text">{step}.</p>
+                if not is_leaf_image("temp_image.jpg"):
+                    st.markdown('<div class="error-box" style="border-left-color: #ffaa00; text-align: center;">', unsafe_allow_html=True)
+                    st.markdown('<h3 style="color: #ffaa00;">⚠️ NOT A LEAF PIC</h3>', unsafe_allow_html=True)
+                    st.markdown('<p>This image does not appear to be a plant leaf. Our AI is specifically trained to analyze natural plant leaves.</p>', unsafe_allow_html=True)
+                    st.markdown('<p><strong>Please upload a clear leaf picture and try again.</strong></p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    try:
+                        os.remove("temp_image.jpg")
+                    except:
+                        pass
+                    st.stop()
+                    
+                # Enhanced loading animation
+                loading_placeholder = st.empty()
+                with loading_placeholder:
+                    st.markdown("""
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <div class="loading-text">🧠 AI PROCESSING IMAGE...</div>
+                        <div class="loading-subtext">Neural network analyzing leaf patterns</div>
                     </div>
-                    """
+                    """, unsafe_allow_html=True)
+                    time.sleep(1)
+                    st.markdown("""
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <div class="loading-text">🔍 DETECTING PATTERNS...</div>
+                        <div class="loading-subtext">Comparing with disease database</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    time.sleep(1)
+                    st.markdown("""
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <div class="loading-text">📊 GENERATING DIAGNOSIS...</div>
+                        <div class="loading-subtext">Calculating confidence scores</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    time.sleep(1)
                 
-                st.markdown(f"""
-                <div class="analysis-card">
-                    <div class="analysis-img-col">
-                        <img src="{img_data_url}" class="analysis-img"/>
-                        <div class="badge {badge_class}">
-                            <span class="material-symbols-outlined" style="font-size: 16px; font-variation-settings: 'FILL' 1;">{badge_icon}</span>
-                            {badge_text}
+                # Clear the loading animation
+                loading_placeholder.empty()
+                try:
+                    # Preprocess image
+                    img = load_img("temp_image.jpg", target_size=(224, 224))
+                    img_array = img_to_array(img)
+                    img_array = img_array.reshape(1, 224, 224, 3) / 255.0
+                    # Make prediction
+                    predictions = st.session_state.model.predict(img_array, verbose=0)
+                    predicted_class = np.argmax(predictions[0])
+                    confidence_score = float(predictions[0][predicted_class])
+                    # Get all predictions for top 3 results
+                    top_3_indices = np.argsort(predictions[0])[-3:][::-1]
+                    # Get class names and prediction
+                    class_names = list(st.session_state.treatments.keys())
+                    predicted_disease = class_names[predicted_class]
+                    treatment = st.session_state.treatments.get(predicted_disease, "Consult with an agricultural expert for specialized treatment.")
+                    # Update analysis counter
+                    st.session_state.analysis_count += 1
+                    # Display enhanced results
+                    st.markdown('<div class="results-card">', unsafe_allow_html=True)
+                    # Main diagnosis result
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    st.markdown('<h4 class="result-title">🎯 PRIMARY DIAGNOSIS</h4>', unsafe_allow_html=True)
+                    # Clean disease name for display
+                    display_disease = predicted_disease.replace('_', ' ').title()
+                    st.markdown(f'<p class="disease-name">{display_disease}</p>', unsafe_allow_html=True)
+                    # Health status indicator
+                    if "healthy" in predicted_disease.lower():
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff88, #00cc66); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">🌿 HEALTHY PLANT</span></div>', unsafe_allow_html=True)
+                    else:
+                        st.markdown('<div style="text-align: center; margin: 1rem 0;"><span style="background: linear-gradient(90deg, #00ff00, #39ff14); color: white; padding: 0.5rem 2rem; border-radius: 25px; font-weight: bold; font-size: 1.1rem;">⚠️ DISEASE DETECTED</span></div>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    # Confidence score with enhanced progress bar
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    st.markdown('<h4 class="result-title">🎯 CONFIDENCE ANALYSIS</h4>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>AI Confidence Level</span>
+                                <span class="confidence-text">{confidence_score*100:.1f}%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: {confidence_score*100}%"></div>
+                            </div>
                         </div>
+                    """, unsafe_allow_html=True)
+                    # Confidence interpretation
+                    if confidence_score > 0.9:
+                        conf_msg = "🟢 **VERY HIGH CONFIDENCE** - Diagnosis is highly reliable"
+                        conf_color = "#00ff88"
+                    elif confidence_score > 0.7:
+                        conf_msg = "🟡 **HIGH CONFIDENCE** - Diagnosis is reliable"
+                        conf_color = "#ffaa00"
+                    elif confidence_score > 0.5:
+                        conf_msg = "🟠 **MODERATE CONFIDENCE** - Consider expert consultation"
+                        conf_color = "#00ff00"
+                    else:
+                        conf_msg = "🔴 **LOW CONFIDENCE** - Recommend professional diagnosis"
+                        conf_color = "#39ff14"
+                    st.markdown(f'<p style="color: {conf_color}; font-weight: 600; text-align: center; margin-top: 1rem;">{conf_msg}</p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    # Top 3 predictions
+
+                    # Treatment recommendation with enhanced styling
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    if "healthy" in predicted_disease.lower():
+                        st.markdown('<h4 class="result-title">🌿 CARE RECOMMENDATION</h4>', unsafe_allow_html=True)
+                    else:
+                        st.markdown('<h4 class="result-title">💊 TREATMENT PROTOCOL</h4>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="treatment-box"><p class="treatment-text">{treatment}</p></div>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    # Analysis summary
+                    st.markdown('<div class="result-item">', unsafe_allow_html=True)
+                    st.markdown('<h4 class="result-title">📈 ANALYSIS SUMMARY</h4>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div style="background: rgba(0, 40, 80, 0.5); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;"><strong>🔬 Analysis #{st.session_state.analysis_count}</strong></p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🧠 Model: Advanced CNN v2.1</p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">⚡ Processing Time: <3 seconds</p>
+                        <p style="color: #d8ffc0; margin: 0.5rem 0;">🎯 Classes Evaluated: {len(class_names)}</p>
                     </div>
-                    <div class="analysis-info-col">
-                        <div>
-                            <h3 class="plant-title">{plant_name}</h3>
-                            <p class="plant-sub">{subtext}</p>
-                        </div>
-                        <div class="diag-box {diag_box_class}">
-                            <p class="diag-label">{diag_label_text}</p>
-                            <p class="diag-value {diag_text_class}">{display_disease}</p>
-                            <p class="diag-conf">{confidence_score*100:.1f}% AI Confidence</p>
-                        </div>
-                        <div>
-                            <p class="treatment-label">Treatment Plan</p>
-                            {steps_html}
-                        </div>
-                    </div>
+                    """, unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    # Success notification
+                    st.success("✅ **ANALYSIS COMPLETE!** Your plant has been successfully diagnosed by our AI system.")
+
+                except Exception as e:
+                    st.markdown('<div class="error-box">', unsafe_allow_html=True)
+                    st.markdown(f'<p>❌ **ANALYSIS ERROR**: {str(e)}</p>', unsafe_allow_html=True)
+                    st.markdown('<p>Please try uploading a different image or contact support if the issue persists.</p>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                # Clean up temporary file
+                try:
+                    os.remove("temp_image.jpg")
+                except:
+                    pass
+            else:
+                st.markdown("""
+                <div style="text-align: center; padding: 2rem; background: rgba(0, 30, 60, 0.4); border-radius: 15px; border: 2px dashed rgba(57, 255, 20, 0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
+                    <h4 style="color: #39ff14; margin-bottom: 1rem;">AI READY FOR ANALYSIS</h4>
+                    <p style="color: #d8ffc0;">Click the "ANALYZE WITH AI" button above to start the diagnosis process. Our neural network will examine your plant image and provide detailed results.</p>
                 </div>
                 """, unsafe_allow_html=True)
-                
-            with col_res_side:
-                moisture_status = "Optimal (82%)" if is_healthy else "High (82%)"
-                moisture_bar = "background: linear-gradient(90deg, #1b4332, #0e6c4a);" if is_healthy else "background: linear-gradient(90deg, #ba1a1a, #ffdad6);"
-                moisture_w = "width: 82%;" if is_healthy else "width: 82%;"
-                
-                st.markdown(f"""
-                <div class="side-stat-box">
-                    <div class="side-stat-flex">
-                        <div class="side-icon icon-blue">
-                            <span class="material-symbols-outlined">water_drop</span>
-                        </div>
-                        <div>
-                            <p class="stat-label" style="margin: 0; text-transform: none; color: #717973;">Moisture Level</p>
-                            <p style="margin: 0; font-weight: 700; color: #012d1d;">{moisture_status}</p>
-                        </div>
-                    </div>
-                    <div class="progress-bg">
-                        <div class="progress-fill" style="{moisture_w} {moisture_bar}"></div>
-                    </div>
-                </div>
-                
-                <div class="side-stat-box">
-                    <div class="side-stat-flex">
-                        <div class="side-icon icon-orange">
-                            <span class="material-symbols-outlined">wb_sunny</span>
-                        </div>
-                        <div>
-                            <p class="stat-label" style="margin: 0; text-transform: none; color: #717973;">Sunlight Exposure</p>
-                            <p style="margin: 0; font-weight: 700; color: #012d1d;">Optimal</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="expert-box">
-                    <h4 class="expert-title">Need expert help?</h4>
-                    <p class="expert-desc">Schedule a 1-on-1 call with a professional horticulturist.</p>
-                    <button class="expert-btn">Book Session</button>
-                    <span class="material-symbols-outlined expert-bg-icon">local_florist</span>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            st.success("✅ **ANALYSIS COMPLETE!** Your plant has been successfully diagnosed.")
-            
-        except Exception as e:
-            st.error(f"❌ **ANALYSIS ERROR**: {str(e)}")
-            
-        # Clean up temporary file
-        try:
-            os.remove("temp_image.jpg")
-        except:
-            pass
+        else:
+            st.markdown('<div class="error-box">', unsafe_allow_html=True)
+            st.markdown('<p>❌ **SYSTEM ERROR**: AI model or treatment database not properly loaded.</p>', unsafe_allow_html=True)
+            st.markdown('<p>Please refresh the page or contact technical support.</p>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
-
-
-# Why Trust Section
-st.markdown("""
-<div class="section-wrapper">
-    <h2 class="section-title">Why Trust Our Diagnosis?</h2>
-    <p class="section-desc">We combine machine learning with decades of botanical research to ensure your plants get the care they deserve.</p>
-    <div class="cards-grid">
-        <div class="card">
-            <div class="card-icon" style="background: #a0f4c8; color: #19724f;">
-                <span class="material-symbols-outlined" style="font-size: 32px;">verified_user</span>
-            </div>
-            <h3 class="card-title">Unmatched Accuracy</h3>
-            <p class="card-text">Our AI model is trained on clinical botanical images with 99.2% identification accuracy.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon" style="background: #c1ecd4; color: #274e3d;">
-                <span class="material-symbols-outlined" style="font-size: 32px;">bolt</span>
-            </div>
-            <h3 class="card-title">Instant Results</h3>
-            <p class="card-text">Get a full diagnostic report and recovery plan in under 3 seconds. No more guessing games.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon" style="background: #ffdbcf; color: #5e3f35;">
-                <span class="material-symbols-outlined" style="font-size: 32px;">library_books</span>
-            </div>
-            <h3 class="card-title">Expert Database</h3>
-            <p class="card-text">Cross-referenced with world-class botanical databases and professional treatment protocols.</p>
+else:
+    # Enhanced upload prompt
+    st.markdown("""
+    <div style="text-align: center; padding: 3rem; background: rgba(0, 30, 60, 0.3); border-radius: 20px; border: 3px dashed rgba(57, 255, 20, 0.4); margin: 2rem 0;">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: bounce 2s infinite;">📸</div>
+        <h3 style="color: #39ff14; margin-bottom: 1rem; font-size: 2rem;">UPLOAD PLANT IMAGE FOR AI ANALYSIS</h3>
+        <p style="color: #d8ffc0; font-size: 1.2rem; margin-bottom: 1.5rem;">Select a clear image of the plant leaf you want to analyze</p>
+        <div style="background: rgba(0, 50, 100, 0.5); padding: 1rem; border-radius: 10px; border: 1px solid rgba(57, 255, 20, 0.3);">
+            <p style="color: #c0ffc0; margin: 0;">Supported formats: JPG, JPEG, PNG</p>
+            <p style="color: #c0ffc0; margin: 0;">Maximum file size: 200MB</p>
         </div>
     </div>
+    """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Enhanced About section
+st.markdown('<div class="about-section glass-container fade-in-up">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">🚀 ABOUT PLANT SAVIOR AI</h2>', unsafe_allow_html=True)
+st.markdown("""
+<div class="about-content">
+    <p class="about-text">
+        <strong>Plant Savior AI</strong> represents the cutting edge of agricultural technology, combining advanced machine learning with practical farming solutions. Our system utilizes a sophisticated Convolutional Neural Network (CNN) architecture trained on 87K rgb images of healthy and diseased crop leaves which is categorized into 38 different classes to deliver professional-grade plant disease diagnosis.
+    </p>
+    <p class="about-text">
+        Built with <strong>TensorFlow 2.x</strong> and deployed using <strong>Streamlit</strong>, this application showcases the power of AI in solving real-world agricultural challenges. Whether you're a farmer, gardener, or agricultural researcher, Plant Savior AI provides instant, accurate plant health assessment at your fingertips.
+    </p>
+    <div class="tech-stack">
+        <div class="tech-item">🧠 TensorFlow</div>
+        <div class="tech-item">🌐 Streamlit</div>
+        <div class="tech-item">🖼️ OpenCV</div>
+        <div class="tech-item">🔢 NumPy</div>
+        <div class="tech-item">🐍 Python</div>
+        <div class="tech-item">📊 Keras</div>
+    </div>
+    <p class="about-text">
+        Our mission is to democratize plant disease detection, making advanced agricultural AI accessible to everyone. By combining scientific rigor with user-friendly design, we're helping to create a more sustainable and productive agricultural future.
+    </p>
 </div>
 """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-
-# Team Section
+# === NEW: Team Section ===
+st.markdown('<div class="team-section glass-container fade-in-up">', unsafe_allow_html=True)
+st.markdown('<h2 class="team-title">👥 MEET THE TEAM</h2>', unsafe_allow_html=True)
 st.markdown("""
-<div class="section-wrapper" style="border-top: none; padding-top: 0;">
-    <h2 class="section-title">Meet the Team</h2>
-    <p class="section-desc">Dedicated professionals who brought Plant Savior AI to life.</p>
-    <div class="cards-grid">
-        <div class="team-card">
-            <h3 class="card-title">Aiza</h3>
-            <p class="team-role">Team Lead & AI Engineer</p>
-            <p class="card-text">Leading the development and integration of AI models and full-stack architecture.</p>
-        </div>
-        <div class="team-card">
-            <h3 class="card-title">Tooba</h3>
-            <p class="team-role">Web Designer</p>
-            <p class="card-text">Crafting the beautiful, user-centered interface and visual layout.</p>
-        </div>
-        <div class="team-card">
-            <h3 class="card-title">Taiba</h3>
-            <p class="team-role">ML Engineer</p>
-            <p class="card-text">Specializing in model training, dataset optimization, and tuning neural networks.</p>
-        </div>
+<div class="team-container">
+    <div class="team-card">
+        <h3 class="team-name">Aiza</h3>
+        <p class="team-role">Team Lead, Full Stack AI Engineer</p>
+        <p class="team-desc">Leading the development and integration of AI models and full-stack architecture. Expert in deep learning, neural networks, and end-to-end system design.</p>
+    </div>
+    <div class="team-card">
+        <h3 class="team-name">Tooba</h3>
+        <p class="team-role">Web Designer</p>
+        <p class="team-desc">Crafting the futuristic UI/UX experience. Responsible for the cyberpunk design, animations, and responsive interface that powers Plant Savior AI.</p>
+    </div>
+    <div class="team-card">
+        <h3 class="team-name">Taiba</h3>
+        <p class="team-role">Machine Learning Engineer</p>
+        <p class="team-desc">Specializing in model training, optimization, and performance tuning. Ensures our AI delivers 99.2% accuracy across diverse plant conditions.</p>
     </div>
 </div>
+<div class="love-icon">❤️</div>
+<p style="text-align: center; color: #39ff14; font-size: 1.3rem; font-weight: 600;">Made with ❤️ by the Plant Savior AI Team</p>
 """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-
-# Footer
+# Enhanced Footer
 st.markdown("""
-<footer class="footer">
-    <div>
-        <div style="font-size: 1.125rem; font-weight: 700; color: #012d1d; margin-bottom: 0.25rem;">Plant Savior AI</div>
-        <div style="font-size: 0.75rem; color: #414844;">© 2026 Plant Savior AI. Nurturing growth through intelligence.</div>
+<div class="footer">
+    <div class="footer-text">🌱 PLANT SAVIOR AI - REVOLUTIONIZING AGRICULTURE WITH ARTIFICIAL INTELLIGENCE</div>
+    <div class="footer-text">Powered by Advanced Deep Learning • Real-time Disease Detection • Professional Treatment Recommendations</div>
+    <div class="creator-info">
+        <div class="footer-text">🎯 <strong>MODEL ACCURACY:</strong> 99.2% on validation data</div>
+        <div class="footer-text">⚡ <strong>PROCESSING SPEED:</strong> Sub-3-second analysis</div>
+        <div class="footer-text">🌍 <strong>IMPACT:</strong> Helping farmers worldwide save crops and reduce pesticide use</div>
     </div>
-    <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Community Forum</a>
-        <a href="#">Contact Us</a>
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid rgba(255, 255, 255, 0.2);">
+        <div class="footer-text">© 2025 Plant Savior AI. All rights reserved. | Built with ❤️ using TensorFlow & Streamlit</div>
     </div>
-    <div style="display: flex; gap: 1rem; color: #717973;">
-        <span class="material-symbols-outlined" style="cursor: pointer;">potted_plant</span>
-        <span class="material-symbols-outlined" style="cursor: pointer;">share</span>
-    </div>
-</footer>
+</div>
 """, unsafe_allow_html=True)
