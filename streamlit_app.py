@@ -122,18 +122,13 @@ st.markdown(clean_html("""
     }
     
     /* Clean white/slate background with premium transparent botanical leaf overlay */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], section.main, .main {
+    .stApp, [data-testid="stAppViewContainer"] {
         background-image: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&auto=format&fit=crop") !important;
         background-size: cover !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
         background-position: center !important;
         color: #0f172a !important;
-    }
-    
-    [data-testid="stAppViewContainer"], [data-testid="stMain"], section.main, .main {
-        background-color: transparent !important;
-        background: transparent !important;
     }
     
     /* Complete elimination of top empty white space on all pages */
@@ -1745,11 +1740,7 @@ elif st.session_state.current_page == "support":
             message = st.text_area("What is happening with your plant?")
             submit = st.form_submit_button("Send to Specialist")
             if submit:
-                # Determine absolute file path relative to streamlit_app.py
-                app_dir = os.path.dirname(os.path.abspath(__file__))
-                file_path = os.path.join(app_dir, "supportqueries.json")
-                
-                # Save inquiry to supportqueries.json file locally
+                # Save inquiry to inquiries.json file locally
                 inquiry_data = {
                     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                     "name": name,
@@ -1757,22 +1748,23 @@ elif st.session_state.current_page == "support":
                     "message": message
                 }
                 
+                file_path = "inquiries.json"
                 existing_data = []
                 if os.path.exists(file_path):
                     try:
-                        with open(file_path, "r", encoding="utf-8") as f:
+                        with open(file_path, "r") as f:
                             existing_data = json.load(f)
-                    except Exception as e:
+                    except Exception:
                         existing_data = []
                 
                 existing_data.append(inquiry_data)
                 try:
-                    with open(file_path, "w", encoding="utf-8") as f:
+                    with open(file_path, "w") as f:
                         json.dump(existing_data, f, indent=4)
-                except Exception as e:
-                    st.error(f"❌ Save Error: {str(e)}")
+                except Exception:
+                    pass
                 
-                st.success("✉️ Inquiry submitted successfully! Saved locally to supportqueries.json. A horticulturist will contact you within 24 hours.")
+                st.success("✉️ Inquiry submitted successfully! Saved locally to inquiries.json. A horticulturist will contact you within 24 hours.")
                 
         st.markdown("</div>", unsafe_allow_html=True)
         
