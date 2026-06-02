@@ -25,11 +25,22 @@ except ImportError:
     for key in list(sys.modules.keys()):
         if key.startswith("cv2"):
             del sys.modules[key]
-    # Use force-reinstall to overwrite the broken cv2 binaries without triggering pip uninstall permission errors
-    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps"], check=False)
+    # Install opencv-python-headless to the user site-packages to bypass read-only virtualenv restrictions
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps", "--user"],
+        capture_output=True,
+        text=True
+    )
     # Invalidate Python import system caches to detect the newly installed package
     importlib.invalidate_caches()
-    import cv2
+    try:
+        import cv2
+    except ImportError as e:
+        raise ImportError(
+            f"Failed to import cv2 after runtime reinstall.\n"
+            f"Pip stdout: {result.stdout}\n"
+            f"Pip stderr: {result.stderr}"
+        ) from e
 
 from ultralytics import YOLO
 
