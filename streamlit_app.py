@@ -16,12 +16,19 @@ import time
 # at runtime, completely bypassing the need for a packages.txt file or cache clearing.
 import subprocess
 import sys
+import importlib
 try:
     import cv2
     _ = cv2.Mat
 except ImportError:
+    # Clear any partially-loaded cv2 modules from sys.modules
+    for key in list(sys.modules.keys()):
+        if key.startswith("cv2"):
+            del sys.modules[key]
     # Use force-reinstall to overwrite the broken cv2 binaries without triggering pip uninstall permission errors
     subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall", "--no-deps"], check=False)
+    # Invalidate Python import system caches to detect the newly installed package
+    importlib.invalidate_caches()
     import cv2
 
 from ultralytics import YOLO
