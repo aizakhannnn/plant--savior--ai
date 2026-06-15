@@ -128,6 +128,26 @@ def format_treatment_steps(treatment_str):
         """)
     return "\n".join(steps_html)
 
+def group_treatments_by_plant(treatments):
+    plants = {}
+    for key, treatment in treatments.items():
+        parts = key.split('___')
+        if len(parts) == 2:
+            plant = parts[0].replace('_', ' ').title()
+            disease = parts[1].replace('_', ' ').title()
+        else:
+            plant = "Other"
+            disease = key.replace('_', ' ').title()
+        if plant not in plants:
+            plants[plant] = []
+        plants[plant].append({
+            'disease': disease,
+            'treatment': treatment,
+            'is_healthy': 'healthy' in disease.lower(),
+            'key': key
+        })
+    return plants
+
 # Premium Modern Botanical Theme CSS Design
 st.markdown(clean_html("""
 <style>
@@ -139,7 +159,7 @@ st.markdown(clean_html("""
     }
     
     .stApp, [data-testid="stAppViewContainer"] {
-        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f8fafc 100%) !important;
+        background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
         color: #0f172a !important;
     }
     
@@ -153,8 +173,8 @@ st.markdown(clean_html("""
     }
     
     .block-container {
-        max-width: 1200px !important;
-        padding: 0 1.5rem !important;
+        max-width: 1160px !important;
+        padding: 0.25rem 1.5rem !important;
         margin: 0 auto !important;
     }
     
@@ -176,7 +196,7 @@ st.markdown(clean_html("""
     }
     
     .nav-bar-container-marker, .active-page-marker-dashboard,
-    .active-page-marker-my_plants, .active-page-marker-care_guide,
+    .active-page-marker-diseases, .active-page-marker-care_guide,
     .active-page-marker-support, .custom-footer-marker,
     .hero-buttons-container-marker, .help-card-container-marker {
         display: none !important;
@@ -192,7 +212,7 @@ st.markdown(clean_html("""
         color: #475569 !important;
         font-weight: 500 !important;
         font-size: 0.85rem !important;
-        padding: 0.35rem 0 !important;
+        padding: 0.4rem 0.6rem !important;
         box-shadow: none !important;
         border-radius: 8px !important;
         width: 100% !important;
@@ -204,11 +224,11 @@ st.markdown(clean_html("""
     
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button:hover {
         color: #065f46 !important;
-        background: rgba(16,185,129,0.06) !important;
+        background: rgba(16,185,129,0.08) !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.active-page-marker-dashboard) div[data-testid="column"]:nth-child(2) button,
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-my_plants) div[data-testid="column"]:nth-child(3) button,
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-diseases) div[data-testid="column"]:nth-child(3) button,
     div[data-testid="stVerticalBlock"]:has(.active-page-marker-care_guide) div[data-testid="column"]:nth-child(4) button,
     div[data-testid="stVerticalBlock"]:has(.active-page-marker-support) div[data-testid="column"]:nth-child(5) button {
         color: #065f46 !important;
@@ -337,9 +357,9 @@ st.markdown(clean_html("""
     
     div[data-testid="stVerticalBlock"]:has(.hero-card-marker) {
         background: #ffffff !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(226,232,240,0.5) !important;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(226,232,240,0.4) !important;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.04) !important;
         padding: 2rem !important;
         margin-bottom: 1.5rem !important;
     }
@@ -364,9 +384,9 @@ st.markdown(clean_html("""
     
     div[data-testid="stVerticalBlock"]:has(.split-card-marker) {
         background: #ffffff !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(226,232,240,0.5) !important;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(226,232,240,0.4) !important;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.04) !important;
         margin-bottom: 1.5rem !important;
         overflow: hidden !important;
     }
@@ -448,7 +468,7 @@ st.markdown(clean_html("""
     .upload-dashed-card {
         border: 2px dashed #d1d5db;
         background: linear-gradient(135deg, #fafdfa, #f0fdf4);
-        border-radius: 20px;
+        border-radius: 24px;
         padding: 2rem 1.5rem;
         text-align: center;
         transition: all 0.3s ease;
@@ -457,7 +477,8 @@ st.markdown(clean_html("""
     .upload-dashed-card:hover {
         border-color: #10b981;
         background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-        box-shadow: 0 4px 20px rgba(16,185,129,0.06);
+        box-shadow: 0 4px 24px rgba(16,185,129,0.08);
+        transform: translateY(-1px);
     }
     
     .camera-circle {
@@ -471,6 +492,12 @@ st.markdown(clean_html("""
         justify-content: center;
         margin: 0 auto 1rem;
         font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+    
+    .upload-dashed-card:hover .camera-circle {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(16,185,129,0.2);
     }
     
     .upload-title {
@@ -1033,34 +1060,6 @@ st.markdown(clean_html("""
         line-height: 1.5;
     }
     
-    .plants-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.25rem;
-        margin-top: 1.5rem;
-    }
-    
-    .plant-collection-card {
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1px solid rgba(226,232,240,0.5);
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        transition: all 0.25s ease;
-    }
-    
-    .plant-collection-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.04);
-        border-color: #d1d5db;
-    }
-    
-    .plant-collection-img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-    }
-    
     @media (max-width: 992px) {
         .hero-title { font-size: 1.8rem; }
         .nav-links { display: none; }
@@ -1101,6 +1100,105 @@ st.markdown(clean_html("""
         color: #065f46;
         margin-top: 0.75rem;
     }
+    
+    .disease-plant-group {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid rgba(226,232,240,0.5);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        margin-bottom: 1.25rem;
+    }
+    
+    .disease-plant-header {
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        padding: 0.85rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .disease-plant-header h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #065f46;
+        margin: 0;
+    }
+    
+    .disease-plant-count {
+        font-size: 0.75rem;
+        color: #64748b;
+        background: #ffffff;
+        padding: 0.15rem 0.6rem;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .disease-item {
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid #f1f5f9;
+        transition: background 0.2s;
+    }
+    
+    .disease-item:last-child {
+        border-bottom: none;
+    }
+    
+    .disease-item:hover {
+        background: #f8fafc;
+    }
+    
+    .disease-name {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .disease-treatment {
+        font-size: 0.82rem;
+        color: #475569;
+        line-height: 1.5;
+        margin: 0;
+    }
+    
+    .disease-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.15rem 0.5rem;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+    
+    .disease-badge.healthy {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+    
+    .disease-badge.critical {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+    
+    .highlight-card {
+        background: linear-gradient(135deg, #ffffff, #f0fdf4);
+        border: 2px solid #10b981;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(16,185,129,0.1);
+    }
+    
+    .highlight-card.critical {
+        border-color: #ef4444;
+        background: linear-gradient(135deg, #ffffff, #fef2f2);
+        box-shadow: 0 4px 20px rgba(239,68,68,0.08);
+    }
 </style>
 """), unsafe_allow_html=True)
 
@@ -1118,7 +1216,7 @@ st.markdown(f'<div class="active-page-marker-{st.session_state.current_page}"></
 # Elegant Navigation Header with clickable columns & instant callbacks
 with st.container():
     st.markdown('<div class="nav-bar-container-marker"></div>', unsafe_allow_html=True)
-    nav_cols = st.columns([2.2, 1, 1, 1.3, 1, 1.2, 0.4, 0.4])
+    nav_cols = st.columns([2, 1, 1, 1.3, 1, 1.2, 0.4, 0.4])
     
     with nav_cols[0]:
         st.markdown('<div class="nav-logo-text">🌱 Plant Savior AI</div>', unsafe_allow_html=True)
@@ -1127,7 +1225,7 @@ with st.container():
         st.button("Dashboard", key="nav_btn_dash", on_click=set_page, args=("dashboard",), help="Go to Dashboard")
             
     with nav_cols[2]:
-        st.button("My Plants", key="nav_btn_my_plants", on_click=set_page, args=("my_plants",), help="Go to My Plants")
+        st.button("Diseases", key="nav_btn_diseases", on_click=set_page, args=("diseases",), help="Disease library & details")
             
     with nav_cols[3]:
         st.button("Plant Care Guide", key="nav_btn_care_guide", on_click=set_page, args=("care_guide",), help="Go to Care Guide")
@@ -1611,67 +1709,73 @@ if st.session_state.current_page == "dashboard":
     </div>
     """), unsafe_allow_html=True)
 
-elif st.session_state.current_page == "my_plants":
-    # ----------------- PAGE: MY PLANTS GRID -----------------
-    # Requirement 1: Make first plant collection image dynamically reference st.session_state.active_image
-    # Determine disease status for display
-    if st.session_state.has_analyzed:
-        is_healthy = "healthy" in st.session_state.active_disease.lower()
-        plant_badge = '<span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>' if is_healthy else '<span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">⚠️ Diseased</span>'
-    else:
-        plant_badge = '<span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f1f5f9; color: #64748b; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">⏳ Pending</span>'
-
-    disease_display = st.session_state.active_disease.replace('_', ' ').title() if st.session_state.has_analyzed else "No diagnosis yet"
-    conf_display = st.session_state.active_conf if st.session_state.has_analyzed else "Upload & analyze a leaf"
+elif st.session_state.current_page == "diseases":
+    plants_data = group_treatments_by_plant(st.session_state.treatments)
+    plants_list = sorted(plants_data.keys())
 
     st.markdown(clean_html(f"""
-    <div style="text-align: center; margin-bottom: 2.5rem;">
-        <span class="powered-badge">MY GARDEN</span>
-        <h1 class="hero-title" style="font-size: 2.2rem; margin-bottom: 0.4rem;">My Plant Collection</h1>
-        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Track and monitor your plant diagnoses from the treatment database.</p>
-    </div>
-    
-    <div class="plants-grid">
-        <div class="plant-collection-card">
-            <img src="{st.session_state.active_image}" class="plant-collection-img" />
-            <div style="padding: 1.25rem;">
-                {plant_badge}
-                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0 0 0.15rem 0;">{disease_display}</h3>
-                <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem;">{conf_display}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.65rem; font-size: 0.78rem; color: #64748b;">
-                    <span>📅 2 days ago</span>
-                    <span style="color: #10b981; font-weight: 600; cursor: pointer;" onclick="window.location.search='?page=dashboard'">View Diagnosis →</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="plant-collection-card">
-            <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
-            <div style="padding: 1.25rem;">
-                <span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
-                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0 0 0.15rem 0;">Tomato Healthy</h3>
-                <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem;">99.8% AI Confidence</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.65rem; font-size: 0.78rem; color: #64748b;">
-                    <span>📅 5 days ago</span>
-                    <span style="color: #16a34a; font-weight: 600;">Optimal Health</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="plant-collection-card">
-            <img src="https://images.unsplash.com/photo-1598512752271-33f913a5af13?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
-            <div style="padding: 1.25rem;">
-                <span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">⚠️ Diseased</span>
-                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0 0 0.15rem 0;">Pepper Bell Bacterial Spot</h3>
-                <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem;">92.4% AI Confidence</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.65rem; font-size: 0.78rem; color: #64748b;">
-                    <span>📅 1 week ago</span>
-                    <span style="color: #10b981; font-weight: 600; cursor: pointer;">View Treatment →</span>
-                </div>
-            </div>
-        </div>
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="powered-badge">DISEASE LIBRARY</span>
+        <h1 class="hero-title" style="font-size: 2rem; margin-bottom: 0.35rem;">Disease Encyclopedia</h1>
+        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Browse all supported diseases and treatments from the botanical database.</p>
     </div>
     """), unsafe_allow_html=True)
+
+    if st.session_state.has_analyzed and st.session_state.active_disease != "AI Diagnostics Pending":
+        is_healthy = "healthy" in st.session_state.active_disease.lower()
+        hl_class = "highlight-card critical" if not is_healthy else "highlight-card"
+        icon = "🛡️" if is_healthy else "⚠️"
+        status = "Healthy" if is_healthy else "Disease Detected"
+        st.markdown(clean_html(f"""
+        <div class="{hl_class}">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                <span style="font-size: 2rem;">{icon}</span>
+                <div>
+                    <span class="disease-badge {'healthy' if is_healthy else 'critical'}">{status}</span>
+                    <h3 style="margin: 0.35rem 0 0.15rem 0; font-size: 1.3rem; font-weight: 800; color: #0f172a;">{st.session_state.active_disease.replace('_', ' ').title()}</h3>
+                    <p style="margin: 0; font-size: 0.85rem; color: #64748b;">{st.session_state.active_conf} · {st.session_state.active_plant} ({st.session_state.active_sub})</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="#stFileUploader" class="btn-primary" style="width: auto; padding: 0.5rem 1.25rem; font-size: 0.8rem;">New Diagnosis →</a>
+                <span style="font-size: 0.8rem; color: #64748b;">View treatment details below</span>
+            </div>
+        </div>
+        """), unsafe_allow_html=True)
+    else:
+        st.markdown(clean_html("""
+        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">
+            <p style="font-size: 0.95rem; color: #64748b; margin: 0 0 0.75rem 0;">No diagnosis yet — browse the complete disease library below.</p>
+            <a href="#stFileUploader" class="btn-primary" style="width: auto; display: inline-block; padding: 0.5rem 1.5rem; font-size: 0.85rem;">Upload leaf for diagnosis</a>
+        </div>
+        """), unsafe_allow_html=True)
+
+    for plant in plants_list:
+        diseases = plants_data[plant]
+        healthy_count = sum(1 for d in diseases if d['is_healthy'])
+        disease_count = len(diseases) - healthy_count
+        emoji = {"Tomato": "🍅", "Potato": "🥔", "Apple": "🍎", "Grape": "🍇", "Orange": "🍊", "Peach": "🍑", "Strawberry": "🍓", "Corn": "🌽", "Soybean": "🫘", "Raspberry": "🫐", "Blueberry": "🫐", "Squash": "🎃", "Cherry": "🍒", "Pepper": "🌶️"}.get(plant, "🌿")
+        
+        items_html = ""
+        for d in diseases:
+            badge = '<span class="disease-badge healthy">Healthy</span>' if d['is_healthy'] else '<span class="disease-badge critical">Disease</span>'
+            items_html += f"""
+            <div class="disease-item">
+                <div class="disease-name">{badge} {d['disease']}</div>
+                <p class="disease-treatment">{d['treatment']}</p>
+            </div>
+            """
+        
+        st.markdown(clean_html(f"""
+        <div class="disease-plant-group">
+            <div class="disease-plant-header">
+                <span style="font-size: 1.3rem;">{emoji}</span>
+                <h3>{plant}</h3>
+                <span class="disease-plant-count">{disease_count} disease{disease_count != 1 and 's' or ''} · {healthy_count} healthy</span>
+            </div>
+            {items_html}
+        </div>
+        """), unsafe_allow_html=True)
 
 elif st.session_state.current_page == "care_guide":
     # ----------------- PAGE: CARE GUIDE MANUALS -----------------
@@ -1807,7 +1911,7 @@ with st.container():
         with sub_cols[0]:
             st.button("Dashboard", key="footer_nav_dash", on_click=set_page, args=("dashboard",))
         with sub_cols[1]:
-            st.button("My Plants", key="footer_nav_my_plants", on_click=set_page, args=("my_plants",))
+            st.button("Diseases", key="footer_nav_diseases", on_click=set_page, args=("diseases",))
         with sub_cols[2]:
             st.button("Care Guide", key="footer_nav_care_guide", on_click=set_page, args=("care_guide",))
         with sub_cols[3]:
