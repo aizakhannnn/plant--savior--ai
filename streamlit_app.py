@@ -173,19 +173,26 @@ st.markdown(clean_html("""
     }
     
     [data-testid="stAppViewContainer"] > section,
-    section.main {
+    section.main,
+    section[data-testid="stMain"] {
         padding: 0 !important;
+        padding-block: 0 !important;
         margin: 0 !important;
     }
     
     [data-testid="stAppViewContainer"] > section > div,
-    section.main > div {
+    section.main > div,
+    section[data-testid="stMain"] > div {
         margin-top: 0 !important;
         padding-top: 0 !important;
+        padding-block-start: 0 !important;
     }
     
-    section.main > .block-container {
+    section.main .block-container,
+    [data-testid="stMain"] .block-container,
+    .block-container {
         padding: 0 1.5rem 2rem 1.5rem !important;
+        padding-block: 0 2rem !important;
         max-width: 1160px !important;
         margin: 0 auto !important;
     }
@@ -194,7 +201,8 @@ st.markdown(clean_html("""
     [data-testid="stMainBlockContainer"],
     [data-testid="stVerticalBlockBorderWrapper"],
     [data-testid="stVerticalBlock"] {
-        padding-top: 0 !important;
+        padding: 0 !important;
+        padding-block: 0 !important;
         margin-top: 0 !important;
     }
     
@@ -214,72 +222,6 @@ st.markdown(clean_html("""
     [data-testid="stDecoration"] {display: none !important;}
     div[data-testid="stStatusWidget"] {display: none !important;}
     .viewerBadge_container__1QS1h {display: none !important;}
-    
-    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) {
-        background: rgba(255,255,255,0.85) !important;
-        backdrop-filter: blur(12px) !important;
-        padding: 0.6rem 1.5rem !important;
-        border: 1px solid rgba(226,232,240,0.6) !important;
-        margin: 0 0 1.5rem 0 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02) !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-    
-    .nav-bar-container-marker, .active-page-marker-dashboard,
-    .active-page-marker-diseases, .active-page-marker-care_guide,
-    .custom-footer-marker,
-    .hero-buttons-container-marker {
-        display: none !important;
-        height: 0 !important;
-        width: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button {
-        background: transparent !important;
-        border: none !important;
-        color: #475569 !important;
-        font-weight: 500 !important;
-        font-size: 0.85rem !important;
-        padding: 0.4rem 0.6rem !important;
-        box-shadow: none !important;
-        border-radius: 8px !important;
-        width: 100% !important;
-        transition: all 0.2s !important;
-        margin: 0 !important;
-        display: inline-block !important;
-        white-space: nowrap !important;
-    }
-    
-    div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button:hover {
-        color: #065f46 !important;
-        background: rgba(16,185,129,0.08) !important;
-    }
-    
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-dashboard) div[data-testid="column"]:nth-child(2) button,
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-diseases) div[data-testid="column"]:nth-child(3) button,
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-care_guide) div[data-testid="column"]:nth-child(4) button {
-        color: #065f46 !important;
-        background: rgba(16,185,129,0.08) !important;
-        font-weight: 700 !important;
-    }
-    
-    .nav-logo-text {
-        font-weight: 800;
-        font-size: 1.15rem;
-        color: #065f46;
-        padding: 0.35rem 0;
-        white-space: nowrap !important;
-        display: flex;
-        align-items: center;
-    }
-    
-
-    
-
     
     div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) {
         background: rgba(255,255,255,0.8) !important;
@@ -1017,25 +959,6 @@ def set_page(page_name):
     st.session_state.current_page = page_name
 
 # Add CSS state class marker div based on current page state
-st.markdown(f'<div class="active-page-marker-{st.session_state.current_page}"></div>', unsafe_allow_html=True)
-
-# Elegant Navigation Header with clickable columns & instant callbacks
-with st.container():
-    st.markdown('<div class="nav-bar-container-marker"></div>', unsafe_allow_html=True)
-    nav_cols = st.columns([2, 1, 1, 1.3])
-    
-    with nav_cols[0]:
-        st.markdown('<div class="nav-logo-text">🌱 Plant Savior AI</div>', unsafe_allow_html=True)
-        
-    with nav_cols[1]:
-        st.button("Dashboard", key="nav_btn_dash", on_click=set_page, args=("dashboard",), help="Go to Dashboard")
-            
-    with nav_cols[2]:
-        st.button("Diseases", key="nav_btn_diseases", on_click=set_page, args=("diseases",), help="Disease library & details")
-            
-    with nav_cols[3]:
-        st.button("Plant Care Guide", key="nav_btn_care_guide", on_click=set_page, args=("care_guide",), help="Go to Care Guide")
-
 with st.expander("ℹ️ SYSTEM INFO", expanded=False):
     st.markdown("### 🚀 AI SYSTEM STATUS")
     status_col1, status_col2, status_col3 = st.columns(3)
@@ -1220,10 +1143,12 @@ if st.session_state.current_page == "dashboard":
                 """, unsafe_allow_html=True)
             else:
                 st.markdown(clean_html("""
-                <div class="upload-dashed-card">
-                    <div style="font-size: 5rem; margin-bottom: 0.5rem; line-height: 1;">🌿</div>
-                    <div class="upload-title">Upload Plant Image</div>
-                    <p class="upload-subtitle" style="margin-bottom: 0.25rem;">Drag and drop your photo here or</p>
+                <div class="upload-dashed-card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?q=80&w=600&auto=format&fit=crop" style="width: 100%; height: 200px; object-fit: cover;" />
+                    <div style="padding: 1rem; text-align: center;">
+                        <div class="upload-title">Upload Plant Image</div>
+                        <p class="upload-subtitle" style="margin-bottom: 0.25rem;">Drag and drop your photo here or</p>
+                    </div>
                 """), unsafe_allow_html=True)
             
             # Streamlit native file uploader gets embedded seamlessly here
@@ -1578,28 +1503,42 @@ with st.container():
         st.markdown('<div class="footer-icons">🌱 🌿 🍃</div>', unsafe_allow_html=True)
 
 # Final override — LAST style tag in DOM wins for equal specificity
+# Uses BOTH physical AND logical CSS properties (Streamlit 1.33+ uses padding-block)
 st.markdown("""
 <style>
 html, body, #root { margin: 0 !important; padding: 0 !important; }
 .stApp { margin: 0 !important; padding: 0 !important; }
 [data-testid="stAppViewContainer"] { margin: 0 !important; padding: 0 !important; }
-section.main, section[data-testid="stMain"] { padding: 0 !important; margin: 0 !important; }
-.block-container { padding-top: 0 !important; }
-[data-testid="stMainBlockContainer"] { padding: 0 !important; margin: 0 !important; }
-[data-testid="stVerticalBlockBorderWrapper"] { padding: 0 !important; margin: 0 !important; }
-[data-testid="stVerticalBlock"]:first-child { margin-top: 0 !important; }
+section.main, section[data-testid="stMain"] { padding: 0 !important; padding-block: 0 !important; margin: 0 !important; }
+.block-container { padding: 0 1.5rem 2rem 1.5rem !important; padding-block: 0 2rem !important; }
+[data-testid="stMainBlockContainer"] { padding: 0 !important; padding-block: 0 !important; margin: 0 !important; }
+[data-testid="stVerticalBlockBorderWrapper"] { padding: 0 !important; padding-block: 0 !important; margin: 0 !important; }
+[data-testid="stVerticalBlock"]:first-child { margin-top: 0 !important; padding-top: 0 !important; }
 div[data-testid="stHeader"], header { display: none !important; height: 0 !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
 #MainMenu, footer, [data-testid="stToolbar"], [data-testid="stDecoration"] { display: none !important; }
 .viewerBadge_container__1QS1h, div[data-testid="stStatusWidget"] { display: none !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# JavaScript injection — forcibly remove top gap that Streamlit sets via inline styles
-st.markdown("""<img src="x" onerror="
+# JavaScript injection — forcibly remove top gap via direct DOM manipulation
+st.markdown("""
+<img src="x" onerror="
 this.remove();
-var s=document.createElement('style');
-s.textContent='html,body,#root,.stApp,[data-testid=stAppViewContainer],section.main,section[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer],[data-testid=stVerticalBlockBorderWrapper]{padding-top:0!important;margin-top:0!important;padding:0 1.5rem 2rem 1.5rem!important;}div[data-testid=stHeader],header{display:none!important;height:0!important;}';
-document.head.appendChild(s);
-var f=function(){document.querySelectorAll('section.main,[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer]').forEach(function(e){e.style.paddingTop='0px';e.style.marginTop='0px';e.style.padding='0 1.5rem 2rem 1.5rem';});};
-f();setTimeout(f,300);setTimeout(f,800);setTimeout(f,1500);
-">""", unsafe_allow_html=True)
+document.querySelectorAll('section.main,[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer],[data-testid=stVerticalBlockBorderWrapper]').forEach(function(e){
+  e.style.paddingTop='0px';
+  e.style.paddingBlockStart='0px';
+  e.style.paddingBlock='0px';
+  e.style.marginTop='0px';
+});
+setTimeout(function(){document.querySelectorAll('section.main,.block-container').forEach(function(e){
+  e.style.paddingTop='0px';
+  e.style.paddingBlockStart='0px';
+  e.style.marginTop='0px';
+})},500);
+setTimeout(function(){document.querySelectorAll('section.main,.block-container').forEach(function(e){
+  e.style.paddingTop='0px';
+  e.style.paddingBlockStart='0px';
+  e.style.marginTop='0px';
+})},1000);
+">
+""", unsafe_allow_html=True)
