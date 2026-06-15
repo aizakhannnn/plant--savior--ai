@@ -163,10 +163,15 @@ st.markdown(clean_html("""
     .stApp, [data-testid="stAppViewContainer"] {
         background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
         color: #0f172a !important;
+        padding: 0 !important;
     }
     
     .stApp > div:first-child {
         margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    [data-testid="stAppViewContainer"] > section {
         padding-top: 0 !important;
     }
     
@@ -182,19 +187,15 @@ st.markdown(clean_html("""
     }
     
     .block-container > div:first-child,
-    .block-container > div:first-child > div:first-child,
-    .block-container > div:first-child > div:first-child > div:first-child {
+    .block-container > div:first-child > div:first-child {
         margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
-    
-    div[data-testid="stAppViewContainer"] > section:first-child {
         padding-top: 0 !important;
     }
     
     [data-testid="stMain"],
     [data-testid="stMainBlockContainer"],
-    div[data-testid="stVerticalBlockBorderWrapper"] {
+    div[data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stVerticalBlock"] {
         padding-top: 0 !important;
         margin-top: 0 !important;
     }
@@ -887,6 +888,20 @@ st.markdown(clean_html("""
         padding: 2rem 1rem;
     }
     
+    .spinner {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #e2e8f0;
+        border-top-color: #10b981;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
     .loading-text {
         font-size: 0.9rem;
         font-weight: 700;
@@ -1551,6 +1566,6 @@ with st.container():
     
     footer_row2_col1, footer_row2_col2 = st.columns([2, 1])
     with footer_row2_col1:
-        st.markdown('<div class="footer-copy">© 2024 Plant Savior AI. All rights reserved.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="footer-copy">© 2026 Plant Savior AI. All rights reserved.</div>', unsafe_allow_html=True)
     with footer_row2_col2:
         st.markdown('<div class="footer-icons">🌱 🌿 🍃</div>', unsafe_allow_html=True)
