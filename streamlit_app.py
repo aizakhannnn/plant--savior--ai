@@ -547,8 +547,13 @@ st.markdown(clean_html("""
     .streamlit-expanderHeader, [data-testid="stExpander"] {
         border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
-        background: #ffffff !important;
+        background: linear-gradient(135deg, #064e3b, #065f46) !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+        color: #ffffff !important;
+    }
+    
+    .streamlit-expanderHeader p, .streamlit-expanderHeader span, [data-testid="stExpander"] summary {
+        color: #ffffff !important;
     }
     
     [data-testid="stExpander"] details {
