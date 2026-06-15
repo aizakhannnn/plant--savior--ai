@@ -148,6 +148,32 @@ def group_treatments_by_plant(treatments):
         })
     return plants
 
+# Plant images from Unsplash for disease cards
+PLANT_IMAGES = {
+    "Tomato": "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?q=80&w=400&auto=format&fit=crop",
+    "Potato": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=400&auto=format&fit=crop",
+    "Apple": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?q=80&w=400&auto=format&fit=crop",
+    "Grape": "https://images.unsplash.com/photo-1537640538966-79f369143f8b?q=80&w=400&auto=format&fit=crop",
+    "Orange": "https://images.unsplash.com/photo-1547514701-42782101795e?q=80&w=400&auto=format&fit=crop",
+    "Peach": "https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=400&auto=format&fit=crop",
+    "Strawberry": "https://images.unsplash.com/photo-1518635017498-87f514b751ba?q=80&w=400&auto=format&fit=crop",
+    "Corn": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?q=80&w=400&auto=format&fit=crop",
+    "Soybean": "https://images.unsplash.com/photo-1615233500064-caa0e1010bf6?q=80&w=400&auto=format&fit=crop",
+    "Raspberry": "https://images.unsplash.com/photo-1577069869848-5b8b674b7bf1?q=80&w=400&auto=format&fit=crop",
+    "Blueberry": "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?q=80&w=400&auto=format&fit=crop",
+    "Squash": "https://images.unsplash.com/photo-1597361136534-97a7cc0c2a2b?q=80&w=400&auto=format&fit=crop",
+    "Cherry": "https://images.unsplash.com/photo-1520201163981-8cc95007dd2a?q=80&w=400&auto=format&fit=crop",
+    "Pepper": "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?q=80&w=400&auto=format&fit=crop",
+    "Other": "https://images.unsplash.com/photo-1504198266287-1659872e6590?q=80&w=400&auto=format&fit=crop"
+}
+
+PLANT_EMOJIS = {
+    "Tomato": "🍅", "Potato": "🥔", "Apple": "🍎", "Grape": "🍇", "Orange": "🍊",
+    "Peach": "🍑", "Strawberry": "🍓", "Corn": "🌽", "Soybean": "🫘",
+    "Raspberry": "🫐", "Blueberry": "🫐", "Squash": "🎃", "Cherry": "🍒",
+    "Pepper": "🌶️", "Other": "🌿"
+}
+
 # Premium Modern Botanical Theme CSS Design
 st.markdown(clean_html("""
 <style>
@@ -849,7 +875,7 @@ st.markdown(clean_html("""
         margin-top: 0.75rem;
     }
     
-    .disease-plant-group {
+    .plant-card {
         background: #ffffff;
         border-radius: 16px;
         border: 1px solid rgba(226,232,240,0.5);
@@ -858,29 +884,24 @@ st.markdown(clean_html("""
         margin-bottom: 1.25rem;
     }
     
-    .disease-plant-header {
-        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-        padding: 0.85rem 1.25rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        border-bottom: 1px solid #e2e8f0;
+    .plant-card-image {
+        height: 160px;
+        background-size: cover !important;
+        background-position: center !important;
+        position: relative;
     }
     
-    .disease-plant-header h3 {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #065f46;
-        margin: 0;
+    .plant-card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        padding: 2rem 1.25rem 0.85rem 1.25rem;
     }
     
-    .disease-plant-count {
-        font-size: 0.75rem;
-        color: #64748b;
-        background: #ffffff;
-        padding: 0.15rem 0.6rem;
-        border-radius: 10px;
-        font-weight: 600;
+    .plant-card-body {
+        padding: 0;
     }
     
     .disease-item {
@@ -895,6 +916,35 @@ st.markdown(clean_html("""
     
     .disease-item:hover {
         background: #f8fafc;
+    }
+    
+    .care-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid rgba(226,232,240,0.5);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        margin-bottom: 1.25rem;
+    }
+    
+    .care-card-image {
+        height: 180px;
+        background-size: cover !important;
+        background-position: center !important;
+        position: relative;
+    }
+    
+    .care-card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        padding: 2rem 1.25rem 1rem 1.25rem;
+    }
+    
+    .care-card-body {
+        padding: 1.25rem;
     }
     
     .disease-name {
@@ -957,6 +1007,16 @@ if 'current_page' not in st.session_state:
 # Instant SPA callback state modifier - Bypasses slow full-browser reload refreshes
 def set_page(page_name):
     st.session_state.current_page = page_name
+    st.session_state.scroll_to_top = True
+
+# Scroll to top on page navigation (if script tags are supported)
+if st.session_state.pop('scroll_to_top', False):
+    st.markdown("""
+    <div id="page-top"></div>
+    <script>window.scrollTo(0,0);document.getElementById('page-top')?.scrollIntoView(true);</script>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown('<div id="page-top"></div>', unsafe_allow_html=True)
 
 # Add CSS state class marker div based on current page state
 with st.expander("ℹ️ SYSTEM INFO", expanded=False):
@@ -1402,76 +1462,348 @@ elif st.session_state.current_page == "diseases":
         </div>
         """), unsafe_allow_html=True)
 
-    for plant in plants_list:
-        diseases = plants_data[plant]
-        healthy_count = sum(1 for d in diseases if d['is_healthy'])
-        disease_count = len(diseases) - healthy_count
-        emoji = {"Tomato": "🍅", "Potato": "🥔", "Apple": "🍎", "Grape": "🍇", "Orange": "🍊", "Peach": "🍑", "Strawberry": "🍓", "Corn": "🌽", "Soybean": "🫘", "Raspberry": "🫐", "Blueberry": "🫐", "Squash": "🎃", "Cherry": "🍒", "Pepper": "🌶️"}.get(plant, "🌿")
-        
-        items_html = ""
-        for d in diseases:
-            badge = '<span class="disease-badge healthy">Healthy</span>' if d['is_healthy'] else '<span class="disease-badge critical">Disease</span>'
-            items_html += f"""
-            <div class="disease-item">
-                <div class="disease-name">{badge} {d['disease']}</div>
-                <p class="disease-treatment">{d['treatment']}</p>
-            </div>
-            """
-        
-        st.markdown(clean_html(f"""
-        <div class="disease-plant-group">
-            <div class="disease-plant-header">
-                <span style="font-size: 1.3rem;">{emoji}</span>
-                <h3>{plant}</h3>
-                <span class="disease-plant-count">{disease_count} disease{disease_count != 1 and 's' or ''} · {healthy_count} healthy</span>
-            </div>
-            {items_html}
-        </div>
-        """), unsafe_allow_html=True)
+    # Render disease cards with images, 2 per row
+    for i in range(0, len(plants_list), 2):
+        row_plants = plants_list[i:i+2]
+        cols = st.columns(2)
+        for j, plant in enumerate(row_plants):
+            diseases = plants_data[plant]
+            healthy_count = sum(1 for d in diseases if d['is_healthy'])
+            disease_count = len(diseases) - healthy_count
+            emoji = PLANT_EMOJIS.get(plant, "🌿")
+            img_url = PLANT_IMAGES.get(plant, PLANT_IMAGES["Other"])
+            
+            items_html = ""
+            for d in diseases:
+                badge = '<span class="disease-badge healthy">Healthy</span>' if d['is_healthy'] else '<span class="disease-badge critical">Disease</span>'
+                items_html += f"""
+                <div class="disease-item">
+                    <div class="disease-name">{badge} {d['disease']}</div>
+                    <p class="disease-treatment">{d['treatment']}</p>
+                </div>
+                """
+            
+            with cols[j]:
+                st.markdown(clean_html(f"""
+                <div class="plant-card">
+                    <div class="plant-card-image" style="background-image: url('{img_url}');">
+                        <div class="plant-card-overlay">
+                            <div style="font-size: 1.5rem;">{emoji}</div>
+                            <h3 style="margin: 0.25rem 0 0.15rem 0; font-size: 1.1rem; font-weight: 800; color: #fff;">{plant}</h3>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.8);">{disease_count} disease{"s" if disease_count != 1 else ""} · {healthy_count} healthy</span>
+                        </div>
+                    </div>
+                    <div class="plant-card-body">
+                        {items_html}
+                    </div>
+                </div>
+                """), unsafe_allow_html=True)
 
 elif st.session_state.current_page == "care_guide":
-    # ----------------- PAGE: CARE GUIDE MANUALS -----------------
-    st.markdown(clean_html("""
+    plants_data = group_treatments_by_plant(st.session_state.treatments)
+    plants_list = sorted(plants_data.keys())
+    
+    st.markdown(clean_html(f"""
     <div style="text-align: center; margin-bottom: 2rem;">
         <span class="powered-badge">CARE MANUALS</span>
         <h1 class="hero-title" style="font-size: 2rem; margin-bottom: 0.35rem;">Botanical Care Manuals</h1>
-        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Expert guides for watering, light levels, and pruning techniques.</p>
+        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Expert guides for watering, light levels, and pruning techniques across {len(plants_list)} plant types.</p>
     </div>
     """), unsafe_allow_html=True)
     
-    with st.expander("🍅 TOMATO CARE ENCYCLOPEDIA (Solanum Lycopersicum)", expanded=True):
-        st.markdown("""
-        ### **Optimal Growing Parameters:**
-        • **🌞 Sunlight**: Full Sun (Minimum 6 to 8 hours of direct daylight daily).
-        • **💧 Watering**: Keep soil evenly moist. Always water at the base of the stem to protect the foliage from early blight spores.
-        • **🌱 Spacing**: Plant 18 to 24 inches apart in rows to maximize wind circulation and lower mildew rates.
-        
-        ### **Common Pests & Disease Warning Signs:**
-        • **Early Blight**: Dark, target-like spots appearing on lower foliage first. Apply copper spray preventively.
-        • **Spider Mites**: Fine webbing under leaf veins with yellow stippling. Wash off with horticultural soap.
-        """)
-        
-    with st.expander("🥔 POTATO CARE MANUAL (Solanum Tuberosum)", expanded=False):
-        st.markdown("""
-        ### **Optimal Growing Parameters:**
-        • **🌞 Sunlight**: Part to Full Sun.
-        • **💧 Watering**: Maintain consistent moisture level. Irrigate early in the morning so excess moisture evaporates before nightfall.
-        • **🌱 Hilling**: Periodically pile loose soil around the stems to ensure tubers stay shielded from direct sunlight.
-        
-        ### **Common Pests & Disease Warning Signs:**
-        • **Late Blight**: Rapidly spreading dark wet spots with white mildew below. Destroy infected plants immediately.
-        """)
-        
-    with st.expander("🌶️ BELL PEPPER CARE MANUAL (Capsicum Annuum)", expanded=False):
-        st.markdown("""
-        ### **Optimal Growing Parameters:**
-        • **🌞 Sunlight**: Hot, bright, full sun conditions.
-        • **💧 Watering**: Water deeply but allow soil to dry slightly between sessions to avoid root rot.
-        • **🌱 Temperature**: Peppers require warm climates. Ensure night temperatures remain above 55°F.
-        
-        ### **Common Pests & Disease Warning Signs:**
-        • **Bacterial Spot**: Dark raised bumps on leaves and fruits. Rotate crops annually to clear soil bacteria.
-        """)
+    for plant in plants_list:
+            img_url = PLANT_IMAGES.get(plant, PLANT_IMAGES["Other"])
+            emoji = PLANT_EMOJIS.get(plant, "🌿")
+            
+            if plant == "Tomato":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Encyclopedia</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Solanum Lycopersicum</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun (6-8 hours direct daily).<br>
+                        <strong>Watering:</strong> Keep soil evenly moist. Water at base to protect foliage.<br>
+                        <strong>Spacing:</strong> Plant 18-24 inches apart for air circulation.<br>
+                        <strong>Soil pH:</strong> 6.0-6.8, well-draining loamy soil.<br>
+                        <strong>Temperature:</strong> 65-85°F (18-30°C).
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Early Blight:</strong> Dark spots on lower leaves. Apply copper fungicide.<br>
+                        <strong>Late Blight:</strong> White mildew under leaves. Remove infected plants.<br>
+                        <strong>Spider Mites:</strong> Fine webbing under leaves. Wash with horticultural soap.<br>
+                        <strong>Blossom End Rot:</strong> Calcium deficiency. Maintain consistent watering.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Potato":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Manual</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Solanum Tuberosum</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Part to Full Sun.<br>
+                        <strong>Watering:</strong> Consistent moisture. Morning irrigation to prevent fungal growth.<br>
+                        <strong>Hilling:</strong> Pile soil around stems to shield tubers from sunlight.<br>
+                        <strong>Soil pH:</strong> 5.0-6.5, loose well-drained soil.<br>
+                        <strong>Temperature:</strong> 60-70°F (15-21°C).
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Late Blight:</strong> Dark wet spots with white mildew. Destroy immediately.<br>
+                        <strong>Colorado Beetle:</strong> Striped beetles on leaves. Hand pick or use neem oil.<br>
+                        <strong>Common Scab:</strong> Rough patches on tubers. Maintain consistent moisture.<br>
+                        <strong>Aphids:</strong> Curled yellow leaves. Spray with insecticidal soap.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Pepper":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Manual</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Capsicum Annuum</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Hot, bright, full sun.<br>
+                        <strong>Watering:</strong> Deep watering, allow soil to dry between sessions.<br>
+                        <strong>Temperature:</strong> Above 55°F (13°C) at night. Warm climates preferred.<br>
+                        <strong>Soil pH:</strong> 6.0-6.8, rich organic soil.<br>
+                        <strong>Fertilizing:</strong> Low nitrogen, high phosphorus for fruit development.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Bacterial Spot:</strong> Dark raised bumps on leaves and fruits. Rotate crops.<br>
+                        <strong>Blossom Drop:</strong> Temperature swings. Maintain consistent warmth.<br>
+                        <strong>Sunscald:</strong> White patches on fruits. Provide afternoon shade.<br>
+                        <strong>Root Rot:</strong> Wilting despite moisture. Improve drainage.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Apple":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Malus Domestica</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun (6+ hours daily).<br>
+                        <strong>Watering:</strong> Deep weekly watering during growing season.<br>
+                        <strong>Pruning:</strong> Late winter pruning to open canopy for light penetration.<br>
+                        <strong>Soil pH:</strong> 6.0-7.0, well-drained loamy soil.<br>
+                        <strong>Chill Hours:</strong> 500-1000 hours below 45°F for proper fruiting.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Apple Scab:</strong> Olive-green spots on leaves. Apply fungicide at bud break.<br>
+                        <strong>Cedar-Apple Rust:</strong> Orange spots on leaves. Remove nearby junipers.<br>
+                        <strong>Codling Moth:</strong> Worms inside fruit. Use pheromone traps.<br>
+                        <strong>Fire Blight:</strong> Blackened branch tips. Prune 12 inches below infection.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Strawberry":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Fragaria × Ananassa</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun (6-8 hours).<br>
+                        <strong>Watering:</strong> 1-2 inches per week. Avoid wetting leaves to prevent rot.<br>
+                        <strong>Planting:</strong> Crown at soil level. Space 12-18 inches apart.<br>
+                        <strong>Soil pH:</strong> 5.5-6.5, sandy loam with good drainage.<br>
+                        <strong>Mulching:</strong> Straw mulch keeps fruit clean and retains moisture.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Gray Mold:</strong> Fuzzy gray growth on fruit. Improve air circulation.<br>
+                        <strong>Powdery Mildew:</strong> White powder on leaves. Apply sulfur spray.<br>
+                        <strong>Slugs:</strong> Holes in fruit. Use diatomaceous earth around plants.<br>
+                        <strong>Leaf Spot:</strong> Purple spots on leaves. Remove affected foliage.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Grape":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Vitis Vinifera</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun all day.<br>
+                        <strong>Watering:</strong> Deep weekly watering. Reduce after fruit set.<br>
+                        <strong>Pruning:</strong> Heavy winter pruning. Train on trellis system.<br>
+                        <strong>Soil pH:</strong> 5.5-6.5, deep well-drained soil.<br>
+                        <strong>Spacing:</strong> 6-8 feet apart for proper vine development.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Powdery Mildew:</strong> White coating on leaves and fruit. Sulfur spray.<br>
+                        <strong>Downy Mildew:</strong> Yellow spots on leaves. Copper fungicide.<br>
+                        <strong>Black Rot:</strong> Brown spots on fruit. Remove mummified berries.<br>
+                        <strong>Japanese Beetles:</strong> Skeletonized leaves. Hand pick or use traps.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Orange":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Citrus × Sinensis</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun (8-12 hours).<br>
+                        <strong>Watering:</strong> Deep watering 1-2 times weekly. Reduce in winter.<br>
+                        <strong>Fertilizing:</strong> Citrus-specific fertilizer every 6 weeks during growing season.<br>
+                        <strong>Soil pH:</strong> 5.5-6.5, well-draining sandy loam.<br>
+                        <strong>Temperature:</strong> 55-85°F (13-30°C). Protect from frost.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Citrus Canker:</strong> Raised lesions on fruit and leaves. Copper spray.<br>
+                        <strong>Greening Disease:</strong> Yellow blotchy leaves. Remove infected trees.<br>
+                        <strong>Scale Insects:</strong> Bumps on stems. Horticultural oil spray.<br>
+                        <strong>Leafminer:</strong> Curving tunnels in leaves. Neem oil treatment.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Peach":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Prunus Persica</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun.<br>
+                        <strong>Watering:</strong> Weekly deep watering during fruit development.<br>
+                        <strong>Pruning:</strong> Annual winter pruning for open center shape.<br>
+                        <strong>Soil pH:</strong> 6.0-7.0, sandy loam preferred.<br>
+                        <strong>Thinning:</strong> Thin fruit to 6 inches apart for larger peaches.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Peach Leaf Curl:</strong> Distorted red leaves. Dormant copper spray.<br>
+                        <strong>Brown Rot:</strong> Brown fuzzy rot on fruit. Remove infected fruit.<br>
+                        <strong>Oriental Fruit Moth:</strong> Worms in fruit. Pheromone disruption.<br>
+                        <strong>Aphids:</strong> Curled leaves. Insecticidal soap spray.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            elif plant == "Corn":
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Zea Mays</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 Optimal Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full Sun.<br>
+                        <strong>Watering:</strong> 1-1.5 inches per week, critical during silking.<br>
+                        <strong>Planting:</strong> Block planting for better pollination. 12 inches apart.<br>
+                        <strong>Soil pH:</strong> 5.8-7.0, rich nitrogen-heavy soil.<br>
+                        <strong>Fertilizing:</strong> High nitrogen. Side-dress when 12 inches tall.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Pests & Diseases</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Northern Leaf Blight:</strong> Long cigar-shaped lesions on leaves. Resistant varieties.<br>
+                        <strong>Corn Earworm:</strong> Worms at ear tip. Apply mineral oil to silks.<br>
+                        <strong>Common Rust:</strong> Red-brown pustules on leaves. Fungicide if severe.<br>
+                        <strong>Fall Armyworm:</strong> Chewed leaves and ears. BT spray treatment.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            else:
+                st.markdown(f"""
+                <div class="care-card">
+                    <div class="care-card-image" style="background-image: url('{img_url}');">
+                        <div class="care-card-overlay">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #fff;">{emoji} {plant} Care Guide</h3>
+                            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">General growing guidelines</span>
+                        </div>
+                    </div>
+                    <div class="care-card-body">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; font-size: 0.95rem;">🌞 General Growing Parameters</h4>
+                        <p style="margin: 0 0 0.75rem 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Sunlight:</strong> Full to partial sun depending on variety.<br>
+                        <strong>Watering:</strong> Keep soil consistently moist, not waterlogged.<br>
+                        <strong>Soil:</strong> Well-draining fertile soil with organic matter.<br>
+                        <strong>Planting:</strong> Follow seed packet or nursery tag instructions.<br>
+                        <strong>Mulching:</strong> Apply 2-3 inch layer to retain moisture.
+                        </p>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #dc2626; font-size: 0.95rem;">⚠️ Common Issues</h4>
+                        <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <strong>Yellow Leaves:</strong> Check watering and nutrient levels.<br>
+                        <strong>Wilting:</strong> May indicate root issues or under-watering.<br>
+                        <strong>Stunted Growth:</strong> Ensure adequate sunlight and fertilizer.<br>
+                        <strong>Pest Damage:</strong> Inspect regularly and treat with appropriate organic methods.
+                        </p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
 with st.container():
     st.markdown('<div class="custom-footer-marker"></div>', unsafe_allow_html=True)
@@ -1520,26 +1852,22 @@ div[data-testid="stHeader"], header { display: none !important; height: 0 !impor
 </style>
 """, unsafe_allow_html=True)
 
-# JavaScript injection — forcibly remove top gap & scroll to top on page nav
+# Try direct script tag for gap fix + scroll-to-top (Streamlit may allow script tags in some versions)
 st.markdown("""
-<img src="x" onerror="
-this.remove();
-window.scrollTo(0,0);
-document.querySelectorAll('section.main,[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer],[data-testid=stVerticalBlockBorderWrapper]').forEach(function(e){
-  e.style.paddingTop='0px';
-  e.style.paddingBlockStart='0px';
-  e.style.paddingBlock='0px';
-  e.style.marginTop='0px';
-});
-setTimeout(function(){window.scrollTo(0,0);document.querySelectorAll('section.main,.block-container').forEach(function(e){
-  e.style.paddingTop='0px';
-  e.style.paddingBlockStart='0px';
-  e.style.marginTop='0px';
-})},500);
-setTimeout(function(){window.scrollTo(0,0);document.querySelectorAll('section.main,.block-container').forEach(function(e){
-  e.style.paddingTop='0px';
-  e.style.paddingBlockStart='0px';
-  e.style.marginTop='0px';
-})},1000);
-">
+<script>
+(function(){
+  var r=function(){
+    window.scrollTo(0,0);
+    document.querySelectorAll('section.main,.block-container,[data-testid=stMain],[data-testid=stMainBlockContainer]').forEach(function(e){
+      e.style.paddingTop='0px';
+      e.style.paddingBlockStart='0px';
+      e.style.paddingBlock='0px';
+      e.style.marginTop='0px';
+    });
+  };
+  r();
+  setTimeout(r,300);
+  setTimeout(r,1000);
+})();
+</script>
 """, unsafe_allow_html=True)
