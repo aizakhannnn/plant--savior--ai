@@ -164,38 +164,30 @@ st.markdown(clean_html("""
         color: #0f172a !important;
     }
     
-    header, [data-testid="stHeader"] {
-        display: none !important;
-        height: 0 !important;
-        padding: 0 !important;
+    body {
         margin: 0 !important;
-        overflow: hidden !important;
+        padding: 0 !important;
     }
     
-    [data-testid="stMain"],
-    [data-testid="stMainBlockContainer"],
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-    
-    div[data-testid="stAppViewContainer"] > section {
-        padding-top: 0 !important;
+    .stApp, [data-testid="stAppViewContainer"] {
+        background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
+        padding: 0 !important;
+        color: #0f172a !important;
     }
     
     section.main {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     
-    section.main > div:first-child,
-    section.main > div:first-child > div:first-child,
-    section.main > div:first-child > div:first-child > div:first-child {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
+    section.main > div.block-container {
+        padding: 0 1.5rem 2rem 1.5rem !important;
+        max-width: 1160px !important;
+        margin: 0 auto !important;
     }
     
-    header[data-testid="stHeader"] {
+    header, [data-testid="stHeader"], header[data-testid="stHeader"] {
+        display: none !important;
         height: 0 !important;
         min-height: 0 !important;
         padding: 0 !important;
@@ -210,18 +202,20 @@ st.markdown(clean_html("""
         margin: 0 !important;
     }
     
-    .block-container {
-        max-width: 1160px !important;
-        padding: 0 1.5rem 2rem 1.5rem !important;
-        margin: 0 auto !important;
-    }
-    
-    section.main .block-container {
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"],
+    div[data-testid="stVerticalBlockBorderWrapper"] {
         padding-top: 0 !important;
         margin-top: 0 !important;
     }
     
-    section.main > div:first-child {
+    div[data-testid="stAppViewContainer"] > section {
+        padding-top: 0 !important;
+    }
+    
+    section.main > div:first-child,
+    section.main > div:first-child > div:first-child,
+    section.main > div:first-child > div:first-child > div:first-child {
         padding-top: 0 !important;
         margin-top: 0 !important;
     }
