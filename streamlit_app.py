@@ -1210,19 +1210,29 @@ if st.session_state.current_page == "dashboard":
                 st.button("Guide Written", key="hero_btn_guide", on_click=set_page, args=("care_guide",), help="Read expert care guides")
 
         with hero_col2:
-            st.markdown(clean_html("""
-            <div class="upload-dashed-card">
-                <div class="camera-circle">📷</div>
-                <div class="upload-title">Upload Plant Image</div>
-                <p class="upload-subtitle" style="margin-bottom: 0.25rem;">Drag and drop your photo here or</p>
-            """), unsafe_allow_html=True)
+            has_image = 'active_image' in st.session_state and st.session_state.active_image
+            
+            if has_image:
+                st.markdown(f"""
+                <div class="upload-dashed-card" style="padding: 0; overflow: hidden; position: relative;">
+                    <img src="{st.session_state.active_image}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 14px;" />
+                    <div style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(16,185,129,0.9); color: #fff; padding: 0.25rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700;">✓ Uploaded</div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(clean_html("""
+                <div class="upload-dashed-card">
+                    <div style="font-size: 5rem; margin-bottom: 0.5rem; line-height: 1;">🌿</div>
+                    <div class="upload-title">Upload Plant Image</div>
+                    <p class="upload-subtitle" style="margin-bottom: 0.25rem;">Drag and drop your photo here or</p>
+                """), unsafe_allow_html=True)
             
             # Streamlit native file uploader gets embedded seamlessly here
             uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], help="Select leaf image for AI diagnosis")
             
-            st.markdown(clean_html("""
+            st.markdown(clean_html(f"""
                 <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem; margin-bottom: 0;">Supports JPG, PNG (Max 10MB)</p>
-            </div>
+                {"</div>" if not has_image else ""}
             """), unsafe_allow_html=True)
 
     # Process uploaded file and convert to base64 dynamically for mockup display
@@ -1567,3 +1577,20 @@ with st.container():
         st.markdown('<div class="footer-copy">© 2026 Plant Savior AI. All rights reserved.</div>', unsafe_allow_html=True)
     with footer_row2_col2:
         st.markdown('<div class="footer-icons">🌱 🌿 🍃</div>', unsafe_allow_html=True)
+
+# Final override — LAST style tag in DOM wins for equal specificity
+st.markdown("""
+<style>
+html, body, #root { margin: 0 !important; padding: 0 !important; }
+.stApp { margin: 0 !important; padding: 0 !important; }
+[data-testid="stAppViewContainer"] { margin: 0 !important; padding: 0 !important; }
+section.main, section[data-testid="stMain"] { padding: 0 !important; margin: 0 !important; }
+.block-container { padding-top: 0 !important; }
+[data-testid="stMainBlockContainer"] { padding: 0 !important; margin: 0 !important; }
+[data-testid="stVerticalBlockBorderWrapper"] { padding: 0 !important; margin: 0 !important; }
+[data-testid="stVerticalBlock"]:first-child { margin-top: 0 !important; }
+div[data-testid="stHeader"], header { display: none !important; height: 0 !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
+#MainMenu, footer, [data-testid="stToolbar"], [data-testid="stDecoration"] { display: none !important; }
+.viewerBadge_container__1QS1h, div[data-testid="stStatusWidget"] { display: none !important; }
+</style>
+""", unsafe_allow_html=True)
