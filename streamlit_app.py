@@ -160,16 +160,54 @@ st.markdown(clean_html("""
     
     .stApp, [data-testid="stAppViewContainer"] {
         background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
+        padding-top: 0 !important;
         color: #0f172a !important;
     }
     
     header, [data-testid="stHeader"] {
         display: none !important;
         height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"],
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
     }
     
     div[data-testid="stAppViewContainer"] > section {
         padding-top: 0 !important;
+    }
+    
+    section.main {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
+    section.main > div:first-child,
+    section.main > div:first-child > div:first-child,
+    section.main > div:first-child > div:first-child > div:first-child {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
+    header[data-testid="stHeader"] {
+        height: 0 !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    header[data-testid="stHeader"] > div {
+        height: 0 !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     
     .block-container {
@@ -193,9 +231,12 @@ st.markdown(clean_html("""
     }
     
     #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
+    header {visibility: hidden; height: 0 !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; overflow: hidden !important;}
     footer {visibility: hidden;}
+    [data-testid="stToolbar"] {display: none !important;}
+    [data-testid="stDecoration"] {display: none !important;}
     .viewerBadge_container__1QS1h {display: none !important;}
+    div[data-testid="stStatusWidget"] {display: none !important;}
     
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) {
         background: rgba(255,255,255,0.85) !important;
