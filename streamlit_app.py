@@ -158,26 +158,30 @@ st.markdown(clean_html("""
         box-sizing: border-box;
     }
     
-    body { margin: 0 !important; padding: 0 !important; }
+    body, html, #root { margin: 0 !important; padding: 0 !important; }
     
-    .stApp, [data-testid="stAppViewContainer"] {
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlockContainer"] {
         background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
         color: #0f172a !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
     
-    .stApp > div:first-child {
+    [data-testid="stAppViewContainer"] > * {
         margin-top: 0 !important;
         padding-top: 0 !important;
     }
     
-    [data-testid="stAppViewContainer"] > section {
-        padding-top: 0 !important;
-    }
-    
+    [data-testid="stAppViewContainer"] > section,
     section.main {
         padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    [data-testid="stAppViewContainer"] > section > div,
+    section.main > div {
         margin-top: 0 !important;
+        padding-top: 0 !important;
     }
     
     section.main > .block-container {
@@ -186,15 +190,9 @@ st.markdown(clean_html("""
         margin: 0 auto !important;
     }
     
-    .block-container > div:first-child,
-    .block-container > div:first-child > div:first-child {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
-    
     [data-testid="stMain"],
     [data-testid="stMainBlockContainer"],
-    div[data-testid="stVerticalBlockBorderWrapper"],
+    [data-testid="stVerticalBlockBorderWrapper"],
     [data-testid="stVerticalBlock"] {
         padding-top: 0 !important;
         margin-top: 0 !important;
