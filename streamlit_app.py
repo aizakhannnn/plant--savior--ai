@@ -1520,22 +1520,23 @@ div[data-testid="stHeader"], header { display: none !important; height: 0 !impor
 </style>
 """, unsafe_allow_html=True)
 
-# JavaScript injection — forcibly remove top gap via direct DOM manipulation
+# JavaScript injection — forcibly remove top gap & scroll to top on page nav
 st.markdown("""
 <img src="x" onerror="
 this.remove();
+window.scrollTo(0,0);
 document.querySelectorAll('section.main,[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer],[data-testid=stVerticalBlockBorderWrapper]').forEach(function(e){
   e.style.paddingTop='0px';
   e.style.paddingBlockStart='0px';
   e.style.paddingBlock='0px';
   e.style.marginTop='0px';
 });
-setTimeout(function(){document.querySelectorAll('section.main,.block-container').forEach(function(e){
+setTimeout(function(){window.scrollTo(0,0);document.querySelectorAll('section.main,.block-container').forEach(function(e){
   e.style.paddingTop='0px';
   e.style.paddingBlockStart='0px';
   e.style.marginTop='0px';
 })},500);
-setTimeout(function(){document.querySelectorAll('section.main,.block-container').forEach(function(e){
+setTimeout(function(){window.scrollTo(0,0);document.querySelectorAll('section.main,.block-container').forEach(function(e){
   e.style.paddingTop='0px';
   e.style.paddingBlockStart='0px';
   e.style.marginTop='0px';
