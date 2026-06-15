@@ -128,10 +128,9 @@ def format_treatment_steps(treatment_str):
         """)
     return "\n".join(steps_html)
 
-# Premium Light Botanical Theme CSS Design - Matches the Mockup Image Exactly
+# Premium Modern Botanical Theme CSS Design
 st.markdown(clean_html("""
 <style>
-    /* Global Styles & Import Premium Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     * {
@@ -139,53 +138,39 @@ st.markdown(clean_html("""
         box-sizing: border-box;
     }
     
-    /* Clean white/slate background with premium transparent botanical leaf overlay */
     .stApp, [data-testid="stAppViewContainer"] {
-        background-image: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&auto=format&fit=crop") !important;
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
-        background-attachment: fixed !important;
-        background-position: center !important;
+        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f8fafc 100%) !important;
         color: #0f172a !important;
     }
     
-    /* Complete elimination of top empty white space on all pages */
     header, [data-testid="stHeader"] {
         display: none !important;
         height: 0 !important;
-        width: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
     }
     
     div[data-testid="stAppViewContainer"] > section {
         padding-top: 0 !important;
     }
     
-    /* Center the container to 1200px max-width like standard modern web apps */
     .block-container {
         max-width: 1200px !important;
-        padding-top: 0.5rem !important; /* Minimal clean spacing at the very top */
-        padding-bottom: 2rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding: 0 1.5rem !important;
         margin: 0 auto !important;
     }
     
-    /* Hide Streamlit default branding */
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
     .viewerBadge_container__1QS1h {display: none !important;}
     
-    /* Style the outer vertical block container as the navbar card */
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) {
-        background-color: #ffffff !important;
-        padding: 0.75rem 2rem !important;
-        border: 1px solid #e2e8f0 !important;
-        margin-bottom: 2.5rem !important;
-        border-radius: 12px !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+        background: rgba(255,255,255,0.85) !important;
+        backdrop-filter: blur(12px) !important;
+        padding: 0.6rem 1.5rem !important;
+        border: 1px solid rgba(226,232,240,0.6) !important;
+        margin-bottom: 1.5rem !important;
+        border-radius: 16px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02) !important;
         display: flex !important;
         flex-direction: column !important;
     }
@@ -201,130 +186,112 @@ st.markdown(clean_html("""
         padding: 0 !important;
     }
     
-    /* Target all buttons inside the navigation bar for premium SPA page redirection */
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button {
         background: transparent !important;
         border: none !important;
         color: #475569 !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        padding: 0.5rem 0 !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
+        padding: 0.35rem 0 !important;
         box-shadow: none !important;
-        border-radius: 0 !important;
-        width: auto !important;
-        transition: color 0.2s !important;
+        border-radius: 8px !important;
+        width: 100% !important;
+        transition: all 0.2s !important;
         margin: 0 !important;
         display: inline-block !important;
         white-space: nowrap !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) button:hover {
-        color: #063c27 !important;
-        background: transparent !important;
+        color: #065f46 !important;
+        background: rgba(16,185,129,0.06) !important;
     }
     
-    /* Dynamic Active Underline navigation styles mapped directly via parent CSS state markers */
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-dashboard) div[data-testid="column"]:nth-child(2) button {
-        color: #063c27 !important;
-        border-bottom: 2px solid #10b981 !important;
-    }
-    
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-my_plants) div[data-testid="column"]:nth-child(3) button {
-        color: #063c27 !important;
-        border-bottom: 2px solid #10b981 !important;
-    }
-    
-    div[data-testid="stVerticalBlock"]:has(.active-page-marker-care_guide) div[data-testid="column"]:nth-child(4) button {
-        color: #063c27 !important;
-        border-bottom: 2px solid #10b981 !important;
-    }
-    
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-dashboard) div[data-testid="column"]:nth-child(2) button,
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-my_plants) div[data-testid="column"]:nth-child(3) button,
+    div[data-testid="stVerticalBlock"]:has(.active-page-marker-care_guide) div[data-testid="column"]:nth-child(4) button,
     div[data-testid="stVerticalBlock"]:has(.active-page-marker-support) div[data-testid="column"]:nth-child(5) button {
-        color: #063c27 !important;
-        border-bottom: 2px solid #10b981 !important;
+        color: #065f46 !important;
+        background: rgba(16,185,129,0.08) !important;
+        font-weight: 700 !important;
     }
     
     .nav-logo-text {
         font-weight: 800;
-        font-size: 1.25rem;
-        color: #063c27;
-        padding: 0.5rem 0;
+        font-size: 1.15rem;
+        color: #065f46;
+        padding: 0.35rem 0;
         white-space: nowrap !important;
         display: flex;
         align-items: center;
     }
     
     .nav-icon-text {
-        font-size: 1.2rem;
-        color: #475569;
+        font-size: 1.1rem;
+        color: #64748b;
         cursor: pointer;
-        padding: 0.5rem 0;
+        padding: 0.35rem 0;
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
     }
     
-    /* Make the Identify Plant button stand out as a pill button inside the navbar */
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) div[data-testid="column"]:nth-child(6) button {
-        background-color: #e6f4ea !important;
-        color: #0f5132 !important;
-        border: 1px solid #d1e7dd !important;
-        padding: 0.5rem 1.25rem !important;
-        border-radius: 20px !important;
-        font-weight: 700 !important;
-        font-size: 0.85rem !important;
+        background: linear-gradient(135deg, #059669, #10b981) !important;
+        color: #ffffff !important;
+        border: none !important;
+        padding: 0.45rem 1.25rem !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        font-size: 0.8rem !important;
         margin: 0 auto !important;
         display: block !important;
-        width: 100% !important;
+        width: auto !important;
+        box-shadow: 0 2px 8px rgba(5,150,105,0.2) !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) div[data-testid="column"]:nth-child(6) button:hover {
-        background-color: #d1e7dd !important;
-        color: #0f5132 !important;
+        background: linear-gradient(135deg, #047857, #059669) !important;
+        box-shadow: 0 4px 12px rgba(5,150,105,0.3) !important;
     }
     
-    /* Style the outer vertical block container as the custom interactive footer */
     div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) {
-        background-color: #ffffff !important;
-        border-top: 1px solid #e2e8f0 !important;
-        padding: 3rem 2rem !important;
-        margin-top: 5rem !important;
-        border-bottom-left-radius: 12px !important;
-        border-bottom-right-radius: 12px !important;
+        background: rgba(255,255,255,0.8) !important;
+        backdrop-filter: blur(8px) !important;
+        border: 1px solid rgba(226,232,240,0.5) !important;
+        padding: 2rem 1.5rem !important;
+        margin-top: 3rem !important;
+        border-radius: 16px !important;
         display: flex !important;
         flex-direction: column !important;
-        box-shadow: 0 -1px 3px rgba(0,0,0,0.01) !important;
     }
     
-    /* Style footer brand block */
     .footer-brand {
         font-weight: 800;
-        font-size: 1.25rem;
-        color: #063c27;
+        font-size: 1.1rem;
+        color: #065f46;
         line-height: 1.2;
     }
     
     .footer-brand span {
         font-weight: 500;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #64748b;
         display: block;
-        margin-top: 0.25rem;
+        margin-top: 0.2rem;
     }
     
-    /* Style all text buttons inside the custom footer container */
     div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) button {
         background: transparent !important;
         border: none !important;
         color: #475569 !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        padding: 0.5rem 0 !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
+        padding: 0.35rem 0 !important;
         box-shadow: none !important;
         border-radius: 0 !important;
-        width: auto !important;
+        width: 100% !important;
         transition: color 0.2s !important;
         margin: 0 !important;
         text-align: left !important;
@@ -333,35 +300,33 @@ st.markdown(clean_html("""
     }
     
     div[data-testid="stVerticalBlock"]:has(.custom-footer-marker) button:hover {
-        color: #063c27 !important;
+        color: #065f46 !important;
         background: transparent !important;
     }
     
     .footer-divider {
         height: 1px;
-        background-color: #f1f5f9;
-        margin: 1.5rem 0;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        margin: 1rem 0;
         width: 100%;
     }
     
     .footer-copy {
-        font-size: 0.85rem;
-        color: #64748b;
-        padding: 0.5rem 0;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        padding: 0.35rem 0;
     }
     
     .footer-icons {
         text-align: right;
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         justify-content: flex-end;
         align-items: center;
-        height: 100%;
-        padding: 0.5rem 0;
+        padding: 0.35rem 0;
     }
     
-    /* Markers to bypass Streamlit card compiling limitations */
     .hero-card-marker, .split-card-marker {
         display: none !important;
         height: 0 !important;
@@ -370,165 +335,157 @@ st.markdown(clean_html("""
         padding: 0 !important;
     }
     
-    /* Style Streamlit Vertical Block as the Hero Card via parent selector */
     div[data-testid="stVerticalBlock"]:has(.hero-card-marker) {
-        background-color: #ffffff !important;
-        border-radius: 24px !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02), 0 8px 10px -6px rgba(0, 0, 0, 0.02) !important;
-        padding: 3rem !important;
-        margin-bottom: 2.5rem !important;
+        background: #ffffff !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(226,232,240,0.5) !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+        padding: 2rem !important;
+        margin-bottom: 1.5rem !important;
     }
     
-    /* Style the hero Guide Written button to have a beautiful light pasture green shade */
     div[data-testid="stVerticalBlock"]:has(.hero-buttons-container-marker) button {
-        background-color: #f0fdf4 !important; /* ultra light pasture green */
-        color: #16a34a !important; /* soft dark green text */
-        border: 1px solid #dcfce7 !important;
-        font-weight: 700 !important;
-        border-radius: 8px !important;
-        padding: 0.75rem 2rem !important;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7) !important;
+        color: #059669 !important;
+        border: 1px solid #bbf7d0 !important;
+        font-weight: 600 !important;
+        border-radius: 10px !important;
+        padding: 0.65rem 1.5rem !important;
         width: 100% !important;
         margin-top: 0 !important;
+        transition: all 0.2s !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.hero-buttons-container-marker) button:hover {
-        background-color: #dcfce7 !important;
-        color: #15803d !important;
+        background: linear-gradient(135deg, #dcfce7, #bbf7d0) !important;
+        color: #047857 !important;
+        transform: translateY(-1px) !important;
     }
     
-    /* Style Streamlit Vertical Block as the Split Diagnosis Card via parent selector */
     div[data-testid="stVerticalBlock"]:has(.split-card-marker) {
-        background-color: #ffffff !important;
-        border-radius: 24px !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02) !important;
-        margin-bottom: 2rem !important;
+        background: #ffffff !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(226,232,240,0.5) !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+        margin-bottom: 1.5rem !important;
+        overflow: hidden !important;
     }
     
-    /* Remove padding and mask corners on first column of the split card for flush image layout */
     div[data-testid="stVerticalBlock"]:has(.split-card-marker) div[data-testid="column"]:first-child {
         padding: 0 !important;
         margin: 0 !important;
-        border-top-left-radius: 24px !important;
-        border-bottom-left-radius: 24px !important;
         overflow: hidden !important;
     }
     
     .powered-badge {
-        background-color: #e6f4ea;
-        color: #0f5132;
-        padding: 0.4rem 1rem;
-        border-radius: 30px;
-        font-weight: 800;
-        font-size: 0.7rem;
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #065f46;
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.65rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
         display: inline-block;
-        margin-bottom: 1.25rem;
+        margin-bottom: 0.75rem;
     }
     
     .hero-title {
-        font-size: 2.6rem;
+        font-size: 2.4rem;
         font-weight: 800;
-        color: #063c27;
-        line-height: 1.2;
-        margin-bottom: 1rem;
+        color: #064e3b;
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
         letter-spacing: -0.03em;
     }
     
     .hero-desc {
-        font-size: 1rem;
+        font-size: 0.95rem;
         color: #475569;
         line-height: 1.6;
-        margin-bottom: 2.25rem;
+        margin-bottom: 1.5rem;
     }
     
-    .hero-buttons {
-        display: flex;
-        gap: 1rem;
-    }
-    
-    /* Styled with light pasture green colors as requested by the user */
     .btn-primary {
-        background-color: #e6f4ea;
-        color: #0f5132 !important;
-        border: 1px solid #d1e7dd;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 700;
+        background: linear-gradient(135deg, #059669, #10b981);
+        color: #ffffff !important;
+        border: none;
+        padding: 0.65rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
         text-decoration: none;
         transition: all 0.2s;
         text-align: center;
+        box-shadow: 0 2px 8px rgba(5,150,105,0.2);
+        display: block;
+        width: 100%;
     }
     
     .btn-primary:hover {
-        background-color: #d1e7dd;
         transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(5,150,105,0.3);
     }
     
     .btn-secondary {
         background-color: #ffffff;
         color: #475569 !important;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 700;
+        padding: 0.65rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
         text-decoration: none;
-        border: 1px solid #cbd5e1;
+        border: 1px solid #e2e8f0;
         transition: all 0.2s;
         text-align: center;
     }
     
     .btn-secondary:hover {
         background-color: #f8fafc;
-        transform: translateY(-1px);
+        border-color: #cbd5e1;
     }
     
-    /* Native File Uploader Overrides (Clean custom dashed card matching mockup) */
     .upload-dashed-card {
-        border: 2px dashed #cbd5e1;
-        background-color: #ffffff;
+        border: 2px dashed #d1d5db;
+        background: linear-gradient(135deg, #fafdfa, #f0fdf4);
         border-radius: 20px;
-        padding: 2.5rem 1.5rem;
+        padding: 2rem 1.5rem;
         text-align: center;
-        transition: all 0.2s ease;
-        position: relative;
+        transition: all 0.3s ease;
     }
     
     .upload-dashed-card:hover {
         border-color: #10b981;
-        background-color: #fafdfa;
+        background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+        box-shadow: 0 4px 20px rgba(16,185,129,0.06);
     }
     
-    /* Light Camera Circle requested by the user */
     .camera-circle {
-        width: 56px;
-        height: 56px;
-        background-color: #e6f4ea;
-        color: #0f5132;
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #065f46;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1.25rem;
-        font-size: 1.3rem;
-        border: 1px solid #d1e7dd;
+        margin: 0 auto 1rem;
+        font-size: 1.25rem;
     }
     
     .upload-title {
-        font-size: 1.15rem;
-        font-weight: 800;
+        font-size: 1.05rem;
+        font-weight: 700;
         color: #0f172a;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.2rem;
     }
     
     .upload-subtitle {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #64748b;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
     
-    /* Native File Uploader overrides to blend perfectly */
     div[data-testid="stFileUploader"] {
         border: none !important;
         background: transparent !important;
@@ -546,43 +503,39 @@ st.markdown(clean_html("""
         justify-content: center !important;
     }
     
-    /* Style the Streamlit browse files button as a simple underlined link matching mockup */
     section[data-testid="stFileUploadDropzone"] button {
-        background: transparent !important;
+        background: linear-gradient(135deg, #059669, #10b981) !important;
         border: none !important;
-        color: #10b981 !important;
-        text-decoration: underline !important;
-        font-weight: 700 !important;
-        font-size: 0.85rem !important;
-        padding: 0 !important;
-        margin-top: -0.25rem !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+        font-size: 0.8rem !important;
+        padding: 0.4rem 1.2rem !important;
+        margin-top: 0.25rem !important;
+        border-radius: 8px !important;
         box-shadow: none !important;
+        transition: all 0.2s !important;
     }
     
     section[data-testid="stFileUploadDropzone"] button:hover {
-        color: #059669 !important;
-        background: transparent !important;
+        background: linear-gradient(135deg, #047857, #059669) !important;
+        transform: translateY(-1px) !important;
     }
     
-    /* Hide all native Streamlit file uploader labels and instructions */
     section[data-testid="stFileUploadDropzone"] > div > div > span,
     section[data-testid="stFileUploadDropzone"] p,
-    section[data-testid="stFileUploadDropzone"] small {
-        display: none !important;
-    }
-    
+    section[data-testid="stFileUploadDropzone"] small,
     section[data-testid="stFileUploadDropzone"] div[data-testid="stFileUploadDropzoneText"] {
         display: none !important;
     }
     
-    /* Custom override to skin Streamlit's dark/grey uploaded file container into premium light botanical theme */
     div[data-testid="stFileUploaderUploadedFile"],
     .uploadedFile {
-        background-color: #ffffff !important;
+        background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
         color: #0f172a !important;
-        padding: 0.75rem 1rem !important;
+        padding: 0.65rem 1rem !important;
     }
     
     div[data-testid="stFileUploaderUploadedFile"] span,
@@ -592,11 +545,10 @@ st.markdown(clean_html("""
         font-weight: 600 !important;
     }
     
-    /* Expander override (Collapsible card styling) */
     .streamlit-expanderHeader, [data-testid="stExpander"] {
         border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
-        background-color: #ffffff !important;
+        background: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
     }
     
@@ -604,66 +556,61 @@ st.markdown(clean_html("""
         border: none !important;
     }
     
-    /* Custom LIGHT button colors as specified by the user */
     .stButton > button {
-        background-color: #e6f4ea !important;
-        color: #0f5132 !important;
-        border: 1px solid #d1e7dd !important;
-        font-weight: 700 !important;
-        border-radius: 8px !important;
-        padding: 0.6rem 1.5rem !important;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7) !important;
+        color: #065f46 !important;
+        border: 1px solid #bbf7d0 !important;
+        font-weight: 600 !important;
+        border-radius: 10px !important;
+        padding: 0.5rem 1.25rem !important;
         transition: all 0.2s ease-in-out !important;
         width: 100%;
-        margin-top: 1rem;
-        box-shadow: 0 2px 4px rgba(15, 81, 50, 0.04) !important;
+        margin-top: 0.75rem;
+        box-shadow: 0 1px 3px rgba(5,150,105,0.05) !important;
     }
     
     .stButton > button:hover {
-        background-color: #d1e7dd !important;
-        color: #0f5132 !important;
+        background: linear-gradient(135deg, #dcfce7, #bbf7d0) !important;
+        color: #047857 !important;
         transform: translateY(-1px) !important;
-        box-shadow: 0 4px 6px rgba(15, 81, 50, 0.08) !important;
+        box-shadow: 0 4px 8px rgba(5,150,105,0.1) !important;
     }
     
-    /* Make the Analyse with AI button extremely prominent, glowing and premium */
     div[data-testid="stVerticalBlock"] button[key="run_ai_scan"],
     button[key="run_ai_scan"] {
-        background-color: #10b981 !important; /* vibrant botanical green */
-        color: #ffffff !important; /* high-contrast white text */
+        background: linear-gradient(135deg, #059669, #10b981) !important;
+        color: #ffffff !important;
         border: none !important;
-        font-size: 1.1rem !important;
-        font-weight: 800 !important;
-        padding: 1rem 2rem !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        padding: 0.85rem 1.75rem !important;
         border-radius: 12px !important;
-        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2) !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.05em !important;
-        margin-top: 1.5rem !important;
+        box-shadow: 0 8px 20px rgba(16,185,129,0.25) !important;
+        letter-spacing: 0.04em !important;
+        margin-top: 1.25rem !important;
     }
     
     div[data-testid="stVerticalBlock"] button[key="run_ai_scan"]:hover,
     button[key="run_ai_scan"]:hover {
-        background-color: #059669 !important;
-        color: #ffffff !important;
+        background: linear-gradient(135deg, #047857, #059669) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.3) !important;
+        box-shadow: 0 12px 28px rgba(16,185,129,0.35) !important;
     }
     
-    /* Critical Form Input Fields Light Theme overrides to solve the dark-mode box bug */
     div[data-testid="stTextInput"] input,
     div[data-testid="stTextArea"] textarea {
-        background-color: #ffffff !important;
+        background: #ffffff !important;
         color: #0f172a !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 8px !important;
-        padding: 0.55rem 1rem !important;
-        transition: border-color 0.2s ease-in-out !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 0.5rem 1rem !important;
+        transition: border-color 0.2s !important;
     }
     
     div[data-testid="stTextInput"] input:focus,
     div[data-testid="stTextArea"] textarea:focus {
         border-color: #10b981 !important;
-        box-shadow: 0 0 0 1px #10b981 !important;
+        box-shadow: 0 0 0 3px rgba(16,185,129,0.1) !important;
     }
     
     form[data-testid="stForm"] {
@@ -675,15 +622,15 @@ st.markdown(clean_html("""
     div[data-testid="stTextInput"] label,
     div[data-testid="stTextArea"] label {
         color: #475569 !important;
-        font-weight: 700 !important;
-        font-size: 0.85rem !important;
-        margin-bottom: 0.5rem !important;
+        font-weight: 600 !important;
+        font-size: 0.8rem !important;
+        margin-bottom: 0.35rem !important;
     }
     
     .diag-image-container {
         width: 100%;
         height: 100%;
-        min-height: 480px;
+        min-height: 400px;
         position: relative;
         overflow: hidden;
     }
@@ -698,22 +645,21 @@ st.markdown(clean_html("""
     }
     
     .diag-content-container {
-        padding: 2.5rem;
+        padding: 1.75rem;
     }
     
-    /* Badges overlaying image */
     .image-badge-critical {
         position: absolute;
-        top: 1.5rem;
-        left: 1.5rem;
-        background-color: rgba(254, 242, 242, 0.95);
+        top: 1rem;
+        left: 1rem;
+        background: rgba(254,242,242,0.95);
         color: #dc2626;
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
+        padding: 0.35rem 0.75rem;
+        border-radius: 8px;
         font-weight: 700;
-        font-size: 0.75rem;
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(254, 226, 226, 0.5);
+        font-size: 0.7rem;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(254,202,202,0.5);
         z-index: 10;
         display: inline-flex;
         align-items: center;
@@ -722,16 +668,16 @@ st.markdown(clean_html("""
     
     .image-badge-healthy {
         position: absolute;
-        top: 1.5rem;
-        left: 1.5rem;
-        background-color: rgba(240, 253, 244, 0.95);
+        top: 1rem;
+        left: 1rem;
+        background: rgba(240,253,244,0.95);
         color: #16a34a;
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
+        padding: 0.35rem 0.75rem;
+        border-radius: 8px;
         font-weight: 700;
-        font-size: 0.75rem;
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(220, 252, 231, 0.5);
+        font-size: 0.7rem;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(187,247,208,0.5);
         z-index: 10;
         display: inline-flex;
         align-items: center;
@@ -739,51 +685,51 @@ st.markdown(clean_html("""
     }
     
     .plant-name {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 800;
         color: #0f172a;
-        margin: 0 0 0.25rem 0;
+        margin: 0 0 0.15rem 0;
     }
     
     .plant-sub {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-style: italic;
         color: #64748b;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
     
     .diag-box-critical {
-        background-color: #fff5f5;
-        border: 1px solid #fee2e2;
+        background: linear-gradient(135deg, #fef2f2, #fff5f5);
+        border: 1px solid #fecaca;
         border-radius: 12px;
-        padding: 1.25rem;
-        margin-bottom: 1.5rem;
+        padding: 1.1rem;
+        margin-bottom: 1.25rem;
     }
     
     .diag-box-healthy {
-        background-color: #f0fdf4;
-        border: 1px solid #dcfce7;
+        background: linear-gradient(135deg, #f0fdf4, #fafdfa);
+        border: 1px solid #bbf7d0;
         border-radius: 12px;
-        padding: 1.25rem;
-        margin-bottom: 1.5rem;
+        padding: 1.1rem;
+        margin-bottom: 1.25rem;
     }
     
     .diag-box-title {
-        font-size: 0.75rem;
-        font-weight: 800;
+        font-size: 0.7rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.3rem;
     }
     
     .diag-box-title.critical { color: #dc2626; }
     .diag-box-title.healthy { color: #16a34a; }
     
     .diag-box-name {
-        font-size: 1.35rem;
+        font-size: 1.2rem;
         font-weight: 800;
         color: #dc2626;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.2rem;
     }
     
     .diag-box-healthy .diag-box-name {
@@ -791,50 +737,50 @@ st.markdown(clean_html("""
     }
     
     .diag-box-conf {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #64748b;
         font-weight: 600;
     }
     
     .plan-title {
-        font-size: 0.85rem;
-        font-weight: 800;
+        font-size: 0.8rem;
+        font-weight: 700;
         color: #475569;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 1rem;
-        margin-top: 1rem;
+        margin-bottom: 0.75rem;
+        margin-top: 0.75rem;
     }
     
     .plan-steps {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
     }
     
     .plan-step {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         align-items: flex-start;
     }
     
     .step-num-badge {
-        width: 24px;
-        height: 24px;
-        background-color: #063c27;
+        width: 22px;
+        height: 22px;
+        background: #065f46;
         color: #ffffff;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         flex-shrink: 0;
-        margin-top: 0.15rem;
+        margin-top: 0.1rem;
     }
     
     .step-text {
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         color: #334155;
         line-height: 1.5;
     }
@@ -843,29 +789,28 @@ st.markdown(clean_html("""
         color: #0f172a;
     }
     
-    /* Side widgets */
     .side-card {
-        background-color: #ffffff;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-        padding: 1.25rem;
-        margin-bottom: 1rem;
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid rgba(226,232,240,0.5);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        padding: 1rem;
+        margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.75rem;
     }
     
     .side-icon-box {
-        width: 40px;
-        height: 40px;
-        background-color: #f1f5f9;
-        border-radius: 8px;
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
-        color: #063c27;
+        font-size: 1.1rem;
+        color: #065f46;
         flex-shrink: 0;
     }
     
@@ -874,257 +819,287 @@ st.markdown(clean_html("""
     }
     
     .side-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: #64748b;
-        margin-bottom: 0.15rem;
+        margin-bottom: 0.1rem;
     }
     
     .side-value {
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         font-weight: 700;
         color: #0f172a;
     }
     
     .side-progress-bg {
         width: 100%;
-        height: 6px;
-        background-color: #f1f5f9;
+        height: 5px;
+        background: #f1f5f9;
         border-radius: 3px;
-        margin-top: 0.5rem;
+        margin-top: 0.35rem;
         overflow: hidden;
     }
     
     .side-progress-fill {
         height: 100%;
-        background-color: #10b981;
+        background: linear-gradient(90deg, #10b981, #059669);
         border-radius: 3px;
     }
     
     .help-card {
-        background-color: #063c27;
-        border-radius: 16px;
-        padding: 1.5rem;
+        background: linear-gradient(135deg, #064e3b, #065f46);
+        border-radius: 14px;
+        padding: 1.25rem;
         color: #ffffff;
         margin-bottom: 0.5rem;
-        box-shadow: 0 4px 10px rgba(6, 60, 39, 0.1);
         position: relative;
         overflow: hidden;
     }
     
     .help-card::after {
-        content: '🌸';
+        content: '🌿';
         position: absolute;
-        bottom: -1rem;
-        right: -1rem;
-        font-size: 4rem;
-        opacity: 0.1;
+        bottom: -0.75rem;
+        right: -0.75rem;
+        font-size: 3.5rem;
+        opacity: 0.08;
     }
     
     .help-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
         color: #ffffff;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.35rem;
     }
     
     .help-desc {
-        font-size: 0.9rem;
+        font-size: 0.82rem;
         color: #a7f3d0;
         line-height: 1.5;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.65rem;
     }
     
-    /* Style the Book Session button inside the help card */
     div[data-testid="stVerticalBlock"]:has(.help-card-container-marker) button {
-        background-color: #ffffff !important;
-        color: #063c27 !important;
-        padding: 0.55rem 1.5rem !important;
-        border-radius: 20px !important;
-        font-weight: 700 !important;
-        font-size: 0.85rem !important;
+        background: #ffffff !important;
+        color: #065f46 !important;
+        padding: 0.45rem 1.25rem !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        font-size: 0.8rem !important;
         border: none !important;
         width: auto !important;
         margin-top: 0 !important;
         display: inline-block !important;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
     }
     
     div[data-testid="stVerticalBlock"]:has(.help-card-container-marker) button:hover {
-        background-color: #f8fafc !important;
+        background: #f8fafc !important;
         transform: translateY(-1px) !important;
     }
     
-    /* Why Trust Our Diagnosis Section */
     .trust-section {
         text-align: center;
-        margin: 4rem 0 2rem;
+        margin: 3rem 0 1.5rem;
     }
     
     .trust-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 800;
-        color: #063c27;
-        margin-bottom: 0.75rem;
+        color: #064e3b;
+        margin-bottom: 0.5rem;
         letter-spacing: -0.02em;
     }
     
     .trust-subtitle {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
         color: #64748b;
-        max-width: 600px;
-        margin: 0 auto 2.5rem;
+        max-width: 560px;
+        margin: 0 auto 2rem;
         line-height: 1.6;
     }
     
     .trust-card {
-        background-color: #ffffff;
+        background: #ffffff;
         border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        padding: 2.5rem 1.5rem;
+        border: 1px solid rgba(226,232,240,0.5);
+        padding: 2rem 1.25rem;
         text-align: center;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        transition: all 0.25s ease;
         height: 100%;
     }
     
     .trust-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
-        border-color: #cbd5e1;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.04);
+        border-color: #d1d5db;
     }
     
     .trust-icon-box {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1.25rem;
-        font-size: 1.25rem;
+        margin: 0 auto 1rem;
+        font-size: 1.2rem;
     }
     
     .trust-icon-box.green {
-        background-color: #e6f4ea;
-        color: #0f5132;
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #065f46;
     }
     
     .trust-icon-box.orange {
-        background-color: #fff3cd;
-        color: #664d03;
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e;
     }
     
     .trust-card-title {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
         font-weight: 700;
         color: #0f172a;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
     
     .trust-card-desc {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #475569;
         line-height: 1.6;
     }
     
-    /* Meet The Team Section in Light Theme */
     .team-section {
-        background-color: #ffffff;
-        border-radius: 24px;
-        padding: 2.5rem;
-        margin-bottom: 2.5rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(226,232,240,0.5);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
     
     .team-title {
-        color: #063c27;
+        color: #064e3b;
         text-align: center;
-        font-size: 2rem;
-        margin-bottom: 2.5rem;
+        font-size: 1.75rem;
+        margin-bottom: 2rem;
         font-weight: 800;
     }
     
     .team-container {
         display: flex;
         justify-content: center;
-        gap: 1.5rem;
+        gap: 1.25rem;
         flex-wrap: wrap;
     }
     
     .team-card {
-        background-color: #f8fafc;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
         border-radius: 16px;
-        padding: 2rem;
+        padding: 1.5rem;
         text-align: center;
         flex: 1;
-        min-width: 240px;
-        max-width: 280px;
+        min-width: 220px;
+        max-width: 260px;
         border: 1px solid #e2e8f0;
         transition: all 0.3s;
     }
     
     .team-card:hover {
         transform: translateY(-4px);
-        border-color: #d1e7dd;
+        border-color: #a7f3d0;
+        box-shadow: 0 8px 20px rgba(5,150,105,0.08);
     }
     
     .team-name {
         color: #0f172a;
-        font-size: 1.35rem;
+        font-size: 1.25rem;
         font-weight: 700;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.35rem;
     }
     
     .team-role {
-        color: #10b981;
-        font-weight: 700;
-        font-size: 0.85rem;
+        color: #059669;
+        font-weight: 600;
+        font-size: 0.78rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 1rem;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.75rem;
     }
     
     .team-desc {
         color: #475569;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         line-height: 1.5;
     }
     
-    /* My Garden Collection styles */
     .plants-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.25rem;
+        margin-top: 1.5rem;
     }
     
     .plant-collection-card {
-        background-color: #ffffff;
-        border-radius: 20px;
-        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid rgba(226,232,240,0.5);
         overflow: hidden;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        transition: all 0.25s ease;
     }
     
     .plant-collection-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
-        border-color: #cbd5e1;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.04);
+        border-color: #d1d5db;
     }
     
     .plant-collection-img {
         width: 100%;
-        height: 200px;
+        height: 180px;
         object-fit: cover;
     }
     
-    /* Custom Responsive spacing */
     @media (max-width: 992px) {
-        .hero-title { font-size: 2rem; }
+        .hero-title { font-size: 1.8rem; }
         .nav-links { display: none; }
-        .diag-image-container { min-height: 300px; }
+        .diag-image-container { min-height: 250px; }
+    }
+    
+    .details-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        margin-top: 0.75rem;
+    }
+    
+    .details-title {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin: 0 0 0.35rem 0;
+    }
+    
+    .details-item {
+        font-size: 0.8rem;
+        color: #475569;
+        margin: 0.15rem 0;
+    }
+    
+    .loading-container {
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+    
+    .loading-text {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #065f46;
+        margin-top: 0.75rem;
     }
 </style>
 """), unsafe_allow_html=True)
@@ -1169,8 +1144,7 @@ with st.container():
     with nav_cols[7]:
         st.markdown('<div class="nav-icon-text">👤</div>', unsafe_allow_html=True)
 
-# System Information Expander instead of Sidebar (Accessible on all pages)
-with st.expander("ℹ️ SYSTEM INFORMATION & GUIDE", expanded=False):
+with st.expander("ℹ️ SYSTEM INFO", expanded=False):
     st.markdown("### 🚀 AI SYSTEM STATUS")
     status_col1, status_col2, status_col3 = st.columns(3)
     with status_col1:
@@ -1333,11 +1307,10 @@ if st.session_state.current_page == "dashboard":
             st.markdown(clean_html("""
             <span class="powered-badge">POWERED BY ADVANCED AI</span>
             <h1 class="hero-title">Heal Your Plants<br>with AI</h1>
-            <p class="hero-desc">Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our botanical intelligence guide your garden to health.</p>
+            <p class="hero-desc">Instant diagnosis and recovery plans for your leafy companions. Simply snap a photo and let our AI guide your garden to health.</p>
             <div class="hero-buttons-container-marker"></div>
             """), unsafe_allow_html=True)
             
-            # Requirement 2: Render horizontal button layout with "Get Started" and the light "Guide Written" redirects
             hero_btn_cols = st.columns([1, 1, 0.5])
             with hero_btn_cols[0]:
                 st.markdown('<a href="#stFileUploader" class="btn-primary" style="display: block; width: 100%; height: 100%; box-sizing: border-box; line-height: 2.25rem;">Get Started</a>', unsafe_allow_html=True)
@@ -1400,9 +1373,9 @@ if st.session_state.current_page == "dashboard":
 
     # Recent Diagnosis Block Title
     st.markdown(clean_html("""
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 3rem 0 1rem;">
-        <h2 style="font-size: 1.8rem; font-weight: 800; color: #063c27; margin: 0; letter-spacing: -0.02em;">Recent Diagnosis</h2>
-        <span style="color: #10b981; font-weight: 700; cursor: pointer; font-size: 0.95rem;">See Full History →</span>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 0.75rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #064e3b; margin: 0; letter-spacing: -0.02em;">Recent Diagnosis</h2>
+        <span style="color: #10b981; font-weight: 600; cursor: pointer; font-size: 0.85rem;">See Full History →</span>
     </div>
     """), unsafe_allow_html=True)
 
@@ -1495,7 +1468,7 @@ if st.session_state.current_page == "dashboard":
                             st.session_state.analysis_count += 1
                             
                             # Determine botanical and genus names
-                            display_disease = predicted_disease.replace('_', ' ').title()
+                            display_disease = predicted_disease.replace('___', ' - ').replace('_', ' ').title()
                             plant_genus = "Swiss Cheese Plant"
                             display_plant = "Monstera Deliciosa"
                             
@@ -1631,9 +1604,9 @@ if st.session_state.current_page == "dashboard":
                 <p class="team-desc">Specializing in model training, optimization, and validation. Ensures our AI delivers 99.2% accuracy across diverse plant conditions.</p>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 2rem;">
-            <span class="love-icon">❤️</span>
-            <p style="display: inline-block; color: #063c27; font-size: 1.1rem; font-weight: 700; margin-left: 0.5rem; margin-top: 0;">Made with love by the Plant Savior AI Team</p>
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <span>❤️</span>
+            <p style="display: inline-block; color: #065f46; font-size: 0.95rem; font-weight: 600; margin-left: 0.4rem; margin-top: 0;">Made with love by the Plant Savior AI Team</p>
         </div>
     </div>
     """), unsafe_allow_html=True)
@@ -1641,49 +1614,59 @@ if st.session_state.current_page == "dashboard":
 elif st.session_state.current_page == "my_plants":
     # ----------------- PAGE: MY PLANTS GRID -----------------
     # Requirement 1: Make first plant collection image dynamically reference st.session_state.active_image
+    # Determine disease status for display
+    if st.session_state.has_analyzed:
+        is_healthy = "healthy" in st.session_state.active_disease.lower()
+        plant_badge = '<span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>' if is_healthy else '<span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">⚠️ Diseased</span>'
+    else:
+        plant_badge = '<span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f1f5f9; color: #64748b; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">⏳ Pending</span>'
+
+    disease_display = st.session_state.active_disease.replace('_', ' ').title() if st.session_state.has_analyzed else "No diagnosis yet"
+    conf_display = st.session_state.active_conf if st.session_state.has_analyzed else "Upload & analyze a leaf"
+
     st.markdown(clean_html(f"""
-    <div style="text-align: center; margin-bottom: 3rem;">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
         <span class="powered-badge">MY GARDEN</span>
-        <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">My Plant Collection</h1>
-        <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Track, manage, and monitor the healing progress of your organic companions.</p>
+        <h1 class="hero-title" style="font-size: 2.2rem; margin-bottom: 0.4rem;">My Plant Collection</h1>
+        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Track and monitor your plant diagnoses from the treatment database.</p>
     </div>
     
     <div class="plants-grid">
         <div class="plant-collection-card">
             <img src="{st.session_state.active_image}" class="plant-collection-img" />
-            <div style="padding: 1.5rem;">
-                <span class="critical-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">⚠️ Critical</span>
-                <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">{st.session_state.active_plant}</h3>
-                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">{st.session_state.active_sub}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+            <div style="padding: 1.25rem;">
+                {plant_badge}
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0 0 0.15rem 0;">{disease_display}</h3>
+                <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem;">{conf_display}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.65rem; font-size: 0.78rem; color: #64748b;">
                     <span>📅 2 days ago</span>
-                    <span style="color: #10b981; font-weight: 700; cursor: pointer;" onclick="window.location.search='?page=dashboard'">View Diagnosis →</span>
+                    <span style="color: #10b981; font-weight: 600; cursor: pointer;" onclick="window.location.search='?page=dashboard'">View Diagnosis →</span>
                 </div>
             </div>
         </div>
         
         <div class="plant-collection-card">
             <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
-            <div style="padding: 1.5rem;">
-                <span class="healthy-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
-                <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Roma Tomato</h3>
-                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Solanum Lycopersicum</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+            <div style="padding: 1.25rem;">
+                <span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">🛡️ Healthy</span>
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0 0 0.15rem 0;">Tomato Healthy</h3>
+                <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem;">99.8% AI Confidence</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.65rem; font-size: 0.78rem; color: #64748b;">
                     <span>📅 5 days ago</span>
-                    <span style="color: #16a34a; font-weight: 700;">Optimal Health</span>
+                    <span style="color: #16a34a; font-weight: 600;">Optimal Health</span>
                 </div>
             </div>
         </div>
         
         <div class="plant-collection-card">
             <img src="https://images.unsplash.com/photo-1598512752271-33f913a5af13?q=80&w=400&auto=format&fit=crop" class="plant-collection-img" />
-            <div style="padding: 1.5rem;">
-                <span class="critical-badge" style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">⚠️ Needs Attention</span>
-                <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.25rem 0;">Bell Pepper</h3>
-                <p style="font-style: italic; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem;">Bacterial Spot</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; font-size: 0.8rem; color: #64748b;">
+            <div style="padding: 1.25rem;">
+                <span style="margin-bottom: 0.5rem; display: inline-flex; background-color: #fef2f2; color: #dc2626; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">⚠️ Diseased</span>
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0 0 0.15rem 0;">Pepper Bell Bacterial Spot</h3>
+                <p style="color: #64748b; font-size: 0.8rem; margin-bottom: 0.75rem;">92.4% AI Confidence</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.65rem; font-size: 0.78rem; color: #64748b;">
                     <span>📅 1 week ago</span>
-                    <span style="color: #10b981; font-weight: 700; cursor: pointer;">View Treatment →</span>
+                    <span style="color: #10b981; font-weight: 600; cursor: pointer;">View Treatment →</span>
                 </div>
             </div>
         </div>
@@ -1693,10 +1676,10 @@ elif st.session_state.current_page == "my_plants":
 elif st.session_state.current_page == "care_guide":
     # ----------------- PAGE: CARE GUIDE MANUALS -----------------
     st.markdown(clean_html("""
-    <div style="text-align: center; margin-bottom: 3rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
         <span class="powered-badge">CARE MANUALS</span>
-        <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Botanical Care Manuals</h1>
-        <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Expert guides for watering, light levels, and pruning techniques.</p>
+        <h1 class="hero-title" style="font-size: 2rem; margin-bottom: 0.35rem;">Botanical Care Manuals</h1>
+        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Expert guides for watering, light levels, and pruning techniques.</p>
     </div>
     """), unsafe_allow_html=True)
     
@@ -1737,10 +1720,10 @@ elif st.session_state.current_page == "care_guide":
 elif st.session_state.current_page == "support":
     # ----------------- PAGE: SUPPORT & FAQ -----------------
     st.markdown(clean_html("""
-    <div style="text-align: center; margin-bottom: 3rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
         <span class="powered-badge">GET HELP</span>
-        <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Expert Botanical Support</h1>
-        <p style="color: #64748b; font-size: 1rem; max-width: 600px; margin: 0 auto;">Connect with a professional horticulturist or browse FAQs.</p>
+        <h1 class="hero-title" style="font-size: 2rem; margin-bottom: 0.35rem;">Expert Botanical Support</h1>
+        <p style="color: #64748b; font-size: 0.9rem; max-width: 560px; margin: 0 auto;">Connect with a professional horticulturist or browse FAQs.</p>
     </div>
     """), unsafe_allow_html=True)
     
@@ -1748,8 +1731,8 @@ elif st.session_state.current_page == "support":
     
     with col1:
         st.markdown(clean_html("""
-        <div style="background-color: #ffffff; padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-            <h3 style="font-weight: 800; color: #063c27; margin: 0 0 1.5rem 0;">Submit Inquiry</h3>
+        <div style="background-color: #ffffff; padding: 1.75rem; border-radius: 16px; border: 1px solid #e2e8f0;">
+            <h3 style="font-weight: 800; color: #064e3b; margin: 0 0 1rem 0;">Submit Inquiry</h3>
         """), unsafe_allow_html=True)
         
         with st.form("support_form"):
@@ -1788,30 +1771,28 @@ elif st.session_state.current_page == "support":
         
     with col2:
         st.markdown(clean_html("""
-        <div style="background-color: #ffffff; padding: 2.5rem; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: 100%;">
-            <h3 style="font-weight: 800; color: #063c27; margin: 0 0 1.5rem 0;">Frequently Asked Questions</h3>
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div style="background-color: #ffffff; padding: 1.75rem; border-radius: 16px; border: 1px solid #e2e8f0; height: 100%;">
+            <h3 style="font-weight: 800; color: #064e3b; margin: 0 0 1rem 0;">Frequently Asked Questions</h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
                 <div>
-                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; font-size: 0.95rem;">How accurate is the AI model?</h4>
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">Our custom convolutional neural network delivers 99.2% accuracy on laboratory test images across all supported leaf classes.</p>
+                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.35rem 0; font-size: 0.88rem;">How accurate is the AI model?</h4>
+                    <p style="color: #64748b; font-size: 0.82rem; margin: 0; line-height: 1.5;">Our CNN delivers 99.2% accuracy on laboratory test images across all supported leaf classes.</p>
                 </div>
                 <div>
-                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; font-size: 0.95rem;">What plants can I analyze?</h4>
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">Currently, we support full diagnostic scans for Tomato plants, Potato plants, and Bell Pepper plants.</p>
+                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.35rem 0; font-size: 0.88rem;">What plants can I analyze?</h4>
+                    <p style="color: #64748b; font-size: 0.82rem; margin: 0; line-height: 1.5;">We support full diagnostic scans for Tomato, Potato, and Bell Pepper plants.</p>
                 </div>
                 <div>
-                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; font-size: 0.95rem;">Why was my scan rejected?</h4>
-                    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">Our custom YOLO classifier filters out non-leaf photos to maintain data clinical integrity. Ensure you zoom into the plant leaf foliage.</p>
+                    <h4 style="font-weight: 700; color: #0f172a; margin: 0 0 0.35rem 0; font-size: 0.88rem;">Why was my scan rejected?</h4>
+                    <p style="color: #64748b; font-size: 0.82rem; margin: 0; line-height: 1.5;">Our YOLO classifier filters out non-leaf photos. Ensure you zoom into the plant leaf foliage for best results.</p>
                 </div>
             </div>
         </div>
         """), unsafe_allow_html=True)
 
-# Custom Elegant Interactive Footer (SPA zero-reload compatible)
 with st.container():
     st.markdown('<div class="custom-footer-marker"></div>', unsafe_allow_html=True)
     
-    # Top Row of Footer
     footer_row1_col1, footer_row1_col2 = st.columns([1.5, 2.5])
     with footer_row1_col1:
         st.markdown(clean_html("""
@@ -1822,22 +1803,20 @@ with st.container():
         """), unsafe_allow_html=True)
         
     with footer_row1_col2:
-        # Align 4 buttons horizontally in sub-columns
         sub_cols = st.columns([1, 1, 1.2, 1])
         with sub_cols[0]:
             st.button("Dashboard", key="footer_nav_dash", on_click=set_page, args=("dashboard",))
         with sub_cols[1]:
             st.button("My Plants", key="footer_nav_my_plants", on_click=set_page, args=("my_plants",))
         with sub_cols[2]:
-            st.button("Plant Care Guide", key="footer_nav_care_guide", on_click=set_page, args=("care_guide",))
+            st.button("Care Guide", key="footer_nav_care_guide", on_click=set_page, args=("care_guide",))
         with sub_cols[3]:
             st.button("Support", key="footer_nav_support", on_click=set_page, args=("support",))
             
     st.markdown('<div class="footer-divider"></div>', unsafe_allow_html=True)
     
-    # Bottom Row of Footer
     footer_row2_col1, footer_row2_col2 = st.columns([2, 1])
     with footer_row2_col1:
         st.markdown('<div class="footer-copy">© 2024 Plant Savior AI. All rights reserved.</div>', unsafe_allow_html=True)
     with footer_row2_col2:
-        st.markdown('<div class="footer-icons">🌸 🌿 🍏</div>', unsafe_allow_html=True)
+        st.markdown('<div class="footer-icons">🌱 🌿 🍃</div>', unsafe_allow_html=True)
