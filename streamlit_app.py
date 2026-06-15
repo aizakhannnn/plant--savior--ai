@@ -158,48 +158,38 @@ st.markdown(clean_html("""
         box-sizing: border-box;
     }
     
+    body { margin: 0 !important; padding: 0 !important; }
+    
     .stApp, [data-testid="stAppViewContainer"] {
         background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
+        color: #0f172a !important;
+    }
+    
+    .stApp > div:first-child {
+        margin-top: 0 !important;
         padding-top: 0 !important;
-        color: #0f172a !important;
-    }
-    
-    body {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    .stApp, [data-testid="stAppViewContainer"] {
-        background: linear-gradient(160deg, #f0fdf4 0%, #f8fafc 40%, #ecfdf5 100%) !important;
-        padding: 0 !important;
-        color: #0f172a !important;
     }
     
     section.main {
         padding: 0 !important;
-        margin: 0 !important;
+        margin-top: 0 !important;
     }
     
-    section.main > div.block-container {
+    section.main > .block-container {
         padding: 0 1.5rem 2rem 1.5rem !important;
         max-width: 1160px !important;
         margin: 0 auto !important;
     }
     
-    header, [data-testid="stHeader"], header[data-testid="stHeader"] {
-        display: none !important;
-        height: 0 !important;
-        min-height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: hidden !important;
+    .block-container > div:first-child,
+    .block-container > div:first-child > div:first-child,
+    .block-container > div:first-child > div:first-child > div:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
     
-    header[data-testid="stHeader"] > div {
-        height: 0 !important;
-        min-height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
+    div[data-testid="stAppViewContainer"] > section:first-child {
+        padding-top: 0 !important;
     }
     
     [data-testid="stMain"],
@@ -209,35 +199,29 @@ st.markdown(clean_html("""
         margin-top: 0 !important;
     }
     
-    div[data-testid="stAppViewContainer"] > section {
-        padding-top: 0 !important;
-    }
-    
-    section.main > div:first-child,
-    section.main > div:first-child > div:first-child,
-    section.main > div:first-child > div:first-child > div:first-child {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-    
-    div[data-testid="stVerticalBlock"] > div:has(> div[data-testid="stMarkdownContainer"]:first-child > p:only-child) {
-        margin-top: 0 !important;
+    div[data-testid="stHeader"],
+    header {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
     }
     
     #MainMenu {visibility: hidden;}
-    header {visibility: hidden; height: 0 !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; overflow: hidden !important;}
     footer {visibility: hidden;}
     [data-testid="stToolbar"] {display: none !important;}
     [data-testid="stDecoration"] {display: none !important;}
-    .viewerBadge_container__1QS1h {display: none !important;}
     div[data-testid="stStatusWidget"] {display: none !important;}
+    .viewerBadge_container__1QS1h {display: none !important;}
     
     div[data-testid="stVerticalBlock"]:has(.nav-bar-container-marker) {
         background: rgba(255,255,255,0.85) !important;
         backdrop-filter: blur(12px) !important;
         padding: 0.6rem 1.5rem !important;
         border: 1px solid rgba(226,232,240,0.6) !important;
-        margin-bottom: 1.5rem !important;
+        margin: 0 0 1.5rem 0 !important;
         border-radius: 16px !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02) !important;
         display: flex !important;
