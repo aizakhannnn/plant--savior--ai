@@ -1139,8 +1139,7 @@ if 'model' not in st.session_state:
 
 # Initialize active interactive states with perfect mockup defaults
 if 'active_image' not in st.session_state:
-    # A premium high-resolution green leaf photo as default mockup preview
-    st.session_state.active_image = "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?q=80&w=600&auto=format&fit=crop"
+    st.session_state.active_image = ""
     st.session_state.active_badge = '<span class="image-badge-critical">⚠️ Critical Health</span>'
     
     st.session_state.active_plant = "Golden Pothos"
@@ -1594,3 +1593,13 @@ div[data-testid="stHeader"], header { display: none !important; height: 0 !impor
 .viewerBadge_container__1QS1h, div[data-testid="stStatusWidget"] { display: none !important; }
 </style>
 """, unsafe_allow_html=True)
+
+# JavaScript injection — forcibly remove top gap that Streamlit sets via inline styles
+st.markdown("""<img src="x" onerror="
+this.remove();
+var s=document.createElement('style');
+s.textContent='html,body,#root,.stApp,[data-testid=stAppViewContainer],section.main,section[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer],[data-testid=stVerticalBlockBorderWrapper]{padding-top:0!important;margin-top:0!important;padding:0 1.5rem 2rem 1.5rem!important;}div[data-testid=stHeader],header{display:none!important;height:0!important;}';
+document.head.appendChild(s);
+var f=function(){document.querySelectorAll('section.main,[data-testid=stMain],.block-container,[data-testid=stMainBlockContainer]').forEach(function(e){e.style.paddingTop='0px';e.style.marginTop='0px';e.style.padding='0 1.5rem 2rem 1.5rem';});};
+f();setTimeout(f,300);setTimeout(f,800);setTimeout(f,1500);
+">""", unsafe_allow_html=True)
